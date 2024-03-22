@@ -45,11 +45,8 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -57,11 +54,19 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Abstract
-
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `localsky`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+A weather app with the ability to upload your own weather data about you surrounding.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Team Members
+
+Ason Yue
+
+Francis Scallatino
+
+Josh O'Halloran
+
+Nick Rucinski
 
 
 
@@ -72,29 +77,19 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. 
+1. Get a free API Key at [Google](https://developers.google.com/maps/documentation/android-sdk/start)
+2. Get a free API Key at [Pirate Weather](https://pirate-weather.apiable.io/)
 3. Clone the repo
    ```sh
    git clone https://github.com/TULocalSky/localsky.git
    ```
-4. Install NPM packages
-   ```sh
-   npm install
-   ```
-5. Enter your API keys in `local.properties`
+4. Enter your API keys in `local.properties`
    ```Java
-   const API_KEY = 'ENTER YOUR API';
+   MAPS_API_KEY=YOURAPIKEYHERE
+   PIRATE_WEATHER_API_KEY=YOURAPIKEYHERE
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
