@@ -100,11 +100,11 @@ To get a local copy up and running follow these simple example steps.
 
 How to contribute to the project
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b YourName/Feature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+0. See Installation
+1. Create your Feature Branch (`git checkout -b YourName/Feature`)
+2. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+3. Push to the Branch (`git push origin feature/AmazingFeature`)
+4. Open a Pull Request
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
