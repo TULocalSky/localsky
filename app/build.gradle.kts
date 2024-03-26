@@ -30,6 +30,20 @@ android {
 
         val googleApiKey = properties.getProperty("GOOGLE_MAPS_API_KEY") ?: ""
         val pirateWeatherApi = properties.getProperty("PIRATE_WEATHER_API_KEY") ?: ""
+
+        buildConfigField(
+            type = "String",
+            name = "GOOGLE_MAPS_API_KEY",
+            value = googleApiKey
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "PIRATE_WEATHER_API_KEY",
+            value = pirateWeatherApi
+        )
+
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = googleApiKey
     }
 
     buildTypes {
@@ -64,51 +78,57 @@ android {
 
 dependencies {
 
+    //Android
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
+
+    //Compose
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("com.google.firebase:firebase-firestore:24.11.0")
-    implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation("androidx.compose.material:material:1.6.4")
+    implementation("androidx.compose.foundation:foundation")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
 
-    // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    // Material Design 3
-    implementation("androidx.compose.material3:material3")
-    // or Material Design 2
-    implementation("androidx.compose.material:material")
-    // or skip Material Design and build directly on top of foundational components
-    implementation("androidx.compose.foundation:foundation")
-    // or only import the main APIs for the underlying toolkit systems,
-    // such as input and measurement/layout
-    implementation("androidx.compose.ui:ui")
+    //Firebase
+    //Firebase Auth
+    val firebaseAuthVersion = "22.3.1"
+    implementation("com.google.firebase:firebase-auth:$firebaseAuthVersion")
 
+    //Firebase Firestore
+    val firestoreVersion = "24.11.0"
+    implementation("com.google.firebase:firebase-firestore:$firestoreVersion")
+
+    //Gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    //Rooms
     val room_version = "2.6.1"
-
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
-    implementation("com.google.maps.android:maps-compose:4.3.0")
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.compose.material:material:1.6.4")
-
     // To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:2.6.1")
+
+    //Google Maps
+    implementation("com.google.maps.android:maps-compose:4.3.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+
+
+
+
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
 }
+
