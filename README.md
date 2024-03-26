@@ -54,7 +54,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Abstract
-A weather app with the ability to upload your own weather data about you surrounding.
+A weather app with the ability to upload your own weather data about your surroundings.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -74,7 +74,6 @@ Nick Rucinski
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 
