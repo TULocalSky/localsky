@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LocalSky"
+rootProject.name = "ls"
 include(":app")
