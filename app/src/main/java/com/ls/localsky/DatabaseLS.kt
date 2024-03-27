@@ -71,6 +71,38 @@ class DatabaseLS() {
     }
 
     /**
+    Creates a user in the database
+    @param email - The email address of the user
+    @param password - The password provided by the user
+    @param onSuccess - A lambda expression that gives access to the authenticated user on success
+    @param firstName - A lambda express that gives access to the error when either authentication or user sign in fails
+    @return void
+
+     *Notes*
+    if email address is already in use this will be put in the onFailure callback
+    com.google.firebase.auth.FirebaseAuthUserCollisionException:
+    The email address is already in use by another account.
+     **/
+    fun signIn(
+        email: String,
+        password: String,
+        onSuccess: (FirebaseUser) -> Unit,
+        onFailure: (Exception) -> Unit
+    ){
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener{ task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG_FIREAUTH, "signInWithEmail:success")
+                    onSuccess(auth.currentUser!!)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG_FIREAUTH, "signInWithEmail:failure", task.exception)
+                    onFailure(task.exception!!)
+                }
+            }
+    }
+
+    /**
 
      **/
     fun getUserTable(
