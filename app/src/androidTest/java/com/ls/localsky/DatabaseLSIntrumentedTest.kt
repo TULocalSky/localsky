@@ -21,11 +21,13 @@ class DatabaseLSIntrumentedTest {
             "TestLastName",
             "test@test.com"
         )
-        //Need to finish this later
+
     }
 
     @Test
     fun firebaseGetUserTable(){
         val database = DatabaseLS()
+
+        database
     }
 }

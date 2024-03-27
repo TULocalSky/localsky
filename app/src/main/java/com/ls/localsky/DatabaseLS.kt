@@ -1,6 +1,7 @@
 package com.ls.localsky
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -181,6 +182,32 @@ class DatabaseLS() {
             {
                 //Choosing not to handle if the user table fails yet
             })
+    }
+
+    /**
+     * @param user - The ID of the user to delete.
+     * @param onSuccess - A lambda expression called with the Task on success.
+     * @param onFailure - A lambda expression called upon failure to delete the user.
+     * @return void
+     */
+    fun removeUser(
+        userID: String,
+        onSuccess: (Task<Void>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ){
+        getUserByID(
+            userID,
+            {
+                database.collection(User.USER_TABLE)
+                    .document(it!!.id)
+                    .delete()
+                    .addOnCompleteListener(onSuccess)
+                    .addOnFailureListener(onFailure)
+            },
+            {
+                //Need to handle this later but should not be a problem
+            }
+        )
     }
 
     /**
