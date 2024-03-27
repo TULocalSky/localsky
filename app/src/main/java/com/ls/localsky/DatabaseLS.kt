@@ -7,6 +7,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 
 class DatabaseLS() {
@@ -41,10 +42,10 @@ class DatabaseLS() {
             .addOnCompleteListener{task ->
                 if(task.isSuccessful){
                     val userMap = hashMapOf(
-                        "UserID" to auth.currentUser!!.uid,
-                        "FirstName" to firstName,
-                        "LastName" to lastName,
-                        "Email" to email
+                        User.USERID to auth.currentUser!!.uid,
+                        User.FIRST_NAME to firstName,
+                        User.LAST_NAME to lastName,
+                        User.EMAIL_ADDRESS to email
                     )
 
                     val user = User(
@@ -103,6 +104,32 @@ class DatabaseLS() {
     }
 
     /**
+     *
+     */
+    fun updateUser(
+        user: User,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ){
+        val newUserData = hashMapOf(
+            User.USERID to user.userID,
+            User.FIRST_NAME to user.firstName,
+            User.LAST_NAME to user.lastName,
+            User.EMAIL_ADDRESS to user.email
+        )
+        getUserByID(
+            user.userID,
+            { userDocument ->
+                database.collection(User.USER_TABLE)
+                    .document(userDocument!!.id)
+                    .set(newUserData, SetOptions.merge())
+                onSuccess()
+            },
+            onFailure
+        )
+    }
+
+    /**
 
      **/
     fun getUserTable(
@@ -123,19 +150,20 @@ class DatabaseLS() {
 
      */
     fun getUserByID(
-        user: User,
-        callback: (QueryDocumentSnapshot?) -> Unit
+        userID: String,
+        onSuccess: (QueryDocumentSnapshot?) -> Unit,
+        onFailure: () -> Unit
     ) {
         getUserTable { users ->
             if (users != null) {
                 for (document in users) {
-                    if (document.data[User.USERID] == user.userID) {
-                        callback(document)
+                    if (document.data[User.USERID] == userID) {
+                        onSuccess(document)
                         return@getUserTable
                     }
                 }
             }
-            callback(null)
+            onFailure()
         }
     }
 
