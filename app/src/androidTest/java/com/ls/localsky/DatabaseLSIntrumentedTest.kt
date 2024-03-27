@@ -11,15 +11,22 @@ import org.junit.Assert.*
 @RunWith(AndroidJUnit4::class)
 class DatabaseLSIntrumentedTest {
 
+    //Testing is not working
     @Test
     fun firebaseCreateUser(){
         val database = DatabaseLS()
 
-        val user = User(
-            "1",
+        database.createUser(
             "TestFirstName",
             "TestLastName",
-            "test@test.com"
+            "test@test.com",
+            "12345",
+            { FirebaseUser, User ->
+                assert(User.firstName == "TestFirstName")
+            },
+            {
+
+            }
         )
 
     }
