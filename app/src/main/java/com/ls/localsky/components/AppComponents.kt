@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import com.google.rpc.context.AttributeContext.Resource
 import com.ls.localsky.R
 import com.ls.localsky.ui.theme.Purple80
+import com.ls.localsky.ui.theme.PurpleGrey40
 import com.ls.localsky.ui.theme.PurpleGrey80
 
 @Composable
@@ -206,7 +207,7 @@ fun ButtonComponent(value: String) {
             .fillMaxWidth()
             .heightIn(48.dp)
             .background(
-                brush = Brush.horizontalGradient(listOf(Purple80, PurpleGrey80)),
+                brush = Brush.horizontalGradient(listOf(PurpleGrey40, PurpleGrey80)),
                 shape = RoundedCornerShape(25.dp)
             ),
             contentAlignment = Alignment.Center
