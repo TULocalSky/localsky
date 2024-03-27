@@ -21,24 +21,4 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.ls.localsky", appContext.packageName)
     }
-
-    @Test
-    fun firebaseCreateUser(){
-        val database = DatabaseLS()
-
-        val user = User(
-            "1",
-            "TestFirstName",
-            "TestLastName",
-            "test@test.com"
-        )
-
-        database.createUser(user)
-        //Need to finish this later
-    }
-
-    @Test
-    fun firebaseGetUserTable(){
-        val database = DatabaseLS()
-    }
 }

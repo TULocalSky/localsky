@@ -54,7 +54,7 @@ class DatabaseLS() {
                         email
                     )
 
-                    database.collection("Users")
+                    database.collection(User.USER_TABLE)
                         .add(userMap)
                         .addOnSuccessListener {
                             Log.d(TAG_FIREAUTH, "User Created with ID $it")
@@ -108,7 +108,7 @@ class DatabaseLS() {
     fun getUserTable(
         callback: (QuerySnapshot?) -> Unit
     ) {
-        database.collection("Users")
+        database.collection(User.USER_TABLE)
             .get()
             .addOnSuccessListener { result ->
                 callback(result)
@@ -160,7 +160,7 @@ class DatabaseLS() {
             "WeatherCondition" to weatherCondition,
             "Picture" to locationPicture,
         )
-        database.collection("UserReports")
+        database.collection(UserReport.USER_REPORT_TABLE)
             .add(report)
             .addOnSuccessListener {
                 Log.d(TAG_FIRESTORE, "UserReport Created with ID $it")
@@ -184,8 +184,17 @@ class DatabaseLS() {
     /**
 
      **/
-    fun getAllUserReports(){
-
+    fun getAllUserReports(callback: (QuerySnapshot?) -> Unit
+    ) {
+        database.collection(UserReport.USER_REPORT_TABLE)
+            .get()
+            .addOnSuccessListener { result ->
+                callback(result)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG_FIRESTORE, "Error getting documents.", exception)
+                callback(null)
+            }
     }
 
 

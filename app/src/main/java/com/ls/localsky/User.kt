@@ -8,6 +8,7 @@ class User(
 ) {
 
     companion object{
+        public val USER_TABLE = "Users"
         public val USERID = "UserID"
         public val FIRST_NAME = "FirstName"
         public val LAST_NAME = "LastName"

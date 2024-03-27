@@ -9,4 +9,8 @@ class UserReport(
     val locationPicture: String,
     val weatherCondition: String,
 ) {
+
+    companion object{
+        public val USER_REPORT_TABLE = "UserReports"
+    }
 }
