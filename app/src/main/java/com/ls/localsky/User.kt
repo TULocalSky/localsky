@@ -7,4 +7,10 @@ class User(
     val email: String
 ) {
 
+    companion object{
+        public val USERID = "UserID"
+        public val FIRST_NAME = "FirstName"
+        public val LAST_NAME = "LastName"
+        public val EMAIL_ADDRESS = "Email"
+    }
 }

@@ -19,6 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        testApplicationId = "com.ls.localsky"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -34,13 +35,13 @@ android {
         buildConfigField(
             type = "String",
             name = "GOOGLE_MAPS_API_KEY",
-            value = googleApiKey
+            value = "\"$googleApiKey\""
         )
 
         buildConfigField(
             type = "String",
             name = "PIRATE_WEATHER_API_KEY",
-            value = pirateWeatherApi
+            value = "\"$pirateWeatherApi\""
         )
 
         manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = googleApiKey
