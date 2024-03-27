@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
+import com.ls.localsky.components.ButtonComponent
 import com.ls.localsky.components.EmailInput
 import com.ls.localsky.components.PasswordInput
 import com.ls.localsky.components.TitleText
@@ -32,9 +33,11 @@ fun LoginScreen() {
 
             TitleText(value = "Login to " + stringResource(R.string.app_name))
             Spacer(modifier=Modifier.height(50.dp))
-            EmailInput(labelValue = stringResource(id = R.string.login))
+            EmailInput(labelValue = stringResource(id = R.string.email))
 
             PasswordInput(labelValue = stringResource(id = R.string.password))
+            Spacer(modifier=Modifier.height(50.dp))
+            ButtonComponent(value = stringResource(id = R.string.login))
 
         }
 

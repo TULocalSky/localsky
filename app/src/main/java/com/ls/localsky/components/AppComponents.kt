@@ -1,11 +1,17 @@
 package com.ls.localsky.components
 
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -21,8 +27,10 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -35,7 +43,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.rpc.context.AttributeContext.Resource
 import com.ls.localsky.R
+import com.ls.localsky.ui.theme.Purple80
+import com.ls.localsky.ui.theme.PurpleGrey80
 
 @Composable
 
@@ -182,11 +193,34 @@ fun LastNameInput(labelValue: String) {
     )
 }
 @Composable
-fun SignInButton() {
+fun ButtonComponent(value: String) {
+    Button(onClick = { /*TODO*/ },
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(48.dp),
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(Color.Transparent)
+        ) {
 
-}
-@Composable
-fun RegisterButton() {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(48.dp)
+            .background(
+                brush = Brush.horizontalGradient(listOf(Purple80, PurpleGrey80)),
+                shape = RoundedCornerShape(25.dp)
+            ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = value,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
+
+    }
 }
+
+
+
 
