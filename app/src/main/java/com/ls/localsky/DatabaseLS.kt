@@ -104,7 +104,11 @@ class DatabaseLS() {
     }
 
     /**
-     *
+     * Updates user information in the database.
+     * @param user - The User object containing updated information.
+     * @param onSuccess - A lambda expression called upon successful update.
+     * @param onFailure - A lambda expression called upon failure to update.
+     * @return void
      */
     fun updateUser(
         user: User,
@@ -130,31 +134,40 @@ class DatabaseLS() {
     }
 
     /**
-
-     **/
+     * Retrieves all user records from the database.
+     * @param onSuccess - A lambda expression that receives the QuerySnapshot result.
+     * @param onFailure - A lambda expression called upon failure to get the table.
+     * @return void
+     */
     fun getUserTable(
-        callback: (QuerySnapshot?) -> Unit
+        onSuccess: (QuerySnapshot?) -> Unit,
+        onFailure: () -> Unit
     ) {
         database.collection(User.USER_TABLE)
             .get()
             .addOnSuccessListener { result ->
-                callback(result)
+                onSuccess(result)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG_FIRESTORE, "Error getting documents.", exception)
-                callback(null)
+                onFailure()
             }
     }
 
-    /*
-
+    /**
+     * Retrieves a user record from the database by user ID.
+     * @param userID - The ID of the user to retrieve.
+     * @param onSuccess - A lambda expression called with the QueryDocumentSnapshot upon success.
+     * @param onFailure - A lambda expression called upon failure to retrieve the user.
+     * @return void
      */
     fun getUserByID(
         userID: String,
         onSuccess: (QueryDocumentSnapshot?) -> Unit,
         onFailure: () -> Unit
     ) {
-        getUserTable { users ->
+        getUserTable (
+            { users ->
             if (users != null) {
                 for (document in users) {
                     if (document.data[User.USERID] == userID) {
@@ -163,13 +176,25 @@ class DatabaseLS() {
                     }
                 }
             }
-            onFailure()
-        }
+                onFailure()
+            },
+            {
+                //Choosing not to handle if the user table fails yet
+            })
     }
 
     /**
-
-     **/
+     * Creates a user report in the database.
+     * @param user - The User object associated with the report.
+     * @param createdTime - The time the report was created.
+     * @param latitude - The latitude of the report location.
+     * @param longitude - The longitude of the report location.
+     * @param locationPicture - The picture associated with the report location.
+     * @param weatherCondition - The weather condition at the report location.
+     * @param onSuccess - A lambda expression called upon successful report creation.
+     * @param onFailure - A lambda expression called upon failure to create the report.
+     * @return void
+     */
     fun createUserReport(
         user:User,
         createdTime: String,
@@ -210,8 +235,10 @@ class DatabaseLS() {
     }
 
     /**
-
-     **/
+     * Retrieves all user reports from the database.
+     * @param callback - A lambda expression that receives the QuerySnapshot result.
+     * @return void
+     */
     fun getAllUserReports(callback: (QuerySnapshot?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
