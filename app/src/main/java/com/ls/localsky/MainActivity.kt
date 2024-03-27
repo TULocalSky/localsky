@@ -17,13 +17,18 @@ class MainActivity : ComponentActivity() {
         //val url = "/forecast/$api_key/{lat_and_long_or_time}"
         val db = DatabaseLS()
 
-        db.getUserTable {
-            if (it != null) {
-                for(user in it.documents){
-                    Log.d("User", user.toString())
-                }
+        db.createUser(
+            "TestFirstName",
+            "TestLastName",
+            "test@test.com",
+            "TestPassword",
+            {
+                Log.d("User", it.email!!)
+            },
+            {
+                Log.d("Except", it.toString())
             }
-        }
+        )
 
         setContent {
             LocalSkyTheme {
