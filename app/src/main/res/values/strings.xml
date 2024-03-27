@@ -5,7 +5,9 @@
     <string name="login">Login</string>
     <string name="sign_out">Sign Out</string>
     <string name="create_post">Post</string>
-
+    <string name="password">Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="hide_password">Hide Password</string>
 
 
 </resources>
