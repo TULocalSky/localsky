@@ -45,7 +45,7 @@ fun LoginScreen() {
             Spacer(modifier=Modifier.height(50.dp))
             //Buttons
             Spacer(modifier=Modifier.height(10.dp))
-            ButtonComponent(value = stringResource(id = R.string.create))
+            ButtonComponent(value = stringResource(id = R.string.register))
             Spacer(modifier=Modifier.height(10.dp))
             //Login with google
             DividerTextComponent()

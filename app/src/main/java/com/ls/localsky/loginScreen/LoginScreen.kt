@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
 import com.ls.localsky.components.ButtonComponent
 import com.ls.localsky.components.ClickableLoginText
+import com.ls.localsky.components.ClickableRegisterText
 import com.ls.localsky.components.DividerTextComponent
 import com.ls.localsky.components.EmailInput
 import com.ls.localsky.components.PasswordInput
@@ -42,11 +43,9 @@ fun LoginScreen() {
             //Buttons
             ButtonComponent(value = stringResource(id = R.string.login))
             Spacer(modifier=Modifier.height(10.dp))
-            ButtonComponent(value = stringResource(id = R.string.create))
-            Spacer(modifier=Modifier.height(10.dp))
             //Login with google
             DividerTextComponent()
-            ClickableLoginText(onTextSelected = {})
+            ClickableRegisterText(onTextSelected = {})
 
         }
 

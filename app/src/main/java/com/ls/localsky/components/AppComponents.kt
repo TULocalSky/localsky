@@ -260,23 +260,58 @@ fun DividerTextComponent() {
 
 @Composable
 fun ClickableLoginText(onTextSelected: (String) -> Unit) {
-    val initText = "Login with your "
-    val googleAccountText = "Google Account"
+    val initText = "Already have an account? "
+    val loginText = "Login Here"
 
     val annotatedString = buildAnnotatedString {
         append(initText)
         withStyle(style = SpanStyle(color = Color.Blue)) {
-            pushStringAnnotation(tag = googleAccountText, annotation = googleAccountText)
-            append(googleAccountText)
+            pushStringAnnotation(tag = loginText, annotation = loginText)
+            append(loginText)
         }
     }
 
-    ClickableText(text = annotatedString, onClick = { offset ->
+    ClickableText(
+        style = TextStyle(
+                textAlign = TextAlign.Center
+        ),
+        text = annotatedString, onClick = { offset ->
         annotatedString.getStringAnnotations(offset, offset)
             .firstOrNull()?.also{ span ->
                 Log.d("ClickableLoginText", "{${span.item}}")
 
-                if (span.item == googleAccountText) {
+                if (span.item == loginText) {
+                    onTextSelected(span.item)
+                }
+
+            }
+    })
+
+}
+
+@Composable
+fun ClickableRegisterText(onTextSelected: (String) -> Unit) {
+    val initText = "Don't have an account? "
+    val registerText = "Register Here"
+
+    val annotatedString = buildAnnotatedString {
+        append(initText)
+        withStyle(style = SpanStyle(color = Color.Blue)) {
+            pushStringAnnotation(tag = registerText, annotation = registerText)
+            append(registerText)
+        }
+    }
+
+    ClickableText(
+        style = TextStyle(
+            textAlign = TextAlign.Center
+        ),
+        text = annotatedString, onClick = { offset ->
+        annotatedString.getStringAnnotations(offset, offset)
+            .firstOrNull()?.also{ span ->
+                Log.d("ClickableRegisterText", "{${span.item}}")
+
+                if (span.item == registerText) {
                     onTextSelected(span.item)
                 }
 
