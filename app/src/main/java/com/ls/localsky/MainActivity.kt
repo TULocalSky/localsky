@@ -14,6 +14,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //Example
         //val url = "/forecast/$api_key/{lat_and_long_or_time}"
+        val db = DatabaseLS()
+        db.createUser(User(
+            "",
+            "",
+            "",
+            ""
+        ))
         setContent {
             LocalSkyTheme {
                 // A surface container using the 'background' color from the theme
