@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
@@ -33,24 +34,31 @@ class DatabaseLS() {
         lastName: String,
         email: String,
         password: String,
-        onSuccess: (FirebaseUser) -> Unit,
+        onSuccess: (FirebaseUser, User) -> Unit,
         onFailure: (Exception) -> Unit
     ){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener{task ->
                 if(task.isSuccessful){
-                    val user = hashMapOf(
+                    val userMap = hashMapOf(
                         "UserID" to auth.currentUser!!.uid,
                         "FirstName" to firstName,
                         "LastName" to lastName,
                         "Email" to email
                     )
 
+                    val user = User(
+                        auth.currentUser!!.uid,
+                        firstName,
+                        lastName,
+                        email
+                    )
+
                     database.collection("Users")
-                        .add(user)
+                        .add(userMap)
                         .addOnSuccessListener {
                             Log.d(TAG_FIREAUTH, "User Created with ID $it")
-                            onSuccess(auth.currentUser!!)
+                            onSuccess(auth.currentUser!!, user)
                         }
                         .addOnFailureListener{ e ->
                             Log.w(TAG_FIREAUTH, "Error adding document", e)
@@ -99,10 +107,52 @@ class DatabaseLS() {
         }
     }
 
-    /*
+    /**
 
-     */
-    fun createMarker(){
+     **/
+    fun createUserReport(
+        user:User,
+        createdTime: String,
+        latitude: Double,
+        longitude: Double,
+        locationPicture: String,
+        weatherCondition: String,
+        onSuccess: (DocumentReference, UserReport) -> Unit,
+        onFailure: (Exception) -> Unit
+    ){
+        val report = hashMapOf(
+            "UserID" to user.userID,
+            "CreatedAt" to createdTime,
+            "Latitude" to latitude,
+            "Longitude" to longitude,
+            "WeatherCondition" to weatherCondition,
+            "Picture" to locationPicture,
+        )
+        database.collection("UserReports")
+            .add(report)
+            .addOnSuccessListener {
+                Log.d(TAG_FIRESTORE, "UserReport Created with ID $it")
+                val userReport = UserReport(
+                    it.id,
+                    user,
+                    createdTime,
+                    latitude,
+                    longitude,
+                    locationPicture,
+                    weatherCondition
+                )
+                onSuccess(it, userReport)
+            }
+            .addOnFailureListener{ e ->
+                Log.w(TAG_FIREAUTH, "Error adding document", e)
+                onFailure(e)
+            }
+    }
+
+    /**
+
+     **/
+    fun getAllUserReports(){
 
     }
 
