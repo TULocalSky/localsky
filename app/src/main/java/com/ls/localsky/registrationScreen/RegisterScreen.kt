@@ -24,7 +24,7 @@ import com.ls.localsky.components.PasswordInput
 import com.ls.localsky.components.TitleText
 
 @Composable
-fun LoginScreen() {
+fun RegisterScreen() {
 
     Surface(
         color = Color.White,
@@ -59,6 +59,6 @@ fun LoginScreen() {
 
 @Preview
 @Composable
-fun DefaultPreviewOfLoginScreen() {
-    LoginScreen()
+fun DefaultPreviewOfRegisterScreen() {
+    RegisterScreen()
 }
