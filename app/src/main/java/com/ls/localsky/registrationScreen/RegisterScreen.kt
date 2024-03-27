@@ -1,4 +1,4 @@
-package com.ls.localsky.loginScreen
+package com.ls.localsky.registrationScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,8 @@ import com.ls.localsky.components.ButtonComponent
 import com.ls.localsky.components.ClickableLoginText
 import com.ls.localsky.components.DividerTextComponent
 import com.ls.localsky.components.EmailInput
+import com.ls.localsky.components.FirstNameInput
+import com.ls.localsky.components.LastNameInput
 import com.ls.localsky.components.PasswordInput
 import com.ls.localsky.components.TitleText
 
@@ -33,14 +35,15 @@ fun LoginScreen() {
     ){
         Column(modifier = Modifier.fillMaxSize()){
 
-            TitleText(value = "Login to " + stringResource(R.string.app_name))
+            TitleText(value = "Register to " + stringResource(R.string.app_name))
             Spacer(modifier=Modifier.height(50.dp))
             //text input fields
+            FirstNameInput(labelValue = stringResource(id = R.string.first_name))
+            LastNameInput(labelValue = stringResource(id = R.string.last_name))
             EmailInput(labelValue = stringResource(id = R.string.email))
             PasswordInput(labelValue = stringResource(id = R.string.password))
             Spacer(modifier=Modifier.height(50.dp))
             //Buttons
-            ButtonComponent(value = stringResource(id = R.string.login))
             Spacer(modifier=Modifier.height(10.dp))
             ButtonComponent(value = stringResource(id = R.string.create))
             Spacer(modifier=Modifier.height(10.dp))

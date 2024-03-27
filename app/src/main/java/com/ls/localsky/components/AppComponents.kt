@@ -1,17 +1,22 @@
 package com.ls.localsky.components
 
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -34,13 +39,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.rpc.context.AttributeContext.Resource
@@ -222,6 +230,57 @@ fun ButtonComponent(value: String) {
     }
 }
 
+@Composable
+fun DividerTextComponent() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
 
+        Divider(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f),
+            color = Color.Gray,
+            thickness = 1.dp
+        )
 
+        Text(modifier = Modifier.padding(8.dp),
+            text= "or",
+            fontSize = 16.sp,
+            color = Color.Gray)
 
+        Divider(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f),
+            color = Color.Gray,
+            thickness = 1.dp
+        )
+    }
+}
+
+@Composable
+fun ClickableLoginText(onTextSelected: (String) -> Unit) {
+    val initText = "Login with your "
+    val googleAccountText = "Google Account"
+
+    val annotatedString = buildAnnotatedString {
+        append(initText)
+        withStyle(style = SpanStyle(color = Color.Blue)) {
+            pushStringAnnotation(tag = googleAccountText, annotation = googleAccountText)
+            append(googleAccountText)
+        }
+    }
+
+    ClickableText(text = annotatedString, onClick = { offset ->
+        annotatedString.getStringAnnotations(offset, offset)
+            .firstOrNull()?.also{ span ->
+                Log.d("ClickableLoginText", "{${span.item}}")
+
+                if (span.item == googleAccountText) {
+                    onTextSelected(span.item)
+                }
+
+            }
+    })
+
+}
