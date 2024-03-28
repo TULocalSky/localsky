@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">LocalSky</string>
+    <string name="register">Register</string>
+    <string name="create">Create an Account</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="create_post">Post</string>
+    <string name="password">Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="hide_password">Hide Password</string>
+
+
 </resources>
