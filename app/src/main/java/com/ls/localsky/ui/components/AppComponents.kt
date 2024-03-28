@@ -202,8 +202,12 @@ fun LastNameInput(labelValue: String) {
     )
 }
 @Composable
-fun ButtonComponent(value: String) {
-    Button(onClick = { /*TODO*/ },
+fun ButtonComponent(
+    value: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
