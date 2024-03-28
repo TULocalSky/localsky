@@ -262,7 +262,7 @@ class DatabaseLS() {
 
     /**
      * Retrieves all user reports from the database.
-     * @param callback - A lambda expression that receives the QuerySnapshot result.
+     * @param callback - A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
     fun getAllUserReports(callback: (QuerySnapshot?) -> Unit

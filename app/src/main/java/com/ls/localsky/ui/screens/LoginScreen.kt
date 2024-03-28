@@ -110,7 +110,10 @@ fun DefaultPreviewOfLoginScreen() {
 }
 
 /**
- *
+ * Checks all fields provided to see if they are valid using [checkIfFieldIsValid]
+ * @param emailField -
+ * @param passwordField -
+ * @return Boolean
  */
 private fun checkInputFields(
     context: Context,
@@ -131,7 +134,12 @@ private fun checkInputFields(
 
 
 /**
- *
+ * Checks if the given text field is blank
+ * and if not it displays a toast with the given error message
+ * @param context - Application context used to display the toast
+ * @param field - The string field that is to be checked
+ * @param errorMessage - A error message that describes the problem to the user
+ * @return Boolean
  */
 private fun checkIfFieldIsValid(
     context: Context,
