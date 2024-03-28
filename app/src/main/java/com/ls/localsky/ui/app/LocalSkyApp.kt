@@ -6,11 +6,15 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.screens.LoginScreen
 import com.ls.localsky.ui.screens.RegisterScreen
 
 @Composable
-fun LocalSkyApp(){
+fun LocalSkyApp(
+    database: DatabaseLS
+){
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -20,10 +24,10 @@ fun LocalSkyApp(){
         Crossfade(targetState = LocalSkyAppRouter.currentScreen, label = "") { currentState ->
             when(currentState.value) {
                 is Screen.LoginScreen -> {
-                    LoginScreen()
+                    LoginScreen(LocalContext.current, database)
                 }
                 is Screen.RegisterScreen -> {
-                    RegisterScreen()
+                    RegisterScreen(LocalContext.current, database)
                 }
             }
         }

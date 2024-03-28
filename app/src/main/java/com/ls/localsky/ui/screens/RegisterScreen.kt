@@ -82,7 +82,26 @@ fun RegisterScreen(
                     passwordValue.value,
                     emailValue.value
                 )){
-
+                    database.createUser(
+                        firstNameValue.value,
+                        lastNameValue.value,
+                        emailValue.value,
+                        passwordValue.value,
+                        { FirebaseUser, User ->
+                            Toast.makeText(
+                                context,
+                                "Debug: Created User",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                        {
+                            Toast.makeText(
+                                context,
+                                "There was an error creating your account try again soon.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
                 }
             }
             Spacer(modifier=Modifier.height(10.dp))
@@ -107,7 +126,7 @@ fun DefaultPreviewOfRegisterScreen() {
 /**
  *
  */
-fun checkInputFields(
+private fun checkInputFields(
     context: Context,
     firstNameField: String,
     lastNameField: String,
@@ -140,7 +159,7 @@ fun checkInputFields(
 /**
  *
  */
-fun checkIfFieldIsValid(
+private fun checkIfFieldIsValid(
     context: Context,
     field: String,
     errorMessage: String
