@@ -1,4 +1,4 @@
-package com.ls.localsky.components
+package com.ls.localsky.ui.components
 
 
 import android.util.Log
@@ -259,7 +259,7 @@ fun DividerTextComponent() {
 }
 
 @Composable
-fun ClickableLoginText(onTextSelected: (String) -> Unit) {
+fun ClickableLoginText(onTextSelected : (String) -> Unit) {
     val initText = "Already have an account? "
     val loginText = "Login Here"
 
@@ -290,7 +290,7 @@ fun ClickableLoginText(onTextSelected: (String) -> Unit) {
 }
 
 @Composable
-fun ClickableRegisterText(onTextSelected: (String) -> Unit) {
+fun ClickableRegisterText(onTextSelected : (String) -> Unit) {
     val initText = "Don't have an account? "
     val registerText = "Register Here"
 

@@ -1,4 +1,4 @@
-package com.ls.localsky.app
+package com.ls.localsky.ui.app
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

@@ -1,4 +1,4 @@
-package com.ls.localsky.registrationScreen
+package com.ls.localsky.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,14 +14,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
-import com.ls.localsky.components.ButtonComponent
-import com.ls.localsky.components.ClickableLoginText
-import com.ls.localsky.components.DividerTextComponent
-import com.ls.localsky.components.EmailInput
-import com.ls.localsky.components.FirstNameInput
-import com.ls.localsky.components.LastNameInput
-import com.ls.localsky.components.PasswordInput
-import com.ls.localsky.components.TitleText
+import com.ls.localsky.ui.app.LocalSkyAppRouter
+import com.ls.localsky.ui.app.Screen
+import com.ls.localsky.ui.components.ButtonComponent
+import com.ls.localsky.ui.components.ClickableLoginText
+import com.ls.localsky.ui.components.DividerTextComponent
+import com.ls.localsky.ui.components.EmailInput
+import com.ls.localsky.ui.components.FirstNameInput
+import com.ls.localsky.ui.components.LastNameInput
+import com.ls.localsky.ui.components.PasswordInput
+import com.ls.localsky.ui.components.TitleText
 
 @Composable
 fun RegisterScreen() {
@@ -47,9 +49,11 @@ fun RegisterScreen() {
             Spacer(modifier=Modifier.height(10.dp))
             ButtonComponent(value = stringResource(id = R.string.register))
             Spacer(modifier=Modifier.height(10.dp))
-            //Login with google
+            //Login divider
             DividerTextComponent()
-            ClickableLoginText(onTextSelected = {})
+            ClickableLoginText(onTextSelected = {
+                LocalSkyAppRouter.navigateTo(Screen.LoginScreen)
+            })
 
         }
 
