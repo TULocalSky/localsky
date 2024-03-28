@@ -130,7 +130,8 @@ fun PasswordInput(
 fun NormalTextInput(
     labelValue: String,
     textInputValue: MutableState<String>,
-    imageVector: ImageVector
+    imageVector: ImageVector,
+    keyboardType: KeyboardType
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -140,7 +141,7 @@ fun NormalTextInput(
             focusedLabelColor = Color.LightGray,
             cursorColor = Color.White
         ),
-        keyboardOptions = KeyboardOptions.Default,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         value = textInputValue.value,
         onValueChange = {
             textInputValue.value = it

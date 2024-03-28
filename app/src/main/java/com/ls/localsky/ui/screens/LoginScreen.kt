@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.DatabaseLS
@@ -58,7 +59,7 @@ fun LoginScreen(
             Spacer(modifier=Modifier.height(50.dp))
             // Text input fields
             // Email
-            NormalTextInput(labelValue = stringResource(id = R.string.email), emailValue, Icons.Filled.Mail)
+            NormalTextInput(labelValue = stringResource(id = R.string.email), emailValue, Icons.Filled.Mail, KeyboardType.Email)
             PasswordInput(labelValue = stringResource(id = R.string.password), passwordValue)
             Spacer(modifier=Modifier.height(50.dp))
             //Buttons
@@ -111,8 +112,8 @@ fun DefaultPreviewOfLoginScreen() {
 
 /**
  * Checks all fields provided to see if they are valid using [checkIfFieldIsValid]
- * @param emailField -
- * @param passwordField -
+ * @param emailField - The string element from the email text edit field
+ * @param passwordField - The string element from the password text edit field
  * @return Boolean
  */
 private fun checkInputFields(
