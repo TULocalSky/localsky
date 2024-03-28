@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.localsky.localsky", appContext.packageName)
+        assertEquals("com.ls.localsky", appContext.packageName)
     }
 }
