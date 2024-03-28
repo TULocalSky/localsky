@@ -9,10 +9,9 @@ import com.ls.localsky.ui.app.LocalSkyApp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Example
-        //val url = "/forecast/$api_key/{lat_and_long_or_time}"
+        val database = DatabaseLS()
         setContent {
-            LocalSkyApp()
+                LocalSkyApp(database)
             }
         }
     }
