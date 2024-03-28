@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -75,39 +77,10 @@ fun TitleText(value: String) {
 }
 
 @Composable
-fun EmailInput(labelValue:String) {
-
-    val emailValue = remember {
-        mutableStateOf("")
-    }
-
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        label = {Text(text = labelValue)},
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.LightGray,
-            focusedLabelColor = Color.LightGray,
-            cursorColor = Color.White
-        ),
-        keyboardOptions = KeyboardOptions.Default,
-        value = emailValue.value,
-        onValueChange = {
-            emailValue.value = it
-        },
-        leadingIcon = {
-            Icon(imageVector = Icons.Filled.Mail, contentDescription = "", tint = Color.LightGray)
-        }
-    )
-
-}
-
-@Composable
-fun PasswordInput(labelValue:String) {
-
-    val passwordValue = remember {
-        mutableStateOf("")
-    }
-
+fun PasswordInput(
+    labelValue:String,
+    textInputValue: MutableState<String>,
+) {
     val passwordVisible = remember {
         mutableStateOf(false)
     }
@@ -123,9 +96,9 @@ fun PasswordInput(labelValue:String) {
             cursorColor = Color.White
         ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        value = passwordValue.value,
+        value = textInputValue.value,
         onValueChange = {
-            passwordValue.value = it
+            textInputValue.value = it
         },
         leadingIcon = {
             Icon(imageVector = Icons.Filled.Lock, contentDescription = "", tint = Color.LightGray)
@@ -154,11 +127,11 @@ fun PasswordInput(labelValue:String) {
 
 
 @Composable
-fun FirstNameInput(labelValue: String) {
-    val firstNameValue = remember {
-        mutableStateOf("")
-    }
-
+fun NormalTextInput(
+    labelValue: String,
+    textInputValue: MutableState<String>,
+    imageVector: ImageVector
+) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         label = {Text(text = labelValue)},
@@ -168,36 +141,12 @@ fun FirstNameInput(labelValue: String) {
             cursorColor = Color.White
         ),
         keyboardOptions = KeyboardOptions.Default,
-        value = firstNameValue.value,
+        value = textInputValue.value,
         onValueChange = {
-            firstNameValue.value = it
+            textInputValue.value = it
         },
         leadingIcon = {
-            Icon(imageVector = Icons.Filled.Person, contentDescription = "", tint = Color.LightGray)
-        }
-    )
-}
-@Composable
-fun LastNameInput(labelValue: String) {
-    val lastNameValue = remember {
-        mutableStateOf("")
-    }
-
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        label = {Text(text = labelValue)},
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.LightGray,
-            focusedLabelColor = Color.LightGray,
-            cursorColor = Color.White
-        ),
-        keyboardOptions = KeyboardOptions.Default,
-        value = lastNameValue.value,
-        onValueChange = {
-            lastNameValue.value = it
-        },
-        leadingIcon = {
-            Icon(imageVector = Icons.Filled.Person, contentDescription = "", tint = Color.LightGray)
+            Icon(imageVector = imageVector, contentDescription = "", tint = Color.LightGray)
         }
     )
 }
