@@ -54,7 +54,7 @@ fun EmailInput(labelValue:String) {
 
 }
 
-@Composables
+@Composable
 fun PasswordInput(labelValue:String) {
 
     val passwordValue = remember {
