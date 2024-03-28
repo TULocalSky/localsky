@@ -73,13 +73,12 @@ class DatabaseLS() {
     }
 
     /**
-    Sign in to with an email and password
-    @param email - The email address of the user
-    @param password - The password provided by the user
-    @param onSuccess - A lambda expression that gives access to the authenticated user on success
-    @param firstName - A lambda express that gives access to the error when either authentication or user sign in fails
-    @return void
-
+     * Sign in to with an email and password
+     * @param email - The email address of the user
+     * @param password - The password provided by the user
+     * @param onSuccess - A lambda expression that gives access to the authenticated user on success
+     * @param onFailure - A lambda express that gives access to the error when either authentication or user sign in fails
+     * @return void
      **/
     fun signIn(
         email: String,

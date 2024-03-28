@@ -56,7 +56,8 @@ fun LoginScreen(
 
             TitleText(value = "Login to " + stringResource(R.string.app_name))
             Spacer(modifier=Modifier.height(50.dp))
-            //text input fields
+            // Text input fields
+            // Email
             NormalTextInput(labelValue = stringResource(id = R.string.email), emailValue, Icons.Filled.Mail)
             PasswordInput(labelValue = stringResource(id = R.string.password), passwordValue)
             Spacer(modifier=Modifier.height(50.dp))
@@ -76,6 +77,8 @@ fun LoginScreen(
                                 "Debug: User Signed in",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            // Put nav here
+                            // LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
                         {
                             Toast.makeText(
@@ -88,7 +91,7 @@ fun LoginScreen(
                 }
             }
             Spacer(modifier=Modifier.height(10.dp))
-            //Login with google
+            // Switch to Register Screen
             DividerTextComponent()
             ClickableRegisterText(onTextSelected = {
                 LocalSkyAppRouter.navigateTo(Screen.RegisterScreen)
