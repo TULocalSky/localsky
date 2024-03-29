@@ -13,6 +13,6 @@ class MainActivity : ComponentActivity() {
         //val url = "/forecast/$api_key/{lat_and_long_or_time}"
         setContent {
             LocalSkyApp()
-            }
         }
     }
+}
