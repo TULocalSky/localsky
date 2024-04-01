@@ -11,8 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val database = DatabaseLS()
         setContent {
-                LocalSkyApp(database)
-            }
+            LocalSkyApp(database)
         }
     }
 }
