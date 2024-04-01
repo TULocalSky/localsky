@@ -18,12 +18,12 @@ class DatabaseLS() {
 
     /**
         Creates a user in the database
-        @param firstName - The first name of the user
-        @param lastName - The last name of the user
-        @param email - The email address of the user
-        @param password - The password provided by the user
-        @param onSuccess - A lambda expression that gives access to the authenticated user on success
-        @param firstName - A lambda express that gives access to the error when either authentication or user creation fails
+        @param firstName The first name of the user
+        @param lastName The last name of the user
+        @param email The email address of the user
+        @param password The password provided by the user
+        @param onSuccess A lambda expression that gives access to the authenticated user on success
+        @param firstName A lambda express that gives access to the error when either authentication or user creation fails
         @return void
 
         *Notes*
@@ -74,10 +74,10 @@ class DatabaseLS() {
 
     /**
      * Sign in to with an email and password
-     * @param email - The email address of the user
-     * @param password - The password provided by the user
-     * @param onSuccess - A lambda expression that gives access to the authenticated user on success
-     * @param onFailure - A lambda express that gives access to the error when either authentication or user sign in fails
+     * @param email The email address of the user
+     * @param password The password provided by the user
+     * @param onSuccess A lambda expression that gives access to the authenticated user on success
+     * @param onFailure A lambda express that gives access to the error when either authentication or user sign in fails
      * @return void
      **/
     fun signIn(
@@ -105,9 +105,9 @@ class DatabaseLS() {
 
     /**
      * Updates user information in the database.
-     * @param user - The User object containing updated information.
-     * @param onSuccess - A lambda expression called upon successful update.
-     * @param onFailure - A lambda expression called upon failure to update.
+     * @param user The User object containing updated information.
+     * @param onSuccess A lambda expression called upon successful update.
+     * @param onFailure A lambda expression called upon failure to update.
      * @return void
      */
     fun updateUser(
@@ -135,8 +135,8 @@ class DatabaseLS() {
 
     /**
      * Retrieves all user records from the database.
-     * @param onSuccess - A lambda expression that receives the QuerySnapshot result.
-     * @param onFailure - A lambda expression called upon failure to get the table.
+     * @param onSuccess A lambda expression that receives the QuerySnapshot result.
+     * @param onFailure A lambda expression called upon failure to get the table.
      * @return void
      */
     fun getUserTable(
@@ -156,9 +156,9 @@ class DatabaseLS() {
 
     /**
      * Retrieves a user record from the database by user ID.
-     * @param userID - The ID of the user to retrieve.
-     * @param onSuccess - A lambda expression called with the QueryDocumentSnapshot upon success.
-     * @param onFailure - A lambda expression called upon failure to retrieve the user.
+     * @param userID The ID of the user to retrieve.
+     * @param onSuccess A lambda expression called with the QueryDocumentSnapshot upon success.
+     * @param onFailure A lambda expression called upon failure to retrieve the user.
      * @return void
      */
     fun getUserByID(
@@ -184,9 +184,9 @@ class DatabaseLS() {
     }
 
     /**
-     * @param user - The ID of the user to delete.
-     * @param onSuccess - A lambda expression called with the Task on success.
-     * @param onFailure - A lambda expression called upon failure to delete the user.
+     * @param user The ID of the user to delete.
+     * @param onSuccess A lambda expression called with the Task on success.
+     * @param onFailure A lambda expression called upon failure to delete the user.
      * @return void
      */
     fun removeUser(
@@ -211,14 +211,14 @@ class DatabaseLS() {
 
     /**
      * Creates a user report in the database.
-     * @param user - The User object associated with the report.
-     * @param createdTime - The time the report was created.
-     * @param latitude - The latitude of the report location.
-     * @param longitude - The longitude of the report location.
-     * @param locationPicture - The picture associated with the report location.
-     * @param weatherCondition - The weather condition at the report location.
-     * @param onSuccess - A lambda expression called upon successful report creation.
-     * @param onFailure - A lambda expression called upon failure to create the report.
+     * @param user The User object associated with the report.
+     * @param createdTime The time the report was created.
+     * @param latitude The latitude of the report location.
+     * @param longitude The longitude of the report location.
+     * @param locationPicture The picture associated with the report location.
+     * @param weatherCondition The weather condition at the report location.
+     * @param onSuccess A lambda expression called upon successful report creation.
+     * @param onFailure A lambda expression called upon failure to create the report.
      * @return void
      */
     fun createUserReport(
@@ -262,7 +262,7 @@ class DatabaseLS() {
 
     /**
      * Retrieves all user reports from the database.
-     * @param callback - A lambda expression that receives the [QuerySnapshot] result.
+     * @param callback A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
     fun getAllUserReports(callback: (QuerySnapshot?) -> Unit
@@ -277,6 +277,15 @@ class DatabaseLS() {
                 callback(null)
             }
     }
+
+    /**
+     * Gets the currently signed in user
+     * @return The firebase user or null
+     */
+    fun getCurrentUser(): FirebaseUser?{
+        return auth.currentUser
+    }
+
 
 
     companion object{

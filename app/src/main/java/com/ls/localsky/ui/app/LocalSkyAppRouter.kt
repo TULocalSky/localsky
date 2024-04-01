@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 sealed class Screen() {
     object LoginScreen : Screen()
     object RegisterScreen : Screen()
+    object MapScreen : Screen()
 }
 
 object LocalSkyAppRouter {
