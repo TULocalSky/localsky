@@ -23,21 +23,16 @@ import com.ls.localsky.ui.theme.LocalSkyTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+import com.ls.localsky.ui.app.LocalSkyApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        
+        val database = DatabaseLS()
+        
         setContent {
-            LocalSkyTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                }
-            }
+            LocalSkyApp(database)
         }
     }
 }

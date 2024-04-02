@@ -19,6 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        testApplicationId = "com.ls.localsky"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -34,13 +35,13 @@ android {
         buildConfigField(
             type = "String",
             name = "GOOGLE_MAPS_API_KEY",
-            value = googleApiKey
+            value = "\"$googleApiKey\""
         )
 
         buildConfigField(
             type = "String",
             name = "PIRATE_WEATHER_API_KEY",
-            value = pirateWeatherApi
+            value = "\"$pirateWeatherApi\""
         )
 
         manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = googleApiKey
@@ -89,6 +90,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.4")
     implementation("androidx.compose.material:material:1.6.4")
     implementation("androidx.compose.foundation:foundation")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
@@ -124,9 +126,6 @@ dependencies {
     //Google Maps
     implementation("com.google.maps.android:maps-compose:4.3.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-
-
-
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
