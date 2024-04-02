@@ -1,4 +1,4 @@
-package com.ls.localsky.network
+package com.ls.localsky.models
 
 data class WeatherData (
     var latitude: Double,

@@ -10,6 +10,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.ls.localsky.models.User
+import com.ls.localsky.models.UserReport
 
 class DatabaseLS() {
 
@@ -222,7 +224,7 @@ class DatabaseLS() {
      * @return void
      */
     fun createUserReport(
-        user:User,
+        user: User,
         createdTime: String,
         latitude: Double,
         longitude: Double,
