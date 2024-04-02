@@ -1,4 +1,6 @@
-package com.ls.localsky
+package com.ls.localsky.models
+
+import com.ls.localsky.models.User
 
 class UserReport(
     val userReportID: String,

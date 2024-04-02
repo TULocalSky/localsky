@@ -1,4 +1,4 @@
-package com.ls.localsky
+package com.ls.localsky.models
 
 class User(
     val userID: String,
