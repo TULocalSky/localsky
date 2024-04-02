@@ -7,6 +7,7 @@ sealed class Screen() {
     object LoginScreen : Screen()
     object RegisterScreen : Screen()
     object MapScreen : Screen()
+    object SettingsScreen : Screen()
 }
 
 object LocalSkyAppRouter {
