@@ -94,7 +94,9 @@ fun RegisterScreen(
                                 context,
                                 "Debug: Created User",
                                 Toast.LENGTH_SHORT
+
                             ).show()
+                            LocalSkyAppRouter.navigateTo(Screen.MapScreen)
                         },
                         {
                             Log.d("Register Error",it.toString())
