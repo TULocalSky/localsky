@@ -1,0 +1,32 @@
+package com.ls.localsky.network
+
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+class CustomUtil {
+
+    fun getDefaultWeatherData(latitude: String, longitude: String, onSuccess:(WeatherData?) -> Unit, onFailure: (Throwable) -> Unit) {
+        // 1. Using RetrofitBuilder to build the service
+        // 2. Using the ApiService Interface to do a GET Request by providing lat and long
+        val call = ApiClient.apiService.getDefaultWeather(latitude, longitude)
+
+        call.enqueue(object : Callback<WeatherData> {
+            // IF success => return back the weather data
+            override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
+                if (response.isSuccessful) {
+                    val weatherData = response.body()
+                    onSuccess(weatherData)
+                }
+            }
+            // IF failure => return back the error
+            override fun onFailure(call: Call<WeatherData>, t: Throwable) {
+                onFailure(t)
+            }
+        })
+    }
+
+
+
+}
+
