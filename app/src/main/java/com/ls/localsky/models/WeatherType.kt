@@ -58,7 +58,7 @@ sealed class WeatherType(
     )
 
     companion object {
-        fun fromWMO(summary: String): WeatherType {
+        fun fromWeatherReport(summary: String): WeatherType {
             return when (summary) {
                 "clear-day" -> ClearDay
                 "fog" -> Foggy
