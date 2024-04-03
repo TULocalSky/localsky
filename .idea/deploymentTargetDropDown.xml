@@ -2,22 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="DefaultWeatherScreen">
+        <State />
+      </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="firebaseCreateUser()">
-        <State />
-      </entry>
-      <entry key="firebaseCreateUser() (1)">
-        <State />
-      </entry>
-      <entry key="firebaseGetUserTable()">
-        <State />
-      </entry>
-      <entry key="useAppContext()">
-        <State />
-      </entry>
-      <entry key="firebaseCreateUser() (1)">
         <State />
       </entry>
     </value>

@@ -34,6 +34,7 @@ import com.ls.localsky.ui.components.PasswordInput
 import com.ls.localsky.ui.components.TitleText
 import com.ls.localsky.ui.components.WeatherCard
 import com.ls.localsky.ui.components.WeatherDataDisplay
+import com.ls.localsky.ui.components.WeatherForecast
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
@@ -44,10 +45,14 @@ fun WeatherScreen(
         color = Color.DarkGray,
         modifier = Modifier.fillMaxSize()
     ) {
+        TitleText("Testing Test")
+        Spacer(modifier = Modifier.height(16.dp))
         WeatherCard(
             viewModelLS,
             backgroundColor = Color.Gray
             )
+
+        WeatherForecast(backgroundColor = Color.LightGray)
         }
     }
 
