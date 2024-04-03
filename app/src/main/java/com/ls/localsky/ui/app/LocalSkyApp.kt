@@ -12,6 +12,7 @@ import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.screens.LoginScreen
 import com.ls.localsky.ui.screens.MapScreen
 import com.ls.localsky.ui.screens.RegisterScreen
+import com.ls.localsky.ui.screens.SettingsScreen
 
 @Composable
 fun LocalSkyApp(
@@ -36,10 +37,10 @@ fun LocalSkyApp(
                 }
                 is Screen.MapScreen -> {
                     MapScreen()
-//                    MapScreen(LocalContext.current, database)
                 }
-
-                else -> {}
+                is Screen.SettingsScreen -> {
+                    SettingsScreen()
+                }
             }
         }
 
