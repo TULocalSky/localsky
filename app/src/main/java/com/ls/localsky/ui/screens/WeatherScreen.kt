@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.drawable.Icon
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,10 +32,31 @@ import com.ls.localsky.ui.components.DividerTextComponent
 import com.ls.localsky.ui.components.NormalTextInput
 import com.ls.localsky.ui.components.PasswordInput
 import com.ls.localsky.ui.components.TitleText
+import com.ls.localsky.ui.components.WeatherCard
+import com.ls.localsky.ui.components.WeatherDataDisplay
+import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
-fun weatherScreen(){
+fun WeatherScreen(
+    viewModelLS: WeatherViewModelLS
+){
+    Surface(
+        color = Color.DarkGray,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        WeatherCard(
+            viewModelLS,
+            backgroundColor = Color.Gray
+            )
+        }
+    }
 
+
+
+@Preview
+@Composable
+fun DefaultWeatherScreen(){
+    WeatherScreen(viewModelLS = WeatherViewModelLS())
 }
 
 

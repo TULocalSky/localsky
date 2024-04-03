@@ -42,10 +42,10 @@ sealed class WeatherType(
         iconRes = R.drawable.rain
     )
 
-    object Sleet : WeatherType(
+    /*object Sleet : WeatherType(
         weatherSummary = "sleet",
         iconRes = R.drawable.sleet__2_
-    )
+    )*/
 
     object Snow : WeatherType(
         weatherSummary = "snow",
@@ -62,7 +62,7 @@ sealed class WeatherType(
             return when (summary) {
                 "clear-day" -> ClearDay
                 "fog" -> Foggy
-                "sleet" -> Sleet
+                /*"sleet" -> Sleet*/
                 "snow" -> Snow
                 "rain" -> Rain
                 "wind" -> Windy
