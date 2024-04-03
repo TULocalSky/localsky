@@ -17,15 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.type.DateTime
 import com.ls.localsky.R
 import com.ls.localsky.WeatherAPI
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun WeatherCard(
@@ -48,7 +45,7 @@ fun WeatherCard(
             /*Time of day*/
             Text(
                 text = "Today ${
-                    data.hourly.data[0].time.milliseconds.toIsoString()
+                    SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
                 }",
                 modifier = Modifier.align(Alignment.End),
                 color = Color.White
@@ -90,5 +87,4 @@ fun WeatherCard(
     }
 
 }
-
 
