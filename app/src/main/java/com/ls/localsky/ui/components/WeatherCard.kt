@@ -17,17 +17,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.type.DateTime
 import com.ls.localsky.R
 import com.ls.localsky.WeatherAPI
+import com.ls.localsky.models.WeatherType
+import com.ls.localsky.viewmodels.WeatherViewModelLS
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
-
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun WeatherCard(
+    viewModel: WeatherViewModelLS = WeatherViewModelLS(),
     backgroundColor: Color,
     modifier: Modifier = Modifier
 ){
+    viewModel.getWeatherData().value?.let { data ->
     Card(
         backgroundColor = backgroundColor,
         shape = RoundedCornerShape(10.dp),
@@ -42,40 +48,47 @@ fun WeatherCard(
             /*Time of day*/
             Text(
                 text = "Today ${
-                    SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
+                    data.hourly.data[0].time.milliseconds.toIsoString()
                 }",
                 modifier = Modifier.align(Alignment.End),
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(16.dp))
             /*Weather icon*/
-            Image(
-                painter = painterResource(id = R.drawable.snow),
-                contentDescription = null,
-                modifier = Modifier.width(200.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            /*Temperature*/
-            Text(
-                /*Retrieve from weather data*/
-                text = "Temperature: ",
-                fontSize = 50.sp,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            /*Weather description*/
-            Text(
-                /*Retrieve from weather data*/
-                text = "Description: ",
-                fontSize = 50.sp,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(32.dp))
 
+                Image(
+                    painter = painterResource(id = WeatherType.fromWeatherReport(data.hourly.summary).iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.width(200.dp)
+                )
 
+                Spacer(modifier = Modifier.height(16.dp))
+                /*Temperature*/
+                Text(
+                    /*Retrieve from weather data*/
+                    text = "Temperature: ${
+                        data.hourly.data[0].temperature
+                    }",
+                    fontSize = 50.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                /*Weather description*/
+                Text(
+                    /*Retrieve from weather data*/
+                    text = "Description: ${
+                        data.hourly.data[0].summary
+                    }",
+                    fontSize = 50.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+
+            }
         }
 
     }
 
 }
+
 
