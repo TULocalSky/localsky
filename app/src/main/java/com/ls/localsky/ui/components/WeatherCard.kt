@@ -16,7 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ls.localsky.R
@@ -88,6 +91,20 @@ fun WeatherCard(
                     horizontalArrangement = Arrangement.SpaceAround
                 ){
                     /*Call weather data row composable */
+                    WeatherDataDisplay(
+                        value = data.hourly.data[0].precipProbability.toInt(),
+                        unit = "%",
+                        icon = ImageVector.vectorResource(R.drawable.drop),
+                        iconTint = Color.White,
+                        textStyle = TextStyle(color = Color.White)
+                    )
+                    WeatherDataDisplay(
+                        value = data.hourly.data[0].windSpeed.toInt(),
+                        unit = "m/s",
+                        icon = ImageVector.vectorResource(R.drawable.wind),
+                        iconTint = Color.White,
+                        textStyle = TextStyle(color = Color.White)
+                    )
                 }
 
             }
