@@ -57,4 +57,21 @@ sealed class WeatherType(
         iconRes = R.drawable.wind__2_
     )
 
+    companion object {
+        fun fromWMO(summary: String): WeatherType {
+            return when (summary) {
+                "clear-day" -> ClearDay
+                "fog" -> Foggy
+                "sleet" -> Sleet
+                "snow" -> Snow
+                "rain" -> Rain
+                "wind" -> Windy
+                "partly-cloudy-night" -> PartlyCloudyNight
+                "partly-cloudy-day" -> PartlyCloudyDay
+                "cloudy" -> Cloudy
+                "clear-night" -> ClearNight
+                else -> ClearDay
+            }
+        }
+    }
 }
