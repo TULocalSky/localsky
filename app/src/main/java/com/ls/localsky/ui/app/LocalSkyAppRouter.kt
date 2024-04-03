@@ -8,6 +8,7 @@ sealed class Screen() {
     object RegisterScreen : Screen()
     object MapScreen : Screen()
     object SettingsScreen : Screen()
+    object WeatherScreen : Screen()
 }
 
 object LocalSkyAppRouter {

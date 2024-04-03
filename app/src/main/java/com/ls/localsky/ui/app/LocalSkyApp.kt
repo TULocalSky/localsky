@@ -13,10 +13,13 @@ import com.ls.localsky.ui.screens.LoginScreen
 import com.ls.localsky.ui.screens.MapScreen
 import com.ls.localsky.ui.screens.RegisterScreen
 import com.ls.localsky.ui.screens.SettingsScreen
+import com.ls.localsky.ui.screens.WeatherScreen
+import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
 fun LocalSkyApp(
-    database: DatabaseLS
+    database: DatabaseLS,
+    weatherViewModelLS: WeatherViewModelLS,
 ){
 
     Surface(
@@ -40,6 +43,9 @@ fun LocalSkyApp(
                 }
                 is Screen.SettingsScreen -> {
                     SettingsScreen()
+                }
+                is Screen.WeatherScreen -> {
+                    WeatherScreen(weatherViewModelLS)
                 }
             }
         }
