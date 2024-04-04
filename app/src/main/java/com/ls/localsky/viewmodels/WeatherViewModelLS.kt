@@ -28,7 +28,9 @@ class WeatherViewModelLS: ViewModel(){
         WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
             Log.d("","getting weather data")
             weatherDataState = weatherDataState.copy(
-                weatherData = it
+                weatherData = it,
+                isLoading = false,
+                error = null
             )
 
         },{
