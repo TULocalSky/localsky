@@ -24,8 +24,8 @@ fun DailyWeatherDisplay(
     modifier: Modifier = Modifier,
     textColor: Color = Color.White
 ) {
-    val formattedTime = remember(weatherData) {
-            SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
+    val formattedDate = remember(weatherData) {
+            SimpleDateFormat("HH:mm").format(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
     }
     Column(
         modifier = modifier,
@@ -33,7 +33,7 @@ fun DailyWeatherDisplay(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = formattedTime,
+            text = formattedDate,
             color = Color.LightGray
         )
         Image(

@@ -28,7 +28,7 @@ fun LocalSkyApp(
     ) {
         Log.d("Logged in user", database.getCurrentUser().toString())
         if(database.getCurrentUser() != null){
-            LocalSkyAppRouter.navigateTo(Screen.MapScreen)
+            LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
         }
         Crossfade(targetState = LocalSkyAppRouter.currentScreen, label = "") { currentState ->
             when(currentState.value) {

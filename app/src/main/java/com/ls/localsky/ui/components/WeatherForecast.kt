@@ -34,8 +34,8 @@ fun WeatherForecast(
             )
             Spacer(modifier = Modifier.height(16.dp))
             LazyRow(content = {
-                items(7) { weatherData ->
-                    DailyWeatherDisplay(weatherData = data.daily.data[0],
+                items(7) { weatherDataIndex ->
+                    DailyWeatherDisplay(weatherData = data.daily.data[weatherDataIndex],
                         modifier = Modifier
                             .height(100.dp)
                             .padding(horizontal = 16.dp)

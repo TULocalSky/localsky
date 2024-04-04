@@ -2,9 +2,10 @@ package com.ls.localsky.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.ls.localsky.models.WeatherData
 
-class WeatherViewModelLS {
+class WeatherViewModelLS: ViewModel(){
 
     private val fullWeatherData by lazy {
         MutableLiveData<WeatherData>()
