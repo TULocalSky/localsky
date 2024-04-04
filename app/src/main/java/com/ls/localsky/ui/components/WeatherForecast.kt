@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,33 +18,39 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
 fun WeatherForecast(
-    viewModel: WeatherViewModelLS = WeatherViewModelLS(),
+    viewModel: WeatherViewModelLS,
     backgroundColor: Color,
     modifier: Modifier = Modifier
 ){
     viewModel.weatherDataState.weatherData?.let { data ->
-
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+        Card(
+            backgroundColor = backgroundColor,
+            shape = RoundedCornerShape(10.dp),
+            modifier = modifier.padding(16.dp)
         ) {
-            Text(
-                text = "Today",
-                fontSize = 20.sp,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            LazyRow(content = {
-                items(7) { weatherDataIndex ->
-                    DailyWeatherDisplay(weatherData = data.daily.data[weatherDataIndex],
-                        modifier = Modifier
-                            .height(100.dp)
-                            .padding(horizontal = 16.dp)
-                    )
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    text = "Today",
+                    fontSize = 20.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyRow(content = {
+                    items(7) { weatherDataIndex ->
+                        DailyWeatherDisplay(
+                            weatherData = data.daily.data[weatherDataIndex],
+                            modifier = Modifier
+                                .height(100.dp)
+                                .padding(horizontal = 16.dp)
+                        )
 
-                }
-            })
+                    }
+                })
+            }
         }
     }
 }

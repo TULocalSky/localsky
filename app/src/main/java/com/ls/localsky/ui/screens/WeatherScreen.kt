@@ -46,15 +46,16 @@ fun WeatherScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            TitleText("Testing Test")
-            Spacer(modifier = Modifier.height(16.dp))
             WeatherCard(
                 modifier = Modifier,
-                viewModelLS,
-                backgroundColor = Color.Gray
+                viewModel = viewModelLS,
+                backgroundColor = Color.Blue
             )
 
-            WeatherForecast(backgroundColor = Color.LightGray)
+            WeatherForecast(
+                backgroundColor = Color.Green,
+                viewModel = viewModelLS
+            )
         }
     }
 
