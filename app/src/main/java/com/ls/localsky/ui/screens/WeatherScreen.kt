@@ -50,8 +50,7 @@ fun WeatherScreen(
         Column {
             WeatherCard(
                 modifier = Modifier,
-                viewModel = viewModelLS,
-                backgroundColor = Color.Blue
+                viewModel = viewModelLS
             )
             if(viewModelLS.weatherDataState.isLoading) {
                 CircularProgressIndicator(
@@ -60,7 +59,7 @@ fun WeatherScreen(
             }
 
             WeatherForecast(
-                backgroundColor = Color.Green,
+                modifier = Modifier,
                 viewModel = viewModelLS
             )
         }

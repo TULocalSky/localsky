@@ -2,6 +2,7 @@ package com.ls.localsky.ui.components
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -34,17 +38,23 @@ import java.util.Calendar
 fun WeatherCard(
     modifier: Modifier = Modifier,
     viewModel: WeatherViewModelLS,
-    backgroundColor: Color
 ){
     viewModel.weatherDataState.weatherData?.let { data ->
         Card(
-            backgroundColor = backgroundColor,
-            shape = RoundedCornerShape(10.dp),
-            modifier = modifier.padding(16.dp)
+            modifier = Modifier
+                .clip(shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))
+                .padding(16.dp)
+                .background(brush = Brush.linearGradient(listOf(Color.DarkGray, Color.LightGray)))
+                .shadow(
+                    elevation = 10.dp,
+                    shape = RoundedCornerShape(8.dp)
+                )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    /*.clip(shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))*/
+                    .background(brush = Brush.linearGradient(listOf(Color.Blue, Color.Gray)))
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
@@ -72,7 +82,7 @@ fun WeatherCard(
                     text = "Temperature: ${
                         data.hourly.data[0].temperature
                     }",
-                    fontSize = 50.sp,
+                    fontSize = 30.sp,
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -82,7 +92,7 @@ fun WeatherCard(
                     text = "Description: ${
                         data.hourly.data[0].summary
                     }",
-                    fontSize = 50.sp,
+                    fontSize = 30.sp,
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(32.dp))
