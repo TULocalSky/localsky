@@ -29,25 +29,22 @@ fun WeatherForecast(
 ){
     viewModel.weatherDataState.weatherData?.let { data ->
         Card(
+            backgroundColor = Color.Transparent,
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))
                 .padding(16.dp)
-                .background(brush = Brush.linearGradient(listOf(Color.LightGray, Color.DarkGray)))
-                .shadow(
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(8.dp)
-                )
+
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .background(Color.LightGray),
+                    .padding(horizontal = 30.dp)
+                    .background(Color.Transparent),
                 verticalArrangement = Arrangement.SpaceBetween
 
             ) {
                 Text(
-                    text = "Today",
+                    text = "Week Forecast",
                     fontSize = 20.sp,
                     color = Color.White
                 )
