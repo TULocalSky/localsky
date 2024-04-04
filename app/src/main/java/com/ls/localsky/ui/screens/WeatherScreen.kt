@@ -48,6 +48,7 @@ fun WeatherScreen(
         TitleText("Testing Test")
         Spacer(modifier = Modifier.height(16.dp))
         WeatherCard(
+            modifier = Modifier.fillMaxSize(),
             viewModelLS,
             backgroundColor = Color.Gray
             )

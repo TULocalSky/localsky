@@ -1,5 +1,6 @@
 package com.ls.localsky.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,9 +32,9 @@ import java.util.Calendar
 
 @Composable
 fun WeatherCard(
+    modifier: Modifier = Modifier,
     viewModel: WeatherViewModelLS = WeatherViewModelLS(),
-    backgroundColor: Color,
-    modifier: Modifier = Modifier
+    backgroundColor: Color
 ){
     viewModel.getWeatherData().value?.let { data ->
     Card(
@@ -58,58 +59,56 @@ fun WeatherCard(
             Spacer(modifier = Modifier.height(16.dp))
             /*Weather icon*/
 
-                Image(
-                    painter = painterResource(id = WeatherType.fromWeatherReport(data.hourly.summary).iconRes),
-                    contentDescription = null,
-                    modifier = Modifier.width(200.dp)
-                )
+            Image(
+                painter = painterResource(id = WeatherType.fromWeatherReport(data.hourly.summary).iconRes),
+                contentDescription = null,
+                modifier = Modifier.width(200.dp)
+            )
 
-                Spacer(modifier = Modifier.height(16.dp))
-                /*Temperature*/
-                Text(
-                    /*Retrieve from weather data*/
-                    text = "Temperature: ${
-                        data.hourly.data[0].temperature
-                    }",
-                    fontSize = 50.sp,
-                    color = Color.White
+            Spacer(modifier = Modifier.height(16.dp))
+            /*Temperature*/
+            Text(
+                /*Retrieve from weather data*/
+                text = "Temperature: ${
+                    data.hourly.data[0].temperature
+                }",
+                fontSize = 50.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            /*Weather description*/
+            Text(
+                /*Retrieve from weather data*/
+                text = "Description: ${
+                    data.hourly.data[0].summary
+                }",
+                fontSize = 50.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            /*Weather data to display, Wind speed and precipitation probability*/
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ){
+                /*Call weather data row composable */
+                WeatherDataDisplay(
+                    value = data.hourly.data[0].precipProbability.toInt(),
+                    unit = "%",
+                    icon = ImageVector.vectorResource(R.drawable.drop),
+                    iconTint = Color.White,
+                    textStyle = TextStyle(color = Color.White)
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                /*Weather description*/
-                Text(
-                    /*Retrieve from weather data*/
-                    text = "Description: ${
-                        data.hourly.data[0].summary
-                    }",
-                    fontSize = 50.sp,
-                    color = Color.White
+                WeatherDataDisplay(
+                    value = data.hourly.data[0].windSpeed.toInt(),
+                    unit = "m/s",
+                    icon = ImageVector.vectorResource(R.drawable.wind),
+                    iconTint = Color.White,
+                    textStyle = TextStyle(color = Color.White)
                 )
-                Spacer(modifier = Modifier.height(32.dp))
-                /*Weather data to display, Wind speed and precipitation probability*/
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ){
-                    /*Call weather data row composable */
-                    WeatherDataDisplay(
-                        value = data.hourly.data[0].precipProbability.toInt(),
-                        unit = "%",
-                        icon = ImageVector.vectorResource(R.drawable.drop),
-                        iconTint = Color.White,
-                        textStyle = TextStyle(color = Color.White)
-                    )
-                    WeatherDataDisplay(
-                        value = data.hourly.data[0].windSpeed.toInt(),
-                        unit = "m/s",
-                        icon = ImageVector.vectorResource(R.drawable.wind),
-                        iconTint = Color.White,
-                        textStyle = TextStyle(color = Color.White)
-                    )
-                }
-
+            }
             }
         }
-
     }
 
 }
