@@ -1,6 +1,7 @@
 package com.ls.localsky.models
 
-class WeatherState(
+public final data class WeatherState(
     val weatherData: WeatherData? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val error: String? = null
 )

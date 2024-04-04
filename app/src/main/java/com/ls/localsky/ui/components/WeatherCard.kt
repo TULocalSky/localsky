@@ -33,80 +33,80 @@ import java.util.Calendar
 @Composable
 fun WeatherCard(
     modifier: Modifier = Modifier,
-    viewModel: WeatherViewModelLS = WeatherViewModelLS(),
+    viewModel: WeatherViewModelLS,
     backgroundColor: Color
 ){
-    viewModel.getWeatherData().value?.let { data ->
-    Card(
-        backgroundColor = backgroundColor,
-        shape = RoundedCornerShape(10.dp),
-        modifier = modifier.padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            /*Time of day*/
-            Text(
-                text = "Today ${
-                    SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
-                }",
-                modifier = Modifier.align(Alignment.End),
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            /*Weather icon*/
-
-            Image(
-                painter = painterResource(id = WeatherType.fromWeatherReport(data.hourly.summary).iconRes),
-                contentDescription = null,
-                modifier = Modifier.width(200.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-            /*Temperature*/
-            Text(
-                /*Retrieve from weather data*/
-                text = "Temperature: ${
-                    data.hourly.data[0].temperature
-                }",
-                fontSize = 50.sp,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            /*Weather description*/
-            Text(
-                /*Retrieve from weather data*/
-                text = "Description: ${
-                    data.hourly.data[0].summary
-                }",
-                fontSize = 50.sp,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            /*Weather data to display, Wind speed and precipitation probability*/
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
+    viewModel.weatherDataState.weatherData?.let { data ->
+        Card(
+            backgroundColor = backgroundColor,
+            shape = RoundedCornerShape(10.dp),
+            modifier = modifier.padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
-                /*Call weather data row composable */
-                WeatherDataDisplay(
-                    value = data.hourly.data[0].precipProbability.toInt(),
-                    unit = "%",
-                    icon = ImageVector.vectorResource(R.drawable.drop),
-                    iconTint = Color.White,
-                    textStyle = TextStyle(color = Color.White)
+                /*Time of day*/
+                Text(
+                    text = "Today ${
+                        SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
+                    }",
+                    modifier = Modifier.align(Alignment.End),
+                    color = Color.White
                 )
-                WeatherDataDisplay(
-                    value = data.hourly.data[0].windSpeed.toInt(),
-                    unit = "m/s",
-                    icon = ImageVector.vectorResource(R.drawable.wind),
-                    iconTint = Color.White,
-                    textStyle = TextStyle(color = Color.White)
+                Spacer(modifier = Modifier.height(16.dp))
+                /*Weather icon*/
+
+                Image(
+                    painter = painterResource(id = WeatherType.fromWeatherReport(data.hourly.summary).iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.width(200.dp)
                 )
-            }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                /*Temperature*/
+                Text(
+                    /*Retrieve from weather data*/
+                    text = "Temperature: ${
+                        data.hourly.data[0].temperature
+                    }",
+                    fontSize = 50.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                /*Weather description*/
+                Text(
+                    /*Retrieve from weather data*/
+                    text = "Description: ${
+                        data.hourly.data[0].summary
+                    }",
+                    fontSize = 50.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                /*Weather data to display, Wind speed and precipitation probability*/
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ){
+                    /*Call weather data row composable */
+                    WeatherDataDisplay(
+                        value = data.hourly.data[0].precipProbability.toInt(),
+                        unit = "%",
+                        icon = ImageVector.vectorResource(R.drawable.drop),
+                        iconTint = Color.White,
+                        textStyle = TextStyle(color = Color.White)
+                    )
+                    WeatherDataDisplay(
+                        value = data.hourly.data[0].windSpeed.toInt(),
+                        unit = "m/s",
+                        icon = ImageVector.vectorResource(R.drawable.wind),
+                        iconTint = Color.White,
+                        textStyle = TextStyle(color = Color.White)
+                    )
+                }
             }
         }
     }

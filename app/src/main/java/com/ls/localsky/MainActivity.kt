@@ -14,14 +14,7 @@ class MainActivity : ComponentActivity() {
         
         val database = DatabaseLS()
         val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
-        val weatherAPI = WeatherAPI()
-        weatherAPI.getWeatherData(40.28517258577531, -75.26480837142107, {
-            Log.d("","getting weather data")
-            weatherViewModel.updateWeatherData(it!!)
-
-        },{
-            Log.d(WeatherAPI.TAG, "Error")
-        })
+        weatherViewModel.getWeatherData()
 
         
         setContent {

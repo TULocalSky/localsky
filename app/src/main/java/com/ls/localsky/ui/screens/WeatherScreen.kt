@@ -45,18 +45,20 @@ fun WeatherScreen(
         color = Color.DarkGray,
         modifier = Modifier.fillMaxSize()
     ) {
-        TitleText("Testing Test")
-        Spacer(modifier = Modifier.height(16.dp))
-        WeatherCard(
-            modifier = Modifier.fillMaxSize(),
-            viewModelLS,
-            backgroundColor = Color.Gray
+        Column {
+            TitleText("Testing Test")
+            Spacer(modifier = Modifier.height(16.dp))
+            WeatherCard(
+                modifier = Modifier,
+                viewModelLS,
+                backgroundColor = Color.Gray
             )
 
-        WeatherForecast(backgroundColor = Color.LightGray)
+            WeatherForecast(backgroundColor = Color.LightGray)
         }
     }
 
+}
 
 
 @Preview

@@ -13,29 +13,32 @@ import com.ls.localsky.models.WeatherState
 
 class WeatherViewModelLS: ViewModel(){
 
-    var fullWeatherData by mutableStateOf(WeatherState())
+    var weatherDataState by mutableStateOf(WeatherState())
 
     /**
      * Gets the current weather data in the view model
      * @return [LiveData] containing [WeatherData]
      */
-    fun getWeatherData(): LiveData<WeatherData>{
+    fun getWeatherData(){
+        // Have the weather data be loading until it gets its info
+        weatherDataState = weatherDataState.copy(
+            isLoading = true,
+            error = null
+        )
         WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
             Log.d("","getting weather data")
-            fullWeatherData = fullWeatherData.copy()
+            weatherDataState = weatherDataState.copy(
+                weatherData = it
+            )
 
         },{
             Log.d(WeatherAPI.TAG, "Error")
+            weatherDataState = weatherDataState.copy(
+                weatherData = null,
+                isLoading = false,
+                error = it.toString()
+            )
         })
     }
-
-    /**
-     * Sets the weather data contained in the view model
-     * @param newData [WeatherData] that will be used to update
-     */
-    fun updateWeatherData(newData: WeatherData){
-        fullWeatherData.value = newData
-    }
-
 
 }

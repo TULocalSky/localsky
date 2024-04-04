@@ -20,7 +20,7 @@ fun WeatherForecast(
     backgroundColor: Color,
     modifier: Modifier = Modifier
 ){
-    viewModel.getWeatherData().value?.let { data ->
+    viewModel.weatherDataState.weatherData?.let { data ->
 
         Column(
             modifier = modifier
