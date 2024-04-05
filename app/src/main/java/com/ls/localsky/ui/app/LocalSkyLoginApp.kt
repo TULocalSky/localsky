@@ -1,6 +1,5 @@
 package com.ls.localsky.ui.app
 
-import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
