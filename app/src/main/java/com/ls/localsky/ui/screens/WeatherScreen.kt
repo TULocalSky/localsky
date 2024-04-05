@@ -10,8 +10,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.ls.localsky.ui.components.WeatherCard
-import com.ls.localsky.ui.components.WeatherForecast
+import com.ls.localsky.ui.components.CurrentWeatherCard
+import com.ls.localsky.ui.components.DailyWeatherForecast
+import com.ls.localsky.ui.components.HourlyWeatherForecast
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
@@ -23,23 +24,30 @@ fun WeatherScreen(
     ) {
         LazyColumn {
             item{
-                WeatherCard(
+                CurrentWeatherCard(
                     viewModel = viewModelLS
                 )
             }
             item{
                 if(viewModelLS.weatherDataState.isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .wrapContentWidth(align = Alignment.CenterHorizontally),
                     )
                 }
             }
             item{
-                WeatherForecast(
+                HourlyWeatherForecast(
                     viewModel = viewModelLS
                 )
             }
+            item{
+                DailyWeatherForecast(
+                    viewModel = viewModelLS
+                )
+            }
+            
         }
     }
 

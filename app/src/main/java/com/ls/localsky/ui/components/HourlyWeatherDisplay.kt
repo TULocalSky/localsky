@@ -3,7 +3,6 @@ package com.ls.localsky.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,22 +18,22 @@ import java.util.Date
 import java.util.GregorianCalendar
 
 @Composable
-fun DailyWeatherDisplay(
-    weatherData: WeatherData.Daily.DailyData,
+fun HourlyWeatherDisplay(
+    weatherData: WeatherData.Hourly.HourlyData,
     modifier: Modifier = Modifier,
 ) {
     val calendar = GregorianCalendar.getInstance()
     val date = Date((weatherData.time*1000).toLong())
     calendar.setTime(date)
-    val time = calendar.get(Calendar.DAY_OF_WEEK)
+    val time = calendar.get(Calendar.HOUR)
 
-    Row(
+    Column(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = getDayOfWeek(time)
+            text = "${time}:00${getAMorPM(calendar.get(Calendar.AM_PM))}"
         )
         Image(
             painter = painterResource(WeatherType.fromWeatherReport(weatherData.summary).iconRes),
@@ -48,32 +47,16 @@ fun DailyWeatherDisplay(
     }
 }
 
-fun getDayOfWeek(day: Int): String{
-    return when(day){
+fun getAMorPM(time: Int): String{
+    when(time){
+        0 -> {
+            return "AM"
+        }
         1 -> {
-            "Sunday"
-        }
-        2 -> {
-            "Monday"
-        }
-        3 -> {
-            "Tuesday"
-        }
-        4 -> {
-            "Wednesday"
-        }
-        5 -> {
-            "Thursday"
-        }
-        6 -> {
-            "Friday"
-        }
-        7 -> {
-            "Saturday"
+            return "PM"
         }
         else -> {
-            ""
+            return "ERROR"
         }
     }
-
 }

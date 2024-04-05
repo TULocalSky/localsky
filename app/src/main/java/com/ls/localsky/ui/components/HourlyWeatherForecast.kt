@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.sp
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
-fun WeatherForecast(
+fun HourlyWeatherForecast(
     viewModel: WeatherViewModelLS,
 ){
-    viewModel.weatherDataState.weatherData?.let { data ->
+    viewModel.weatherDataState.weatherData?.hourly?.let { hourly ->
         Card(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(0.dp, 20.dp, 0.dp, 20.dp))
@@ -42,17 +42,16 @@ fun WeatherForecast(
                     .background(brush = Brush.linearGradient(listOf(Color(0xFFADD8E6), Color.LightGray)))
                     .padding(16.dp),
                 verticalArrangement = Arrangement.SpaceBetween
-
             ) {
                 Text(
-                    text = "Week Forecast",
+                    text = "Hourly Forecast",
                     fontSize = 20.sp,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 LazyRow(content = {
-                    items(7) { weatherDataIndex ->
-                        DailyWeatherDisplay(
-                            weatherData = data.daily.data[weatherDataIndex],
+                    items(hourly.data.size) { weatherDataIndex ->
+                        HourlyWeatherDisplay(
+                            weatherData = hourly.data[weatherDataIndex],
                             modifier = Modifier
                                 .height(100.dp)
                                 .padding(horizontal = 16.dp)

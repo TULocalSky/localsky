@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ls.localsky.R
@@ -33,7 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 @Composable
-fun WeatherCard(
+fun CurrentWeatherCard(
     viewModel: WeatherViewModelLS,
 ){
     viewModel.weatherDataState.weatherData?.let { data ->
