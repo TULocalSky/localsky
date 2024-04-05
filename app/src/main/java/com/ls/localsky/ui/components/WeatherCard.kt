@@ -1,6 +1,5 @@
 package com.ls.localsky.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,8 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +27,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ls.localsky.R
-import com.ls.localsky.WeatherAPI
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 import java.text.SimpleDateFormat
@@ -36,15 +34,13 @@ import java.util.Calendar
 
 @Composable
 fun WeatherCard(
-    modifier: Modifier = Modifier,
     viewModel: WeatherViewModelLS,
 ){
     viewModel.weatherDataState.weatherData?.let { data ->
         Card(
             modifier = Modifier
-                .clip(shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))
+                .clip(shape = RoundedCornerShape(0.dp, 20.dp, 0.dp, 20.dp))
                 .padding(16.dp)
-                .background(brush = Brush.linearGradient(listOf(Color.DarkGray, Color.LightGray)))
                 .shadow(
                     elevation = 10.dp,
                     shape = RoundedCornerShape(8.dp)
@@ -54,7 +50,7 @@ fun WeatherCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     /*.clip(shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))*/
-                    .background(brush = Brush.linearGradient(listOf(Color.Blue, Color.Gray)))
+                    .background(brush = Brush.linearGradient(listOf(Color(0xFFADD8E6), Color.LightGray)))
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
@@ -64,7 +60,6 @@ fun WeatherCard(
                         SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
                     }",
                     modifier = Modifier.align(Alignment.End),
-                    color = Color.White
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 /*Weather icon*/
@@ -79,21 +74,17 @@ fun WeatherCard(
                 /*Temperature*/
                 Text(
                     /*Retrieve from weather data*/
-                    text = "Temperature: ${
+                    text = "${
                         data.hourly.data[0].temperature
-                    }",
+                    }°",
                     fontSize = 30.sp,
-                    color = Color.White
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 /*Weather description*/
                 Text(
                     /*Retrieve from weather data*/
-                    text = "Description: ${
-                        data.hourly.data[0].summary
-                    }",
+                    text = data.hourly.data[0].summary,
                     fontSize = 30.sp,
-                    color = Color.White
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 /*Weather data to display, Wind speed and precipitation probability*/
@@ -106,15 +97,11 @@ fun WeatherCard(
                         value = data.hourly.data[0].precipProbability.toInt(),
                         unit = "%",
                         icon = ImageVector.vectorResource(R.drawable.drop),
-                        iconTint = Color.White,
-                        textStyle = TextStyle(color = Color.White)
                     )
                     WeatherDataDisplay(
                         value = data.hourly.data[0].windSpeed.toInt(),
                         unit = "m/s",
                         icon = ImageVector.vectorResource(R.drawable.wind),
-                        iconTint = Color.White,
-                        textStyle = TextStyle(color = Color.White)
                     )
                 }
             }

@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,7 +22,6 @@ import java.util.Calendar
 fun DailyWeatherDisplay(
     weatherData: WeatherData.Daily.DailyData,
     modifier: Modifier = Modifier,
-    textColor: Color = Color.White
 ) {
     val formattedDate = remember(weatherData) {
             SimpleDateFormat("HH:mm").format(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
@@ -34,7 +33,6 @@ fun DailyWeatherDisplay(
     ) {
         Text(
             text = formattedDate,
-            color = Color.LightGray
         )
         Image(
             painter = painterResource(WeatherType.fromWeatherReport(weatherData.summary).iconRes),
@@ -43,7 +41,6 @@ fun DailyWeatherDisplay(
         )
         Text(
             text = weatherData.summary,
-            color = textColor,
             fontWeight = FontWeight.Bold
         )
     }

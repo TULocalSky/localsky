@@ -9,10 +9,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -25,28 +24,29 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 @Composable
 fun WeatherForecast(
     viewModel: WeatherViewModelLS,
-    modifier: Modifier = Modifier
 ){
     viewModel.weatherDataState.weatherData?.let { data ->
         Card(
-            backgroundColor = Color.Transparent,
             modifier = Modifier
-                .clip(shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))
+                .clip(shape = RoundedCornerShape(0.dp, 20.dp, 0.dp, 20.dp))
                 .padding(16.dp)
+                .shadow(
+                    elevation = 10.dp,
+                    shape = RoundedCornerShape(8.dp)
+                )
 
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 30.dp)
-                    .background(Color.Transparent),
+                    .background(brush = Brush.linearGradient(listOf(Color(0xFFADD8E6), Color.LightGray)))
+                    .padding(16.dp),
                 verticalArrangement = Arrangement.SpaceBetween
 
             ) {
                 Text(
                     text = "Week Forecast",
                     fontSize = 20.sp,
-                    color = Color.White
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 LazyRow(content = {
