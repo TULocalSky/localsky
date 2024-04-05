@@ -39,11 +39,7 @@ fun MapScreen(
         mutableStateOf(MapProperties(mapType = MapType.NORMAL))
     }
 
-    Scaffold(
-        bottomBar = { CustomNavBar() }
-    ) {
         Column(
-            modifier = Modifier.padding(it)
         ) {
             GoogleMap (
                 modifier = Modifier.fillMaxSize(),
@@ -55,6 +51,5 @@ fun MapScreen(
                     title = "City Hall"
                 )
             }
-        }
     }
 }
