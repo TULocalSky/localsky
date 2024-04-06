@@ -40,6 +40,9 @@ class WeatherViewModelLS: ViewModel(){
                 isLoading = false,
                 error = it.toString()
             )
+            // Probably should wait some amount of time to restart
+            getWeatherData()
+
         })
     }
 
