@@ -12,11 +12,11 @@ private val DarkColorScheme = darkColorScheme(
     secondary = Color.LightGray,
     tertiary = Pink40,
     secondaryContainer = Color(0xFFC8F4F9),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
+//    onPrimary = Color.White,
+//    onSecondary = Color.White,
+//    onTertiary = Color.White,
+//    onBackground = Color.White,
+//    onSurface = Color.White,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -24,11 +24,12 @@ private val LightColorScheme = lightColorScheme(
     secondary = Color.LightGray,
     tertiary = Pink40,
     secondaryContainer = Color(0xFFC8F4F9),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
+//    onPrimary = Color.White,
+//    onSecondary = Color.White,
+//    onTertiary = Color.White,
+//    onBackground = Color.White,
+//    onSurface = Color.White,
+
 
 )
 
