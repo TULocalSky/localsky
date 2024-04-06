@@ -1,6 +1,7 @@
 package com.ls.localsky.ui.app
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
@@ -13,6 +14,7 @@ sealed class Screen(var title: String, var icon: ImageVector, var screen_route: 
     object RegisterScreen : Screen("CreateAccount",Icons.Default.Person,"create_account", false)
     object MapScreen : Screen("Map", Icons.Default.Place,"map", true)
     object SettingsScreen : Screen("Settings",Icons.Default.Settings,"settings", true)
+    object WeatherScreen : Screen("Weather", Icons.Default.Cloud, "weather", true)
 }
 
 sealed class App{

@@ -13,8 +13,7 @@ import com.ls.localsky.ui.app.Screen
 
 @Composable
 fun CustomNavBar(navController: NavController){
-    //TODO: add Screen.WeatherScreen
-    val navigate = listOf(/*Screen.WeatherScreen, */Screen.MapScreen, Screen.SettingsScreen)
+    val navigate = listOf(Screen.WeatherScreen, Screen.MapScreen, Screen.SettingsScreen)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 

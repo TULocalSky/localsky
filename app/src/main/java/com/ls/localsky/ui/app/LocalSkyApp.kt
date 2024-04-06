@@ -10,11 +10,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.components.CustomNavBar
+import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LocalSkyApp(
-    database: DatabaseLS
+    database: DatabaseLS,
+    weatherViewModelLS: WeatherViewModelLS
 ){
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -26,7 +28,7 @@ fun LocalSkyApp(
 
         ) { _ ->
 
-            NavigationGraph(navController = navController, database)
+            NavigationGraph(navController = navController, database, weatherViewModelLS)
         }
     }
 }
