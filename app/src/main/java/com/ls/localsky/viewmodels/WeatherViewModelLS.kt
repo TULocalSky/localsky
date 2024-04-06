@@ -34,7 +34,7 @@ class WeatherViewModelLS: ViewModel(){
             )
 
         },{
-            Log.d(WeatherAPI.TAG, "Error")
+            Log.d(WeatherAPI.TAG, "Error $it")
             weatherDataState = weatherDataState.copy(
                 weatherData = null,
                 isLoading = false,

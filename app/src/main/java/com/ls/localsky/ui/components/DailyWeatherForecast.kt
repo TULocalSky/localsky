@@ -50,18 +50,16 @@ fun DailyWeatherForecast(
                     fontSize = 20.sp,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Column(content = {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     daily.data.forEach {
                         DailyWeatherDisplay(
                             weatherData = it,
-                            modifier = Modifier
-                                .height(100.dp)
-                                .padding(horizontal = 16.dp)
-                                .background(Color.Transparent)
                         )
 
                     }
-                })
+                }
             }
         }
     }

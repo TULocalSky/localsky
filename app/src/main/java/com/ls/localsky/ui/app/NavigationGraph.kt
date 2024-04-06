@@ -15,7 +15,7 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
 fun NavigationGraph(navController: NavHostController, databaseLS: DatabaseLS, weatherViewModel: WeatherViewModelLS) {
-    NavHost(navController, startDestination = Screen.MapScreen.screen_route) {
+    NavHost(navController, startDestination = Screen.WeatherScreen.screen_route) {
         composable(Screen.MapScreen.screen_route) {
             MapScreen()
         }

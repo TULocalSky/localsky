@@ -36,7 +36,7 @@ fun HourlyWeatherDisplay(
             text = "${time}:00${getAMorPM(calendar.get(Calendar.AM_PM))}"
         )
         Image(
-            painter = painterResource(WeatherType.fromWeatherReport(weatherData.summary).iconRes),
+            painter = painterResource(WeatherType.fromWeatherReport(weatherData.icon).iconRes),
             contentDescription = null,
             modifier = Modifier.width(40.dp)
         )

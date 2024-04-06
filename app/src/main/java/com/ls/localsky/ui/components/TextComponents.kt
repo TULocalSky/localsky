@@ -133,12 +133,11 @@ fun ClickableRegisterText(onTextSelected : (String) -> Unit) {
 
 @Composable
 fun TemperatureText(
-    temperature: Double,
+    temperature: Int,
     fontSize: TextUnit,
 ){
     Text(
         text = "${temperature}°",
-        fontWeight = FontWeight.Bold,
         fontSize = fontSize
     )
 }

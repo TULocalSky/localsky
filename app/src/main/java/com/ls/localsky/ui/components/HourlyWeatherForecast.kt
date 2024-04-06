@@ -46,11 +46,11 @@ fun HourlyWeatherForecast(
             ) {
                 Text(
                     text = "Hourly Forecast",
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 LazyRow(content = {
-                    items(hourly.data.size) { weatherDataIndex ->
+                    items(12) { weatherDataIndex ->
                         HourlyWeatherDisplay(
                             weatherData = hourly.data[weatherDataIndex],
                             modifier = Modifier
