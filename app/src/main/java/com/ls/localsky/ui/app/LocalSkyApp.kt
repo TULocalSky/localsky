@@ -22,7 +22,6 @@ fun LocalSkyApp(
     LocalSkyTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = Color.White
         ) {
             val navController = rememberNavController()
             Scaffold(

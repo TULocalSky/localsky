@@ -18,7 +18,6 @@ fun LocalSkyLoginApp(
 ){
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color.White
     ) {
         Crossfade(targetState = LocalSkyAppRouter.currentScreen, label = "") { currentState ->
             when(currentState.value) {
