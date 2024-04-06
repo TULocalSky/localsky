@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.components.CustomNavBar
+import com.ls.localsky.ui.theme.LocalSkyTheme
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -18,17 +19,20 @@ fun LocalSkyApp(
     database: DatabaseLS,
     weatherViewModelLS: WeatherViewModelLS
 ){
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color.White
-    ) {
-        val navController = rememberNavController()
-        Scaffold(
-            bottomBar = { CustomNavBar(navController = navController) },
+    LocalSkyTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color.White
+        ) {
+            val navController = rememberNavController()
+            Scaffold(
+                bottomBar = { CustomNavBar(navController = navController) },
 
-        ) { _ ->
+                ) { _ ->
 
-            NavigationGraph(navController = navController, database, weatherViewModelLS)
+                NavigationGraph(navController = navController, database, weatherViewModelLS)
+            }
         }
+
     }
 }
