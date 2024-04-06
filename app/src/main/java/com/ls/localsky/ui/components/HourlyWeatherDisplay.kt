@@ -48,15 +48,15 @@ fun HourlyWeatherDisplay(
 }
 
 fun getAMorPM(time: Int): String{
-    when(time){
+    return when(time){
         0 -> {
-            return "AM"
+            "AM"
         }
         1 -> {
-            return "PM"
+            "PM"
         }
         else -> {
-            return "ERROR"
+            "ERROR"
         }
     }
 }

@@ -48,7 +48,6 @@ fun CurrentWeatherCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    /*.clip(shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))*/
                     .background(brush = Brush.linearGradient(listOf(Color(0xFFADD8E6), Color.LightGray)))
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally

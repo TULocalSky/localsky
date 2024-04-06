@@ -1,19 +1,17 @@
 package com.ls.localsky.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ls.localsky.models.WeatherData
-import com.ls.localsky.models.WeatherType
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -33,18 +31,32 @@ fun DailyWeatherDisplay(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start,
     ) {
-        Text(
-            text = getDayOfWeek(time)
-        )
-        Image(
-            painter = painterResource(WeatherType.fromWeatherReport(weatherData.summary).iconRes),
-            contentDescription = null,
-            modifier = Modifier.width(40.dp)
-        )
-        Text(
-            text = weatherData.summary,
-            fontWeight = FontWeight.Bold
-        )
+        Column {
+            Text(
+                text = getDayOfWeek(time)
+            )
+        }
+        Column {
+
+        }
+        Column {
+
+        }
+        Column {
+
+        }
+        Column {
+            TemperatureText(
+                temperature = weatherData.temperatureHigh,
+                fontSize = 12.sp,
+            )
+        }
+        Column {
+            TemperatureText(
+                temperature = weatherData.temperatureLow,
+                fontSize = 12.sp,
+            )
+        }
     }
 }
 
