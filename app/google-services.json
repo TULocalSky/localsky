@@ -21,6 +21,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyDaEOCa4dGwq82vXbj6kL90uF17_MTImWM"
+        },
+        {
+          "current_key": "AIzaSyBW49CMgwLm5Q8vJb2PQ4OahmG-yrEN-QI"
         }
       ],
       "services": {
@@ -43,11 +46,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "111685960381-bjni934stcm9s6t6ucdiscgjlnhsaq7a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ls.localsky",
+            "certificate_hash": "ca0fcbbfd421d0416c8b38eaaf30102e6f12cc00"
+          }
+        },
+        {
           "client_id": "111685960381-f8hm1usg9bvu32o559sk21t0n9hh8vfh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ls.localsky",
             "certificate_hash": "09d075e04872ff9a9b66b76a9fa4f72fb181f1c1"
+          }
+        },
+        {
+          "client_id": "111685960381-svv09nhmbd10plu8cauup416ob9h9ipa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ls.localsky",
+            "certificate_hash": "c71e533234940e342b053490a020ce4baf8167bf"
           }
         },
         {
@@ -58,6 +77,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyDaEOCa4dGwq82vXbj6kL90uF17_MTImWM"
+        },
+        {
+          "current_key": "AIzaSyBW49CMgwLm5Q8vJb2PQ4OahmG-yrEN-QI"
         }
       ],
       "services": {

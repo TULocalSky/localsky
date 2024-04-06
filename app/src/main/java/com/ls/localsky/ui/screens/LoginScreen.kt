@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
+import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.Screen
 import com.ls.localsky.ui.components.ButtonComponent
@@ -79,7 +80,7 @@ fun LoginScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
                             // Put nav here
-                             LocalSkyAppRouter.navigateTo(Screen.MapScreen)
+                            LocalSkyAppRouter.changeApp(App.Main)
                         },
                         {
                             Toast.makeText(
