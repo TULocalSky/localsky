@@ -18,9 +18,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         
         val database = DatabaseLS()
+        val cacheLS = CacheLS(this)
         val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
-        weatherViewModel.getWeatherData()
-        
+        weatherViewModel.getWeatherData(cacheLS)
+
         setContent {
             LocalSkyTheme {
 
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
                         App.Main -> {
                             LocalSkyApp(
                                 database,
-                                weatherViewModel
+                                weatherViewModel,
                             )
                         }
                         App.Login -> {

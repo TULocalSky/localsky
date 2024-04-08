@@ -1,22 +1,28 @@
 package com.ls.localsky
 
 import android.content.Context
+import android.util.Log
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.google.gson.Gson
 import com.ls.localsky.models.WeatherData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 
 class CacheLS(
-    val context: Context
+    context: Context
 ) {
     val cache = Room.databaseBuilder(
         context,
@@ -25,13 +31,21 @@ class CacheLS(
 
     val gson = Gson()
 
-    fun getCachedWeatherData(userID: String): WeatherData{
-        val weatherDataJSON = cache.weatherDataDao().findByUserID(userID).lastWeatherData
+    fun getCachedWeatherData(): WeatherData{
+        Log.d(TAG, "Getting Cached Weather Data")
+        val weatherDataJSON = cache.weatherDataDao().getWeatherData(1).lastWeatherData
         return gson.fromJson(weatherDataJSON, WeatherData::class.java)
     }
 
-    fun updateCachedWeatherData(userID: String, weatherData: WeatherData){
-        cache.weatherDataDao().insert(UserWeatherData(userID, gson.toJson(weatherData)))
+    fun updateCachedWeatherData(weatherData: WeatherData){
+        Log.d(TAG, "Updating Cached Weather Data")
+        CoroutineScope(Dispatchers.IO).launch {
+            cache.weatherDataDao().insert(UserWeatherData(1, gson.toJson(weatherData)))
+        }
+    }
+
+    companion object{
+        val TAG = "Cache"
     }
 
 }
@@ -44,17 +58,17 @@ abstract class CacheDB : RoomDatabase(){
 @Entity(tableName = "LocalSky")
 data class UserWeatherData(
     @PrimaryKey()
-    val userID: String,
+    val index: Int,
     @ColumnInfo
     val lastWeatherData: String
 )
 
 @Dao
 interface WeatherDataDao {
-    @Query("SELECT * FROM LocalSky WHERE userID LIKE :uid LIMIT 1")
-    fun findByUserID(uid: String): UserWeatherData
+    @Query("SELECT * FROM LocalSky WHERE `index` LIKE :ind LIMIT 1")
+    fun getWeatherData(ind: Int): UserWeatherData
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userWeatherData: UserWeatherData)
 
     @Delete

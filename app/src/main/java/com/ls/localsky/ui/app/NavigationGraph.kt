@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.ls.localsky.CacheLS
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.screens.LoginScreen
 import com.ls.localsky.ui.screens.MapScreen
@@ -14,7 +15,11 @@ import com.ls.localsky.ui.screens.WeatherScreen
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
-fun NavigationGraph(navController: NavHostController, databaseLS: DatabaseLS, weatherViewModel: WeatherViewModelLS) {
+fun NavigationGraph(
+    navController: NavHostController,
+    databaseLS: DatabaseLS,
+    weatherViewModel: WeatherViewModelLS,
+) {
     NavHost(navController, startDestination = Screen.WeatherScreen.screen_route) {
         composable(Screen.MapScreen.screen_route) {
             MapScreen()

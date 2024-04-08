@@ -5,8 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ls.localsky.CacheLS
 import com.ls.localsky.WeatherAPI
 import com.ls.localsky.models.WeatherData
 import com.ls.localsky.models.WeatherState
@@ -19,19 +19,22 @@ class WeatherViewModelLS: ViewModel(){
      * Gets the current weather data in the view model
      * @return [LiveData] containing [WeatherData]
      */
-    fun getWeatherData(){
+    fun getWeatherData(
+        cache: CacheLS
+    ){
         // Have the weather data be loading until it gets its info
         weatherDataState = weatherDataState.copy(
             isLoading = true,
             error = null
         )
         WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
-            Log.d("","getting weather data")
+            Log.d(TAG,"Getting New Weather Data for the View Model")
             weatherDataState = weatherDataState.copy(
                 weatherData = it,
                 isLoading = false,
                 error = null
             )
+            cache.updateCachedWeatherData(it!!)
 
         },{
             Log.d(WeatherAPI.TAG, "Error $it")
@@ -41,9 +44,13 @@ class WeatherViewModelLS: ViewModel(){
                 error = it.toString()
             )
             // Probably should wait some amount of time to restart
-            getWeatherData()
+//            getWeatherData(cache)
 
         })
+    }
+
+    companion object{
+        val TAG = "Weather ViewModel"
     }
 
 }

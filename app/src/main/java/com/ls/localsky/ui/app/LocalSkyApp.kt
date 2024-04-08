@@ -6,8 +6,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
+import com.ls.localsky.CacheLS
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.components.CustomNavBar
 import com.ls.localsky.ui.theme.LocalSkyTheme
@@ -17,7 +17,7 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 @Composable
 fun LocalSkyApp(
     database: DatabaseLS,
-    weatherViewModelLS: WeatherViewModelLS
+    weatherViewModel: WeatherViewModelLS,
 ){
     LocalSkyTheme {
         Surface(
@@ -29,7 +29,7 @@ fun LocalSkyApp(
 
                 ) { _ ->
 
-                NavigationGraph(navController = navController, database, weatherViewModelLS)
+                NavigationGraph(navController = navController, database, weatherViewModel)
             }
         }
 

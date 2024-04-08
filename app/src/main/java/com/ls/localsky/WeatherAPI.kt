@@ -2,6 +2,7 @@ package com.ls.localsky
 
 import com.ls.localsky.models.WeatherData
 import com.ls.localsky.network.ApiClient
+import com.ls.localsky.viewmodels.WeatherViewModelLS
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -11,7 +12,12 @@ class WeatherAPI {
     /**
      *
      */
-    fun getWeatherData(latitude: Double, longitude: Double, onSuccess:(WeatherData?) -> Unit, onFailure: (Throwable) -> Unit) {
+    fun getWeatherData(
+        latitude: Double,
+        longitude: Double,
+        onSuccess:(WeatherData?) -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) {
         // 1. Using RetrofitBuilder to build the service
         // 2. Using the ApiService Interface to do a GET Request by providing lat and long
         val call = ApiClient.apiService.getDefaultWeather(latitude.toString(), longitude.toString())
