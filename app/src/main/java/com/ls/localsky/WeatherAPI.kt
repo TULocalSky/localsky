@@ -31,9 +31,9 @@ class WeatherAPI {
         })
     }
 
-companion object {
-    val TAG = "WeatherAPI"
-}
+    companion object {
+        val TAG = "WeatherAPI"
+    }
 
 
 }

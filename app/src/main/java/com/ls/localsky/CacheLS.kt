@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.google.gson.Gson
 import com.ls.localsky.models.WeatherData
 
 
@@ -22,12 +23,15 @@ class CacheLS(
         CacheDB::class.java, "LocalSkyDatabase"
     ).build()
 
+    val gson = Gson()
+
     fun getCachedWeatherData(userID: String): WeatherData{
-        return cache.weatherDataDao().findByUserID(userID).lastWeatherData
+        val weatherDataJSON = cache.weatherDataDao().findByUserID(userID).lastWeatherData
+        return gson.fromJson(weatherDataJSON, WeatherData::class.java)
     }
 
     fun updateCachedWeatherData(userID: String, weatherData: WeatherData){
-        cache.weatherDataDao().insert(UserWeatherData(userID, weatherData))
+        cache.weatherDataDao().insert(UserWeatherData(userID, gson.toJson(weatherData)))
     }
 
 }
@@ -42,7 +46,7 @@ data class UserWeatherData(
     @PrimaryKey()
     val userID: String,
     @ColumnInfo
-    val lastWeatherData: WeatherData
+    val lastWeatherData: String
 )
 
 @Dao
