@@ -3,17 +3,18 @@ package com.ls.localsky.ui.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailInput(labelValue:String) {
 
@@ -56,6 +58,7 @@ fun EmailInput(labelValue:String) {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordInput(
     labelValue:String,
@@ -105,6 +108,7 @@ fun PasswordInput(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NormalTextInput(
     labelValue: String,
