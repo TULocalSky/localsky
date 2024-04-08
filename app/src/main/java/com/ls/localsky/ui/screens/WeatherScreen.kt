@@ -22,9 +22,10 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 @Composable
 fun WeatherScreen(
     viewModelLS: WeatherViewModelLS,
+    modifier: Modifier
 ){
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     ) {
         LazyColumn {
             item{

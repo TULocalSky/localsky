@@ -1,6 +1,7 @@
 package com.ls.localsky.ui.app
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,13 +17,16 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @Composable
 fun NavigationGraph(
+    modifier: Modifier,
     navController: NavHostController,
     databaseLS: DatabaseLS,
     weatherViewModel: WeatherViewModelLS,
 ) {
     NavHost(navController, startDestination = Screen.WeatherScreen.screen_route) {
         composable(Screen.MapScreen.screen_route) {
-            MapScreen()
+            MapScreen(
+                modifier = modifier
+            )
         }
         composable(Screen.SettingsScreen.screen_route) {
             SettingsScreen(
@@ -32,6 +36,7 @@ fun NavigationGraph(
         composable(Screen.WeatherScreen.screen_route) {
             WeatherScreen(
                 viewModelLS = weatherViewModel,
+                modifier = modifier
             )
         }
         composable(Screen.RegisterScreen.screen_route){
