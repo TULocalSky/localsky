@@ -2,6 +2,7 @@ package com.ls.localsky.ui.screens
 
 import android.content.Context
 import android.graphics.drawable.Icon
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
