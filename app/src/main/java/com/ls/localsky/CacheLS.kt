@@ -24,17 +24,21 @@ import kotlinx.coroutines.launch
 class CacheLS(
     context: Context
 ) {
-    val cache = Room.databaseBuilder(
+    private val cache = Room.databaseBuilder(
         context,
         CacheDB::class.java, "LocalSkyDatabase"
     ).build()
 
-    val gson = Gson()
+    private val gson = Gson()
 
-    fun getCachedWeatherData(): WeatherData{
+    fun getCachedWeatherData(): WeatherData? {
         Log.d(TAG, "Getting Cached Weather Data")
-        val weatherDataJSON = cache.weatherDataDao().getWeatherData(1).lastWeatherData
-        return gson.fromJson(weatherDataJSON, WeatherData::class.java)
+        val weatherData = cache.weatherDataDao().getWeatherData(1)
+        return if(weatherData == null){
+            null
+        } else{
+            gson.fromJson(weatherData.lastWeatherData, WeatherData::class.java)
+        }
     }
 
     fun updateCachedWeatherData(weatherData: WeatherData){
@@ -45,7 +49,7 @@ class CacheLS(
     }
 
     companion object{
-        val TAG = "Cache"
+        const val TAG = "Cache"
     }
 
 }
@@ -66,7 +70,7 @@ data class UserWeatherData(
 @Dao
 interface WeatherDataDao {
     @Query("SELECT * FROM LocalSky WHERE `index` LIKE :ind LIMIT 1")
-    fun getWeatherData(ind: Int): UserWeatherData
+    fun getWeatherData(ind: Int): UserWeatherData?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userWeatherData: UserWeatherData)

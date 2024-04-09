@@ -10,6 +10,9 @@ import com.ls.localsky.CacheLS
 import com.ls.localsky.WeatherAPI
 import com.ls.localsky.models.WeatherData
 import com.ls.localsky.models.WeatherState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WeatherViewModelLS: ViewModel(){
 
@@ -22,11 +25,22 @@ class WeatherViewModelLS: ViewModel(){
     fun getWeatherData(
         cache: CacheLS
     ){
+
         // Have the weather data be loading until it gets its info
         weatherDataState = weatherDataState.copy(
             isLoading = true,
             error = null
         )
+        CoroutineScope(Dispatchers.IO).launch {
+            cache.getCachedWeatherData()?.let {
+                weatherDataState = weatherDataState.copy(
+                    weatherData = it,
+                    isLoading = false,
+                    error = null
+                )
+                return@launch
+            }
+        }
         WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
             Log.d(TAG,"Getting New Weather Data for the View Model")
             weatherDataState = weatherDataState.copy(
@@ -38,11 +52,11 @@ class WeatherViewModelLS: ViewModel(){
 
         },{
             Log.d(WeatherAPI.TAG, "Error $it")
-            weatherDataState = weatherDataState.copy(
-                weatherData = null,
-                isLoading = false,
-                error = it.toString()
-            )
+//            weatherDataState = weatherDataState.copy(
+//                weatherData = null,
+//                isLoading = false,
+//                error = it.toString()
+//            )
             // Probably should wait some amount of time to restart
 //            getWeatherData(cache)
 
