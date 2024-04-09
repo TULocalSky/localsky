@@ -10,10 +10,18 @@ import androidx.lifecycle.ViewModel
 import com.ls.localsky.WeatherAPI
 import com.ls.localsky.models.WeatherData
 import com.ls.localsky.models.WeatherState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class WeatherViewModelLS: ViewModel(){
 
     var weatherDataState by mutableStateOf(WeatherState())
+
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
 
     /**
      * Gets the current weather data in the view model
