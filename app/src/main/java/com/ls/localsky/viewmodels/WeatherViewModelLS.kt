@@ -10,6 +10,9 @@ import com.ls.localsky.CacheLS
 import com.ls.localsky.WeatherAPI
 import com.ls.localsky.models.WeatherData
 import com.ls.localsky.models.WeatherState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,6 +20,11 @@ import kotlinx.coroutines.launch
 class WeatherViewModelLS: ViewModel(){
 
     var weatherDataState by mutableStateOf(WeatherState())
+
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
 
     /**
      * Gets the current weather data in the view model
@@ -44,9 +52,9 @@ class WeatherViewModelLS: ViewModel(){
         WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
             Log.d(TAG,"Getting New Weather Data for the View Model")
             weatherDataState = weatherDataState.copy(
-                weatherData = it,
+                weatherData = null,
                 isLoading = false,
-                error = null
+                error = it.toString()
             )
             cache.updateCachedWeatherData(it!!)
 
