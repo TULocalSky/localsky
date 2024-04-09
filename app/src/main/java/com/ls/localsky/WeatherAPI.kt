@@ -11,10 +11,10 @@ class WeatherAPI {
     /**
      *
      */
-    fun getWeatherData(latitude: String, longitude: String, onSuccess:(WeatherData?) -> Unit, onFailure: (Throwable) -> Unit) {
+    fun getWeatherData(latitude: Double, longitude: Double, onSuccess:(WeatherData?) -> Unit, onFailure: (Throwable) -> Unit) {
         // 1. Using RetrofitBuilder to build the service
         // 2. Using the ApiService Interface to do a GET Request by providing lat and long
-        val call = ApiClient.apiService.getDefaultWeather(latitude, longitude)
+        val call = ApiClient.apiService.getDefaultWeather(latitude.toString(), longitude.toString())
 
         call.enqueue(object : Callback<WeatherData> {
             // IF success => return back the weather data
@@ -31,7 +31,13 @@ class WeatherAPI {
         })
     }
 
+companion object {
+    val TAG = "WeatherAPI"
+}
 
 
 }
+
+
+
 

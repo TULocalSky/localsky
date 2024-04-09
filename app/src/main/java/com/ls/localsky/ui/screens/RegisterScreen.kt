@@ -96,7 +96,7 @@ fun RegisterScreen(
                                 Toast.LENGTH_SHORT
 
                             ).show()
-                            LocalSkyAppRouter.navigateTo(Screen.MapScreen)
+                            LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
                         {
                             Log.d("Register Error",it.toString())
