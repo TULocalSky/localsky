@@ -1,14 +1,15 @@
 package com.ls.localsky.models
 
+import android.graphics.Bitmap
 import com.ls.localsky.models.User
 
-class UserReport(
+data class UserReport(
     val userReportID: String,
     val user: User,
     val createdTime: String,
     val latitude: Double,
     val longitude: Double,
-    val locationPicture: String,
+    val locationPicture: Bitmap,
     val weatherCondition: String,
 ) {
 

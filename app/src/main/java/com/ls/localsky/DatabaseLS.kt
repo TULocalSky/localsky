@@ -226,22 +226,17 @@ class DatabaseLS() {
      * @return void
      */
     fun createUserReport(
-        user: User,
-        createdTime: String,
-        latitude: Double,
-        longitude: Double,
-        locationPicture: String,
-        weatherCondition: String,
+        userReport: UserReport,
         onSuccess: (DocumentReference, UserReport) -> Unit,
         onFailure: (Exception) -> Unit
     ){
         val report = hashMapOf(
-            "UserID" to user.userID,
-            "CreatedAt" to createdTime,
-            "Latitude" to latitude,
-            "Longitude" to longitude,
-            "WeatherCondition" to weatherCondition,
-            "Picture" to locationPicture,
+            "UserID" to userReport.user.userID,
+            "CreatedAt" to userReport.createdTime,
+            "Latitude" to userReport.latitude,
+            "Longitude" to userReport.longitude,
+            "WeatherCondition" to userReport.weatherCondition,
+            "Picture" to userReport.locationPicture,
         )
         database.collection(UserReport.USER_REPORT_TABLE)
             .add(report)
@@ -249,12 +244,12 @@ class DatabaseLS() {
                 Log.d(TAG_FIRESTORE, "UserReport Created with ID $it")
                 val userReport = UserReport(
                     it.id,
-                    user,
-                    createdTime,
-                    latitude,
-                    longitude,
-                    locationPicture,
-                    weatherCondition
+                    userReport.user,
+                    userReport.createdTime,
+                    userReport.latitude,
+                    userReport.longitude,
+                    userReport.locationPicture,
+                    userReport.weatherCondition
                 )
                 onSuccess(it, userReport)
             }
