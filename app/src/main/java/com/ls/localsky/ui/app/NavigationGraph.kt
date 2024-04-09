@@ -20,6 +20,7 @@ fun NavigationGraph(
     modifier: Modifier,
     navController: NavHostController,
     databaseLS: DatabaseLS,
+    cache: CacheLS,
     weatherViewModel: WeatherViewModelLS,
 ) {
     NavHost(navController, startDestination = Screen.WeatherScreen.screen_route) {
@@ -36,6 +37,7 @@ fun NavigationGraph(
         composable(Screen.WeatherScreen.screen_route) {
             WeatherScreen(
                 viewModelLS = weatherViewModel,
+                cache = cache,
                 modifier = modifier
             )
         }

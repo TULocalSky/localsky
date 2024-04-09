@@ -19,6 +19,7 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 fun LocalSkyApp(
     database: DatabaseLS,
     weatherViewModel: WeatherViewModelLS,
+    cache: CacheLS
 ){
     LocalSkyTheme {
         Surface(
@@ -33,8 +34,9 @@ fun LocalSkyApp(
                 NavigationGraph(
                     modifier = Modifier.padding(innerPadding),
                     navController = navController,
-                    database,
-                    weatherViewModel,
+                    databaseLS = database,
+                    weatherViewModel = weatherViewModel,
+                    cache = cache,
                 )
             }
         }

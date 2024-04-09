@@ -46,7 +46,6 @@ class WeatherViewModelLS: ViewModel(){
                     isLoading = false,
                     error = null
                 )
-                return@launch
             }
         }
         WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
@@ -54,17 +53,17 @@ class WeatherViewModelLS: ViewModel(){
             weatherDataState = weatherDataState.copy(
                 weatherData = null,
                 isLoading = false,
-                error = it.toString()
+                error = null
             )
             cache.updateCachedWeatherData(it!!)
 
         },{
             Log.d(WeatherAPI.TAG, "Error $it")
-//            weatherDataState = weatherDataState.copy(
-//                weatherData = null,
-//                isLoading = false,
-//                error = it.toString()
-//            )
+            weatherDataState = weatherDataState.copy(
+                weatherData = null,
+                isLoading = false,
+                error = it.toString()
+            )
             // Probably should wait some amount of time to restart
 //            getWeatherData(cache)
 

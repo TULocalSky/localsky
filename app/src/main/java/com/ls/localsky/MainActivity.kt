@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
                             LocalSkyApp(
                                 database,
                                 weatherViewModel,
+                                cacheLS
                             )
                         }
                         App.Login -> {
