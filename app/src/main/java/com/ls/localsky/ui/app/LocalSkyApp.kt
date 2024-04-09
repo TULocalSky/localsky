@@ -2,12 +2,13 @@ package com.ls.localsky.ui.app
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
+import com.ls.localsky.CacheLS
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.components.CustomNavBar
 import com.ls.localsky.ui.theme.LocalSkyTheme
@@ -17,7 +18,8 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 @Composable
 fun LocalSkyApp(
     database: DatabaseLS,
-    weatherViewModelLS: WeatherViewModelLS
+    weatherViewModel: WeatherViewModelLS,
+    cache: CacheLS
 ){
     LocalSkyTheme {
         Surface(
@@ -27,9 +29,15 @@ fun LocalSkyApp(
             Scaffold(
                 bottomBar = { CustomNavBar(navController = navController) },
 
-                ) { _ ->
+                ) { innerPadding ->
 
-                NavigationGraph(navController = navController, database, weatherViewModelLS)
+                NavigationGraph(
+                    modifier = Modifier.padding(innerPadding),
+                    navController = navController,
+                    databaseLS = database,
+                    weatherViewModel = weatherViewModel,
+                    cache = cache,
+                )
             }
         }
 

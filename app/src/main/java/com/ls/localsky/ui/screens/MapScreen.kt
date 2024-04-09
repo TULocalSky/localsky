@@ -27,7 +27,8 @@ const val MARKER_STATE = "marker state"
 @Composable
 fun MapScreen(
     latitude: Double = 39.9528,
-    longitude: Double = -75.1635
+    longitude: Double = -75.1635,
+    modifier: Modifier
 ){
     val cityHall = remember{ LatLng(latitude, longitude) }
     val cityHallState = rememberMarkerState(MARKER_STATE, cityHall)
@@ -42,7 +43,7 @@ fun MapScreen(
         Column(
         ) {
             GoogleMap (
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier,
                 cameraPositionState = cameraPositionState,
                 properties = mapProperties
             ) {

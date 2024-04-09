@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ls.localsky.CacheLS
 import com.ls.localsky.ui.components.CurrentWeatherCard
 import com.ls.localsky.ui.components.DailyWeatherForecast
 import com.ls.localsky.ui.components.HourlyWeatherForecast
@@ -26,17 +27,18 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WeatherScreen(
-    viewModelLS: WeatherViewModelLS
+    viewModelLS: WeatherViewModelLS,
+    cache: CacheLS,
+    modifier: Modifier
 ){
     val isRefreshing by viewModelLS.isRefreshing.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
-            viewModelLS.getWeatherData()
+            viewModelLS.getWeatherData(cache)
         })
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .pullRefresh(pullRefreshState)
     ) {
         LazyColumn {
@@ -79,7 +81,7 @@ fun WeatherScreen(
 @Preview
 @Composable
 fun DefaultWeatherScreen(){
-    WeatherScreen(viewModelLS = WeatherViewModelLS())
+//    WeatherScreen(viewModelLS = WeatherViewModelLS())
 }
 
 
