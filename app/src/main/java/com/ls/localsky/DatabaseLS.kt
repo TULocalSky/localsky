@@ -10,6 +10,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
 
@@ -17,6 +18,7 @@ class DatabaseLS() {
 
     private val database = Firebase.firestore
     private val auth = Firebase.auth
+    private val storage = Firebase.storage
 
     /**
         Creates a user in the database
