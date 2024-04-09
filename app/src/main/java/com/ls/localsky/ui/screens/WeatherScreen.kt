@@ -35,7 +35,7 @@ fun WeatherScreen(
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
-//            viewModelLS.getWeatherData(cache)
+            viewModelLS.getWeatherData(cache)
         })
     Surface(
         modifier = modifier

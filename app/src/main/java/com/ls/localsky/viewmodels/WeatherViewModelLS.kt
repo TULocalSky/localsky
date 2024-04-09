@@ -39,6 +39,7 @@ class WeatherViewModelLS: ViewModel(){
             isLoading = true,
             error = null
         )
+
         CoroutineScope(Dispatchers.IO).launch {
             cache.getCachedWeatherData()?.let {
                 weatherDataState = weatherDataState.copy(
@@ -51,7 +52,7 @@ class WeatherViewModelLS: ViewModel(){
         WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
             Log.d(TAG,"Getting New Weather Data for the View Model")
             weatherDataState = weatherDataState.copy(
-                weatherData = null,
+                weatherData = it,
                 isLoading = false,
                 error = null
             )
@@ -60,12 +61,11 @@ class WeatherViewModelLS: ViewModel(){
         },{
             Log.d(WeatherAPI.TAG, "Error $it")
             weatherDataState = weatherDataState.copy(
-                weatherData = null,
                 isLoading = false,
                 error = it.toString()
             )
             // Probably should wait some amount of time to restart
-//            getWeatherData(cache)
+            getWeatherData(cache)
 
         })
     }
