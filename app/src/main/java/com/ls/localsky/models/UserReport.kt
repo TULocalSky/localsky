@@ -9,11 +9,11 @@ data class UserReport(
     val createdTime: String,
     val latitude: Double,
     val longitude: Double,
-    val locationPicture: Bitmap,
+    val locationPicture: String,
     val weatherCondition: String,
 ) {
 
     companion object{
-        public val USER_REPORT_TABLE = "UserReports"
+        val USER_REPORT_TABLE = "UserReports"
     }
 }

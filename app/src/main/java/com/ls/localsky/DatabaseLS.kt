@@ -1,5 +1,6 @@
 package com.ls.localsky
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
@@ -13,6 +14,7 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
+import java.io.ByteArrayOutputStream
 
 class DatabaseLS() {
 
@@ -226,17 +228,22 @@ class DatabaseLS() {
      * @return void
      */
     fun createUserReport(
-        userReport: UserReport,
+        user: User,
+        createdTime: String,
+        latitude: Double,
+        longitude: Double,
+        locationPicture: String,
+        weatherCondition: String,
         onSuccess: (DocumentReference, UserReport) -> Unit,
         onFailure: (Exception) -> Unit
     ){
         val report = hashMapOf(
-            "UserID" to userReport.user.userID,
-            "CreatedAt" to userReport.createdTime,
-            "Latitude" to userReport.latitude,
-            "Longitude" to userReport.longitude,
-            "WeatherCondition" to userReport.weatherCondition,
-            "Picture" to userReport.locationPicture,
+            "UserID" to user.userID,
+            "CreatedAt" to createdTime,
+            "Latitude" to latitude,
+            "Longitude" to longitude,
+            "WeatherCondition" to weatherCondition,
+            "Picture" to locationPicture,
         )
         database.collection(UserReport.USER_REPORT_TABLE)
             .add(report)
@@ -244,18 +251,31 @@ class DatabaseLS() {
                 Log.d(TAG_FIRESTORE, "UserReport Created with ID $it")
                 val userReport = UserReport(
                     it.id,
-                    userReport.user,
-                    userReport.createdTime,
-                    userReport.latitude,
-                    userReport.longitude,
-                    userReport.locationPicture,
-                    userReport.weatherCondition
+                    user,
+                    createdTime,
+                    latitude,
+                    longitude,
+                    locationPicture,
+                    weatherCondition
                 )
                 onSuccess(it, userReport)
             }
             .addOnFailureListener{ e ->
                 Log.w(TAG_FIREAUTH, "Error adding document", e)
                 onFailure(e)
+            }
+    }
+
+    fun uploadImage(image: Bitmap){
+        val storageReference = storage.reference
+        val byteOutput = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteOutput)
+        val data = byteOutput.toByteArray()
+        val uploadTask = storageReference.putBytes(data)
+        uploadTask.addOnCompleteListener{
+
+            }.addOnFailureListener{
+
             }
     }
 
