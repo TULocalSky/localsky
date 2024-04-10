@@ -26,7 +26,8 @@ fun NavigationGraph(
     NavHost(navController, startDestination = Screen.WeatherScreen.screen_route) {
         composable(Screen.MapScreen.screen_route) {
             MapScreen(
-                modifier = modifier
+                modifier = modifier,
+                database = databaseLS
             )
         }
         composable(Screen.SettingsScreen.screen_route) {

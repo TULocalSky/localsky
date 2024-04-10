@@ -9,14 +9,6 @@ plugins {
 }
 
 android {
-    signingConfigs {
-        getByName("debug") {
-            storeFile = file("C:\\Users\\nruci\\AndroidStudioProjects\\debug.keystore")
-            storePassword = "LocalSky"
-            keyAlias = "debug"
-            keyPassword = "LocalSky"
-        }
-    }
     namespace = "com.ls.localsky"
     compileSdk = 34
 

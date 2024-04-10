@@ -266,12 +266,13 @@ class DatabaseLS() {
             }
     }
 
-    fun uploadImage(image: Bitmap){
+    fun uploadImage(image: Bitmap, name: String){
         val storageReference = storage.reference
+        val imageRef = storageReference.child("UserReportImages/$name.jpeg")
         val byteOutput = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteOutput)
         val data = byteOutput.toByteArray()
-        val uploadTask = storageReference.putBytes(data)
+        val uploadTask = imageRef.putBytes(data)
         uploadTask.addOnCompleteListener{
 
             }.addOnFailureListener{
