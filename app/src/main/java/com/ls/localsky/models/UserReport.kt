@@ -14,6 +14,6 @@ data class UserReport(
 ) {
 
     companion object{
-        public val USER_REPORT_TABLE = "UserReports"
+        val USER_REPORT_TABLE = "UserReports"
     }
 }
