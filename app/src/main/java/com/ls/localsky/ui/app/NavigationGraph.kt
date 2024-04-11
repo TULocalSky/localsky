@@ -1,5 +1,6 @@
 package com.ls.localsky.ui.app
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,11 +23,13 @@ fun NavigationGraph(
     databaseLS: DatabaseLS,
     cache: CacheLS,
     weatherViewModel: WeatherViewModelLS,
+    innerPadding: PaddingValues
 ) {
     NavHost(navController, startDestination = Screen.WeatherScreen.screen_route) {
         composable(Screen.MapScreen.screen_route) {
             MapScreen(
-                modifier = modifier
+                modifier = modifier,
+                innerPadding = innerPadding
             )
         }
         composable(Screen.SettingsScreen.screen_route) {
