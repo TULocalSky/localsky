@@ -79,7 +79,7 @@ fun MapScreen(
         FloatingActionButton(
             onClick = {
                 val user = User(
-                    database.getCurrentUser()!!.toString(),
+                    database.getCurrentUser()!!.uid,
                     "",
                     "",
                     "",
@@ -87,8 +87,6 @@ fun MapScreen(
                 database.uploadReport(
                     picture,
                     user,
-                    "TestFile",
-                    LocalDateTime.now().toString(),
                     latitude,
                     longitude,
                     "Clear",

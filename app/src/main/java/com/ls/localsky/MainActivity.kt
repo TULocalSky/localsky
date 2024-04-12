@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.firestore.toObject
+import com.ls.localsky.models.User
 import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyApp
 import com.ls.localsky.ui.app.LocalSkyAppRouter
@@ -30,6 +32,16 @@ class MainActivity : ComponentActivity() {
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
                     LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
+                    database.getUserByID(
+                        database.getCurrentUser()!!.uid,
+                        {document ->
+                                val user = document!!.toObject<User>()
+                                Log.d("", user.email.toString())
+                        },
+                        {
+
+                        }
+                    )
                 }
 
                 Crossfade(targetState = LocalSkyAppRouter.currentApp, label = "") { currentApp ->

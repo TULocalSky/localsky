@@ -17,6 +17,7 @@ import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
 import java.io.ByteArrayOutputStream
+import java.time.LocalDateTime
 
 class DatabaseLS() {
 
@@ -130,7 +131,7 @@ class DatabaseLS() {
             User.EMAIL_ADDRESS to user.email
         )
         getUserByID(
-            user.userID,
+            user.userID!!,
             { userDocument ->
                 database.collection(User.USER_TABLE)
                     .document(userDocument!!.id)
@@ -271,12 +272,12 @@ class DatabaseLS() {
     private fun uploadImage(
         image: Bitmap,
         userID: String,
-        name: String,
+        fileName: String,
         onSuccess: (String) -> Unit,
         onFailure: (Exception) -> Unit
     ){
         val storageReference = storage.reference
-        val imageRef = storageReference.child("UserReportImages/$userID/$name.jpeg")
+        val imageRef = storageReference.child("UserReportImages/$userID/$fileName.jpeg")
         val byteOutput = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteOutput)
         val data = byteOutput.toByteArray()
@@ -291,11 +292,9 @@ class DatabaseLS() {
             }
     }
 
-    public fun uploadReport(
+    fun uploadReport(
         image: Bitmap,
         user: User,
-        fileName: String,
-        createdTime: String,
         latitude: Double,
         longitude: Double,
         weatherCondition: String,
@@ -305,12 +304,12 @@ class DatabaseLS() {
     ){
         uploadImage(
             image,
-            user.userID,
-            fileName,
+            user.userID!!,
+            user.email + latitude + longitude,
             { fileURL ->
                 createUserReport(
                     user,
-                    createdTime,
+                    LocalDateTime.now().toString(),
                     latitude,
                     longitude,
                     fileURL,
