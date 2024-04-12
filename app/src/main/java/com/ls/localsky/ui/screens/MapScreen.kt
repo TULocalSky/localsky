@@ -77,32 +77,36 @@ fun MapScreen(
             )
         }
         FloatingActionButton(
-            onClick = {},
+            onClick = {
+                val user = User(
+                    database.getCurrentUser()!!.toString(),
+                    "",
+                    "",
+                    "",
+                )
+                database.uploadReport(
+                    picture,
+                    user,
+                    "TestFile",
+                    LocalDateTime.now().toString(),
+                    latitude,
+                    longitude,
+                    "Clear",
+                    { _ , _ ->
+                        Log.d("","Worked");
+                    },
+                    {
+                        Log.d("","Failed");
+
+                    }
+
+                )
+            },
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             Icon(Icons.Filled.Add, "Floating action button.")
         }
 
-    }
-}
-
-@Composable
-fun AddUserReportButton(modifier: Modifier = Modifier, addUserReportButtonSize:TextUnit, showUserReportScreen:MutableState<Boolean>){
-    Box(
-        modifier = modifier
-            .clip(CircleShape)
-            .background(Color.Black)
-            .clickable {
-                showUserReportScreen.value = true
-                       },
-        contentAlignment = Alignment.Center
-    ){
-        Text(
-            text = "+",
-            color = Color.White,
-            fontSize =  addUserReportButtonSize/2,
-            fontWeight = FontWeight.Bold
-        )
     }
 }
 

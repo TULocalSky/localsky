@@ -10,6 +10,7 @@ import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyApp
 import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.LocalSkyLoginApp
+import com.ls.localsky.ui.app.Screen
 import com.ls.localsky.ui.theme.LocalSkyTheme
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
                 Log.d("Logged in user", database.getCurrentUser().toString())
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
+                    LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                 }
 
                 Crossfade(targetState = LocalSkyAppRouter.currentApp, label = "") { currentApp ->

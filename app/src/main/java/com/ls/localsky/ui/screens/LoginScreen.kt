@@ -82,6 +82,7 @@ fun LoginScreen(
                             ).show()
                             // Put nav here
                             LocalSkyAppRouter.changeApp(App.Main)
+                            LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
                         {
                             Toast.makeText(
