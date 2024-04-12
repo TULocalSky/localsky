@@ -47,10 +47,8 @@ fun LoginScreen(
     }
 
     Surface(
-        color = Color.White,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
             .padding(28.dp)
     ){
         Column(modifier = Modifier.fillMaxSize()){
