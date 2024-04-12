@@ -1,6 +1,7 @@
 package com.ls.localsky.ui.screens
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -76,15 +77,7 @@ fun MapScreen(
             )
         }
         FloatingActionButton(
-            onClick = {
-                val user = User(
-                    database.getCurrentUser()!!.toString(),
-                    "",
-                    "",
-                    "",
-                )
-                      database.uploadImage(picture, "test")
-            },
+            onClick = {},
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             Icon(Icons.Filled.Add, "Floating action button.")

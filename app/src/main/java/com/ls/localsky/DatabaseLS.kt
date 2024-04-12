@@ -1,6 +1,7 @@
 package com.ls.localsky
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
@@ -11,6 +12,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
@@ -227,7 +229,7 @@ class DatabaseLS() {
      * @param onFailure A lambda expression called upon failure to create the report.
      * @return void
      */
-    fun createUserReport(
+    private fun createUserReport(
         user: User,
         createdTime: String,
         latitude: Double,
@@ -243,7 +245,7 @@ class DatabaseLS() {
             "Latitude" to latitude,
             "Longitude" to longitude,
             "WeatherCondition" to weatherCondition,
-            "Picture" to locationPicture,
+            "PictureLink" to locationPicture,
         )
         database.collection(UserReport.USER_REPORT_TABLE)
             .add(report)
@@ -266,18 +268,59 @@ class DatabaseLS() {
             }
     }
 
-    fun uploadImage(image: Bitmap, name: String){
+    private fun uploadImage(
+        image: Bitmap,
+        userID: String,
+        name: String,
+        onSuccess: (String) -> Unit,
+        onFailure: (Exception) -> Unit
+    ){
         val storageReference = storage.reference
-        val imageRef = storageReference.child("UserReportImages/$name.jpeg")
+        val imageRef = storageReference.child("UserReportImages/$userID/$name.jpeg")
         val byteOutput = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteOutput)
         val data = byteOutput.toByteArray()
         val uploadTask = imageRef.putBytes(data)
-        uploadTask.addOnCompleteListener{
-
+        uploadTask.addOnCompleteListener{ task ->
+                if (task.isSuccessful) {
+                    onSuccess(imageRef.path)
+                }
             }.addOnFailureListener{
-
+                Log.d(TAG_STORAGE, it.toString())
+                onFailure(it)
             }
+    }
+
+    public fun uploadReport(
+        image: Bitmap,
+        user: User,
+        fileName: String,
+        createdTime: String,
+        latitude: Double,
+        longitude: Double,
+        weatherCondition: String,
+        onSuccess: (DocumentReference, UserReport) -> Unit,
+        onFailure: (Exception) -> Unit
+
+    ){
+        uploadImage(
+            image,
+            user.userID,
+            fileName,
+            { fileURL ->
+                createUserReport(
+                    user,
+                    createdTime,
+                    latitude,
+                    longitude,
+                    fileURL,
+                    weatherCondition,
+                    onSuccess,
+                    onFailure
+                )
+            },
+            onFailure
+        )
     }
 
     /**
@@ -311,5 +354,6 @@ class DatabaseLS() {
     companion object{
         private val TAG_FIRESTORE = "FIRESTORE"
         private val TAG_FIREAUTH = "FIREAUTH"
+        private val TAG_STORAGE = "STORAGE"
     }
 }
