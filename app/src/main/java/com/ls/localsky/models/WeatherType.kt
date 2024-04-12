@@ -58,6 +58,9 @@ sealed class WeatherType(
     )
 
     companion object {
+        val allWeatherTypes = arrayOf(ClearDay, ClearNight, Cloudy, Foggy,
+            PartlyCloudyDay, PartlyCloudyNight, Rain, Snow, Windy)
+
         fun fromWeatherReport(summary: String): WeatherType {
             return when (summary) {
                 "clear-day" -> ClearDay

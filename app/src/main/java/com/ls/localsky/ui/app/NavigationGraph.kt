@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import com.ls.localsky.CacheLS
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.screens.LoginScreen
-import com.ls.localsky.ui.screens.MapScreen
+import com.ls.localsky.ui.screens.Map.MapScreen
 import com.ls.localsky.ui.screens.RegisterScreen
 import com.ls.localsky.ui.screens.SettingsScreen
 import com.ls.localsky.ui.screens.WeatherScreen
