@@ -37,6 +37,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
+import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.ui.components.CustomMapMarker
@@ -48,7 +49,8 @@ fun MapScreen(
     latitude: Double = 39.9528,
     longitude: Double = -75.1635,
     modifier: Modifier,
-    innerPadding: PaddingValues = PaddingValues()
+    innerPadding: PaddingValues = PaddingValues(),
+    database: DatabaseLS
 ){
     val cityHall = remember{ LatLng(latitude, longitude) }
     val cityHallState = rememberMarkerState(MARKER_STATE, cityHall)
@@ -198,5 +200,4 @@ fun MapScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewMapScreen (){
-    MapScreen(modifier = Modifier.fillMaxSize())
 }
