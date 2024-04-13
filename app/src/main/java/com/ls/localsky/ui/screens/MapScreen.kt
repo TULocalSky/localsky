@@ -92,7 +92,12 @@ fun MapScreen(
 
         if(showUserReportScreen){
             UserReportPopup{picture, condition ->
-                val user = User()
+                val user = User(
+                    database.getCurrentUser()!!.uid,
+                    "",
+                    "",
+                    "",
+                )
                 database.uploadReport(
                     picture,
                     user,
