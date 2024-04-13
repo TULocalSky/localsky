@@ -37,6 +37,7 @@ fun LocalSkyApp(
                     databaseLS = database,
                     weatherViewModel = weatherViewModel,
                     cache = cache,
+                    innerPadding = innerPadding
                 )
             }
         }
