@@ -68,6 +68,8 @@ fun MapScreen(
         }.toTypedArray()
     }
 
+    val paddingLazyColumn = 15.dp
+
     Box(Modifier.fillMaxSize()){
         GoogleMap (
             modifier = modifier,
@@ -107,7 +109,12 @@ fun MapScreen(
             LazyColumn(
                 modifier = Modifier
                     .matchParentSize()
-                    .padding(25.dp)
+                    .padding(
+                        start = paddingLazyColumn,
+                        top =paddingLazyColumn,
+                        end = paddingLazyColumn,
+                        bottom = innerPadding.calculateBottomPadding() + paddingLazyColumn
+                    )
                     .background(Color.Gray),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
