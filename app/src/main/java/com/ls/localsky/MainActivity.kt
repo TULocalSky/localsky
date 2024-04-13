@@ -14,6 +14,7 @@ import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.LocalSkyLoginApp
 import com.ls.localsky.ui.app.Screen
 import com.ls.localsky.ui.theme.LocalSkyTheme
+import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 class MainActivity : ComponentActivity() {
@@ -23,23 +24,25 @@ class MainActivity : ComponentActivity() {
         val database = DatabaseLS()
         val cacheLS = CacheLS(this)
         val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
+        val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
 
         setContent {
             LocalSkyTheme {
 
-                Log.d("Logged in user", database.getCurrentUser().toString())
+                Log.d("Logged in user", database.getCurrentUser()!!.email!!)
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
                     LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                     database.getUserByID(
                         database.getCurrentUser()!!.uid,
                         {document ->
-                                val user = document!!.toObject<User>()
-                                Log.d("", user.email.toString())
+                                userViewModel.setCurrentUser(document!!.toObject<User>())
+                                Log.d("Login", "Got User ${document.toObject<User>()}")
+
                         },
                         {
-
+                            Log.d("Login", "Error Getting User ${database.getCurrentUser()!!.uid}")
                         }
                     )
                 }
@@ -50,12 +53,14 @@ class MainActivity : ComponentActivity() {
                             LocalSkyApp(
                                 database,
                                 weatherViewModel,
-                                cacheLS
+                                cacheLS,
+                                userViewModel
                             )
                         }
                         App.Login -> {
                             LocalSkyLoginApp(
-                                database = database
+                                database = database,
+                                userViewModel
                             )
                         }
                     }

@@ -34,11 +34,13 @@ import com.ls.localsky.ui.components.DividerTextComponent
 import com.ls.localsky.ui.components.NormalTextInput
 import com.ls.localsky.ui.components.PasswordInput
 import com.ls.localsky.ui.components.TitleText
+import com.ls.localsky.viewmodels.UserViewModelLS
 
 @Composable
 fun RegisterScreen(
     context: Context,
-    database: DatabaseLS
+    database: DatabaseLS,
+    userViewModel: UserViewModelLS
 ) {
 
     val firstNameValue = remember {
@@ -88,13 +90,14 @@ fun RegisterScreen(
                         lastNameValue.value,
                         emailValue.value,
                         passwordValue.value,
-                        { FirebaseUser, User ->
-                            Toast.makeText(
-                                context,
-                                "Debug: Created User",
-                                Toast.LENGTH_SHORT
-
-                            ).show()
+                        { firebaseUser, user ->
+//                            Toast.makeText(
+//                                context,
+//                                "Debug: Created User",
+//                                Toast.LENGTH_SHORT
+//
+//                            ).show()
+                            userViewModel.setCurrentUser(user)
                             LocalSkyAppRouter.changeApp(App.Main)
                             LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
@@ -120,12 +123,6 @@ fun RegisterScreen(
 
     }
 
-}
-
-@Preview
-@Composable
-fun DefaultPreviewOfRegisterScreen() {
-    RegisterScreen(LocalContext.current,  DatabaseLS())
 }
 
 /**

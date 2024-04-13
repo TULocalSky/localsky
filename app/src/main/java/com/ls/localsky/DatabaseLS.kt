@@ -3,6 +3,7 @@ package com.ls.localsky
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.Composable
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -185,9 +186,9 @@ class DatabaseLS() {
                     }
                 }
             }
-                onFailure()
             },
             {
+                onFailure
                 //Choosing not to handle if the user table fails yet
             })
     }

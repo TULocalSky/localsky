@@ -1,6 +1,7 @@
 package com.ls.localsky.ui.screens
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,8 +22,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.firestore.toObject
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
+import com.ls.localsky.models.User
 import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.Screen
@@ -32,11 +35,13 @@ import com.ls.localsky.ui.components.DividerTextComponent
 import com.ls.localsky.ui.components.NormalTextInput
 import com.ls.localsky.ui.components.PasswordInput
 import com.ls.localsky.ui.components.TitleText
+import com.ls.localsky.viewmodels.UserViewModelLS
 
 @Composable
 fun LoginScreen(
     context: Context,
-    database: DatabaseLS
+    database: DatabaseLS,
+    userViewModelLS: UserViewModelLS
 ) {
 
     val emailValue = remember {
@@ -71,12 +76,23 @@ fun LoginScreen(
                         emailValue.value,
                         passwordValue.value,
                         {
-                            Toast.makeText(
-                                context,
-                                "Debug: User Signed in",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            // Put nav here
+//                            Toast.makeText(
+//                                context,
+//                                "Debug: User Signed in",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+                            database.getUserByID(
+                                it.uid,
+                                { document ->
+                                    userViewModelLS.setCurrentUser(document!!.toObject<User>())
+                                    Log.d("Login", "Got User ${document.toObject<User>()}")
+
+                                },
+                                {
+                                    Log.d("Login", "Error Getting User")
+                                }
+                            )
+
                             LocalSkyAppRouter.changeApp(App.Main)
                             LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
@@ -101,12 +117,6 @@ fun LoginScreen(
 
     }
 
-}
-
-@Preview
-@Composable
-fun DefaultPreviewOfLoginScreen() {
-    LoginScreen(LocalContext.current, DatabaseLS())
 }
 
 /**

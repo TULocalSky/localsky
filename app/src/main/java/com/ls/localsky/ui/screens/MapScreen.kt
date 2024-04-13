@@ -1,6 +1,7 @@
 package com.ls.localsky.ui.screens
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -43,6 +44,7 @@ import com.ls.localsky.models.User
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.ui.components.CustomMapMarker
+import com.ls.localsky.viewmodels.UserViewModelLS
 
 const val MARKER_STATE = "marker state"
 
@@ -51,7 +53,8 @@ fun MapScreen(
     latitude: Double = 39.9528,
     longitude: Double = -75.1635,
     modifier: Modifier,
-    database: DatabaseLS
+    database: DatabaseLS,
+    userViewModel: UserViewModelLS
 ){
     val cityHall = remember{ LatLng(latitude, longitude) }
     val cityHallState = rememberMarkerState(MARKER_STATE, cityHall)
@@ -92,12 +95,7 @@ fun MapScreen(
 
         if(showUserReportScreen){
             UserReportPopup{picture, condition ->
-                val user = User(
-                    database.getCurrentUser()!!.uid,
-                    "",
-                    "",
-                    "",
-                )
+                val user = userViewModel.getCurrentUser()
                 database.uploadReport(
                     picture,
                     user,
@@ -105,9 +103,11 @@ fun MapScreen(
                     longitude,
                     condition.weatherSummary,
                     { ref, report ->
-
+                        Log.d("UserReport","It worked")
                     },
-                    {}
+                    {
+                        Log.d("UserReport","It didnt work")
+                    }
                 )
                 showUserReportScreen = false
             }
