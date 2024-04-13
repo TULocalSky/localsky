@@ -7,6 +7,9 @@ class User(
     val email: String? = null
 ) {
 
+    @Override
+    override fun toString(): String = userID + "\n" + firstName + "\n" + lastName + "\n" + email
+
     companion object{
         public val USER_TABLE = "Users"
         public val USERID = "userID"
