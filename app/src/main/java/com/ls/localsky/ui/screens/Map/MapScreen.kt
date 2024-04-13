@@ -17,13 +17,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,7 +55,7 @@ fun MapScreen(
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(cityHall, 12f)
     }
-    val showUserReportScreen: MutableState<Boolean> = remember {
+    var showUserReportScreen by remember {
         mutableStateOf(false)
     }
 
@@ -64,6 +63,9 @@ fun MapScreen(
         WeatherType.allWeatherTypes.map {
             WeatherItem(it)
         }.toTypedArray()
+    }
+    var selectedWeatherItem by remember {
+        mutableStateOf<WeatherItem?>(null)
     }
 
     //compose equivalent to using intents which launch photo taking apps
@@ -88,9 +90,9 @@ fun MapScreen(
             )
         }
 
-        if(!showUserReportScreen.value){
+        if(!showUserReportScreen){
             Button(
-                onClick = { showUserReportScreen.value = true },
+                onClick = { showUserReportScreen = true },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(
@@ -103,13 +105,7 @@ fun MapScreen(
             }
         }
 
-        if(showUserReportScreen.value){
-//            Box(modifier = Modifier
-//                .fillMaxSize()
-//                .padding(25.dp)
-//            ){
-//
-//            }
+        if(showUserReportScreen){
             LazyColumn(
                 modifier = Modifier
                     .matchParentSize()
@@ -160,14 +156,25 @@ fun MapScreen(
                 }
                 items(weatherItems){weatherItem ->
                     if(weatherItem.isSelected.value){
-                        Button(onClick = { weatherItem.isSelected.value = false }) {
+                        Button(onClick = {
+                            weatherItem.isSelected.value = false
+                        }) {
                             Text(
                                 text = weatherItem.weatherType.weatherSummary,
                                 fontWeight = FontWeight.Bold
                             )
                         }
                     }else{
-                        ElevatedButton(onClick = { weatherItem.isSelected.value = true }) {
+                        ElevatedButton(onClick = {
+                            if(selectedWeatherItem == null){
+                                selectedWeatherItem = weatherItem
+                                weatherItem.isSelected.value = true
+                            }else{
+                                selectedWeatherItem!!.isSelected.value = false
+                                selectedWeatherItem = weatherItem
+                                weatherItem.isSelected.value = true
+                            }
+                        }) {
                             Text(text = weatherItem.weatherType.weatherSummary,
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold
@@ -179,7 +186,7 @@ fun MapScreen(
                     Spacer(modifier = Modifier.padding(10.dp))
                 }
                 item{
-                    Button(onClick = { showUserReportScreen.value = false }) {
+                    Button(onClick = { showUserReportScreen = false }) {
                         Text(text = "submit")
                     }
                 }
