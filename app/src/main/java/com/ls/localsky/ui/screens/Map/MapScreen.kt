@@ -1,5 +1,9 @@
 package com.ls.localsky.ui.screens.Map
 
+import android.graphics.Bitmap
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,15 +20,14 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -54,21 +57,19 @@ fun MapScreen(
         mutableStateOf(false)
     }
 
-    val wi = remember{
-        mutableStateListOf(
-            WeatherType.allWeatherTypes.map {
-                WeatherItem(it)
-            }.toTypedArray()
-        )
-    }
-
     val weatherItems = remember {
         WeatherType.allWeatherTypes.map {
             WeatherItem(it)
         }.toTypedArray()
     }
 
-    val paddingLazyColumn = 15.dp
+    //compose equivalent to using intents which launch photo taking apps
+    val userImage = remember { mutableStateOf<Bitmap?>(null) }
+    val userImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
+        userImage.value = it
+    }
+
+    val paddingForLazyColumn = 15.dp
 
     Box(Modifier.fillMaxSize()){
         GoogleMap (
@@ -110,27 +111,35 @@ fun MapScreen(
                 modifier = Modifier
                     .matchParentSize()
                     .padding(
-                        start = paddingLazyColumn,
-                        top =paddingLazyColumn,
-                        end = paddingLazyColumn,
-                        bottom = innerPadding.calculateBottomPadding() + paddingLazyColumn
+                        start = paddingForLazyColumn,
+                        top = paddingForLazyColumn,
+                        end = paddingForLazyColumn,
+                        bottom = innerPadding.calculateBottomPadding() + paddingForLazyColumn
                     )
                     .background(Color.Gray),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item{
-                    Image(
-                        painter = painterResource(id = R.drawable.no_photo_jpg ),
-                        contentDescription = "",
-                        alignment = Alignment.Center
-                    )
+                    if(userImage.value == null){
+                        Image(
+                            painter = painterResource(id = R.drawable.no_photo_jpg ),
+                            contentDescription = "local weather image",
+                            alignment = Alignment.Center
+                        )
+                    }else{
+                        Image(
+                            bitmap = userImage.value!!.asImageBitmap(),
+                            contentDescription = "local weather image",
+                            alignment = Alignment.Center
+                        )
+                    }
                 }
                 item{
                     Spacer(modifier = Modifier.padding(5.dp))
                 }
                 item{
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = { userImageLauncher.launch() }) {
                         Text("take a pic")
                     }
                 }
@@ -176,8 +185,8 @@ fun MapScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewMapScreen (){
-    MapScreen(modifier = Modifier.fillMaxSize())
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewMapScreen (){
+//    MapScreen(modifier = Modifier.fillMaxSize())
+//}
