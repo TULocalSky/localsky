@@ -17,12 +17,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -95,7 +102,7 @@ fun MapScreen(
                     .padding(20.dp),
                 onClick = { showUserReportScreen = true  },
                 icon = { Icon(Icons.Filled.Edit, "Report") },
-                text = { Text(text = "Extended FAB") },
+                text = { Text(text = "Report") },
             )
 
         }
@@ -152,7 +159,8 @@ fun UserReportPopup(
     val paddingForLazyColumn = 15.dp
     Card (
         modifier = Modifier
-            .padding(paddingForLazyColumn)
+            .padding(paddingForLazyColumn),
+
     ){
         Column(
             modifier = Modifier
@@ -175,7 +183,7 @@ fun UserReportPopup(
                 )
             }
             Spacer(modifier = Modifier.padding(5.dp))
-            ElevatedButton(onClick = { userImageLauncher.launch() }) {
+            FilledTonalButton(onClick = { userImageLauncher.launch() }) {
                 Text("take a pic")
             }
             Spacer(modifier = Modifier.padding(20.dp))
@@ -205,6 +213,7 @@ fun UserReportPopup(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?>){
     val weatherItems = remember {
@@ -212,32 +221,40 @@ fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?
             WeatherItem(it)
         }.toTypedArray()
     }
-    LazyColumn (
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        items(weatherItems){weatherItem ->
-            if(weatherItem.isSelected.value){
-                ElevatedButton(onClick = {
-                    weatherItem.isSelected.value = false
-                }) {
-                    Text(
-                        text = weatherItem.weatherType.weatherSummary,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }else{
-                ElevatedButton(onClick = {
-                    if(selectedWeatherItem.value == null){
-                        selectedWeatherItem.value = weatherItem
-                        weatherItem.isSelected.value = true
-                    }else{
-                        selectedWeatherItem.value!!.isSelected.value = false
-                        selectedWeatherItem.value = weatherItem
-                        weatherItem.isSelected.value = true
-                    }
-                }) {
-                    Text(text = weatherItem.weatherType.weatherSummary,
-                        fontWeight = FontWeight.Bold
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp)
+    ) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = it
+            },
+        ) {
+            TextField(
+                value = selectedWeatherItem.value?.weatherType?.weatherSummary ?: "",
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                modifier = Modifier.menuAnchor()
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                weatherItems.forEach { item ->
+                    DropdownMenuItem(
+                        text = { Text(text = item.weatherType.weatherSummary) },
+                        onClick = {
+                            selectedWeatherItem.value = item
+                            expanded = false
+                        }
                     )
                 }
             }
