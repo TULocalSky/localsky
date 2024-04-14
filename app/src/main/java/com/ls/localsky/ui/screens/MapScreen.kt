@@ -105,9 +105,7 @@ fun MapScreen(
                 text = { Text(text = "Report") },
             )
 
-        }
-
-        if(showUserReportScreen){
+        } else{
             UserReportPopup(
                 submitAction = {
                     picture, condition ->
@@ -195,7 +193,7 @@ fun UserReportPopup(
             Spacer(modifier = Modifier.padding(10.dp))
             Row{
                 FilledTonalButton(onClick = {
-                    if((userImage.value != null) && (selectedWeatherItem != null)){
+                    if(userImage.value != null){
                         submitAction(userImage.value!!, selectedWeatherItem.value!!.weatherType)
                     }
                 }) {
@@ -231,7 +229,7 @@ fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = {
-                expanded = it
+                expanded = !expanded
             },
         ) {
             TextField(
