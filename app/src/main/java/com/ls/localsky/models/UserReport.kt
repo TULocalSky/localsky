@@ -1,19 +1,28 @@
 package com.ls.localsky.models
 
 import android.graphics.Bitmap
+import androidx.compose.ui.util.packInts
 import com.ls.localsky.models.User
 
 data class UserReport(
-    val userReportID: String,
-    val user: User,
-    val createdTime: String,
-    val latitude: Double,
-    val longitude: Double,
-    val locationPicture: String,
-    val weatherCondition: String,
+    val userID: String? = null,
+    val createdTime: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val locationPicture: String? = null,
+    val weatherCondition: String? = null,
 ) {
+
+    @Override
+    override fun toString(): String = userID + "\n" + createdTime + "\n" + latitude + "\n" + longitude + "\n" + locationPicture + "\n" + weatherCondition
 
     companion object{
         val USER_REPORT_TABLE = "UserReports"
+        val USER_ID = "userID"
+        val CREATED_TIME = "createdTime"
+        val LATITUDE = "latitude"
+        val LONGITUDE = "longitude"
+        val LOCATION_PICTURE = "locationPicture"
+        val WEATHER_CONDITION = "weatherCondition"
     }
 }

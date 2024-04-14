@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
@@ -133,7 +134,7 @@ class DatabaseLS() {
         )
         getUserByID(
             user.userID!!,
-            { userDocument ->
+            { userDocument, _ ->
                 database.collection(User.USER_TABLE)
                     .document(userDocument!!.id)
                     .set(newUserData, SetOptions.merge())
@@ -173,7 +174,7 @@ class DatabaseLS() {
      */
     fun getUserByID(
         userID: String,
-        onSuccess: (QueryDocumentSnapshot?) -> Unit,
+        onSuccess: (QueryDocumentSnapshot?, User?) -> Unit,
         onFailure: () -> Unit
     ) {
         getUserTable (
@@ -181,7 +182,7 @@ class DatabaseLS() {
             if (users != null) {
                 for (document in users) {
                     if (document.data[User.USERID] == userID) {
-                        onSuccess(document)
+                        onSuccess(document, document.toObject<User>())
                         return@getUserTable
                     }
                 }
@@ -206,9 +207,9 @@ class DatabaseLS() {
     ){
         getUserByID(
             userID,
-            {
+            { document, _ ->
                 database.collection(User.USER_TABLE)
-                    .document(it!!.id)
+                    .document(document!!.id)
                     .delete()
                     .addOnCompleteListener(onSuccess)
                     .addOnFailureListener(onFailure)
@@ -242,12 +243,12 @@ class DatabaseLS() {
         onFailure: (Exception) -> Unit
     ){
         val report = hashMapOf(
-            "UserID" to user.userID,
-            "CreatedAt" to createdTime,
-            "Latitude" to latitude,
-            "Longitude" to longitude,
-            "WeatherCondition" to weatherCondition,
-            "PictureLink" to locationPicture,
+            UserReport.USER_ID to user.userID,
+            UserReport.CREATED_TIME to createdTime,
+            UserReport.LATITUDE to latitude,
+            UserReport.LONGITUDE to longitude,
+            UserReport.WEATHER_CONDITION to weatherCondition,
+            UserReport.LOCATION_PICTURE to locationPicture,
         )
         database.collection(UserReport.USER_REPORT_TABLE)
             .add(report)
@@ -255,7 +256,7 @@ class DatabaseLS() {
                 Log.d(TAG_FIRESTORE, "UserReport Created with ID $it")
                 val userReport = UserReport(
                     it.id,
-                    user,
+                    user.userID!!,
                     createdTime,
                     latitude,
                     longitude,
@@ -328,12 +329,16 @@ class DatabaseLS() {
      * @param callback A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
-    fun getAllUserReports(callback: (QuerySnapshot?) -> Unit
+    fun getAllUserReports(callback: (ArrayList<UserReport>?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
             .get()
-            .addOnSuccessListener { result ->
-                callback(result)
+            .addOnSuccessListener { documents ->
+                val reports = ArrayList<UserReport>()
+                for(document in documents){
+                    reports.add(document.toObject<UserReport>())
+                }
+                callback(reports)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG_FIRESTORE, "Error getting documents.", exception)

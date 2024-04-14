@@ -83,9 +83,9 @@ fun LoginScreen(
 //                            ).show()
                             database.getUserByID(
                                 it.uid,
-                                { document ->
-                                    userViewModelLS.setCurrentUser(document!!.toObject<User>())
-                                    Log.d("Login", "Got User ${document.toObject<User>()}")
+                                { _, user ->
+                                    userViewModelLS.setCurrentUser(user!!)
+                                    Log.d("Login", "Got User $user")
 
                                 },
                                 {

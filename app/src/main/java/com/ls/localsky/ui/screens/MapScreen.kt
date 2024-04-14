@@ -65,6 +65,12 @@ fun MapScreen(
         mutableStateOf(false)
     }
 
+    database.getAllUserReports {
+        it?.forEach {
+           Log.d("", it.toString())
+        }
+    }
+
     Box(modifier = modifier){
         GoogleMap (
             cameraPositionState = cameraPositionState,

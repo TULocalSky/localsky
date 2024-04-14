@@ -36,9 +36,9 @@ class MainActivity : ComponentActivity() {
                     LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                     database.getUserByID(
                         database.getCurrentUser()!!.uid,
-                        {document ->
-                                userViewModel.setCurrentUser(document!!.toObject<User>())
-                                Log.d("Login", "Got User ${document.toObject<User>()}")
+                        {_, user ->
+                                userViewModel.setCurrentUser(user!!)
+                                Log.d("Login", "Got User $user")
 
                         },
                         {
