@@ -92,7 +92,7 @@ fun CurrentWeatherCard(
                 ){
                     /*Call weather data row composable */
                     WeatherDataDisplay(
-                        value = data.hourly.data[0].precipProbability.toInt(),
+                        value = (data.hourly.data[0].precipProbability * 100).toInt(),
                         unit = "%",
                         icon = ImageVector.vectorResource(R.drawable.drop),
                     )
