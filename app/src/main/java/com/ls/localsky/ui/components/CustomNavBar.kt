@@ -41,31 +41,3 @@ fun CustomNavBar(navController: NavController){
         }
     }
 }
-//            NavigationBarItem(
-//                selected = selectedItemIndex == index,
-//                onClick = {
-//                    selectedItemIndex = index
-//                    LocalSkyAppRouter.navigateTo(navigate[index])
-//                },
-//                label = {Text(text = item.title)},
-//                icon = {
-//                    BadgedBox(
-//                        badge = {
-//                            if(item.badgeCount != null){
-//                                Badge{ Text(text = item.badgeCount.toString()) }
-//                            } else if (item.hasNews) Badge()
-//                        }
-//                    ) {
-//                        Icon(
-//                            icon = { Icon(item.icon, contentDescription = item.title) },
-//                            contentDescription = item.title
-//                        )
-//                    }
-//                })
-
-//        }
-//    }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewCustomNavBar(){ CustomNavBar() }
