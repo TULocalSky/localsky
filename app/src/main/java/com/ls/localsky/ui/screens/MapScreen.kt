@@ -10,16 +10,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +46,6 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
-import com.ls.localsky.models.User
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.ui.components.CustomMapMarker
@@ -65,11 +70,12 @@ fun MapScreen(
         mutableStateOf(false)
     }
 
-    database.getAllUserReports {
-        it?.forEach {
-           Log.d("", it.toString())
-        }
-    }
+    //Use this to get all user reports
+//    database.getAllUserReports {
+//        it?.forEach {
+//           Log.d("", it.toString())
+//        }
+//    }
 
     Box(modifier = modifier){
         GoogleMap (
@@ -100,23 +106,29 @@ fun MapScreen(
         }
 
         if(showUserReportScreen){
-            UserReportPopup{picture, condition ->
-                val user = userViewModel.getCurrentUser()
-                database.uploadReport(
-                    picture,
-                    user,
-                    latitude,
-                    longitude,
-                    condition.weatherSummary,
-                    { ref, report ->
-                        Log.d("UserReport","It worked")
-                    },
-                    {
-                        Log.d("UserReport","It didnt work")
-                    }
-                )
-                showUserReportScreen = false
-            }
+            UserReportPopup(
+                submitAction = {
+                    picture, condition ->
+                    val user = userViewModel.getCurrentUser()
+                    database.uploadReport(
+                        picture,
+                        user,
+                        latitude,
+                        longitude,
+                        condition.weatherSummary,
+                        { ref, report ->
+                            Log.d("UserReport","It worked")
+                        },
+                        {
+                            Log.d("UserReport","It didnt work")
+                        }
+                    )
+                    showUserReportScreen = false
+                },
+                cancelAction = {
+                    showUserReportScreen = false
+                }
+            )
         }
     }
 }
@@ -129,15 +141,10 @@ fun PreviewMapScreen (){
 
 @Composable
 fun UserReportPopup(
-    submitAction: (Bitmap, WeatherType) -> Unit
+    submitAction: (Bitmap, WeatherType) -> Unit,
+    cancelAction: () -> Unit
 ){
-
-    val weatherItems = remember {
-        WeatherType.allWeatherTypes.map {
-            WeatherItem(it)
-        }.toTypedArray()
-    }
-    var selectedWeatherItem by remember {
+    val selectedWeatherItem = remember {
         mutableStateOf<WeatherItem?>(null)
     }
 
@@ -148,21 +155,17 @@ fun UserReportPopup(
     }
 
     val paddingForLazyColumn = 15.dp
-
-    LazyColumn(
+    Card (
         modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(
-                start = paddingForLazyColumn,
-                top = paddingForLazyColumn,
-                end = paddingForLazyColumn,
-                bottom = paddingForLazyColumn
-            ),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item{
+            .padding(paddingForLazyColumn)
+    ){
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingForLazyColumn),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             if(userImage.value == null){
                 Image(
                     painter = painterResource(id = R.drawable.no_photo_jpg ),
@@ -176,26 +179,44 @@ fun UserReportPopup(
                     alignment = Alignment.Center
                 )
             }
-        }
-        item{
             Spacer(modifier = Modifier.padding(5.dp))
-        }
-        item{
             Button(onClick = { userImageLauncher.launch() }) {
                 Text("take a pic")
             }
-        }
-        item{
             Spacer(modifier = Modifier.padding(20.dp))
-        }
-        item{
             Text(
                 text = "What's the weather looking like?",
             )
-        }
-        item{
+            WeatherConditionButtonDisplay(selectedWeatherItem = selectedWeatherItem)
             Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(10.dp))
+            Row{
+                Button(onClick = {
+                    if((userImage.value != null) && (selectedWeatherItem != null)){
+                        submitAction(userImage.value!!, selectedWeatherItem.value!!.weatherType)
+                    }
+                }) {
+                    Text(text = "Submit")
+                }
+                Button(onClick = {
+                    cancelAction()
+                }) {
+                    Text(text = "Cancel")
+                }
+            }
         }
+
+    }
+}
+
+@Composable
+fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?>){
+    val weatherItems = remember {
+        WeatherType.allWeatherTypes.map {
+            WeatherItem(it)
+        }.toTypedArray()
+    }
+    LazyColumn {
         items(weatherItems){weatherItem ->
             if(weatherItem.isSelected.value){
                 Button(onClick = {
@@ -208,12 +229,12 @@ fun UserReportPopup(
                 }
             }else{
                 ElevatedButton(onClick = {
-                    if(selectedWeatherItem == null){
-                        selectedWeatherItem = weatherItem
+                    if(selectedWeatherItem.value == null){
+                        selectedWeatherItem.value = weatherItem
                         weatherItem.isSelected.value = true
                     }else{
-                        selectedWeatherItem!!.isSelected.value = false
-                        selectedWeatherItem = weatherItem
+                        selectedWeatherItem.value!!.isSelected.value = false
+                        selectedWeatherItem.value = weatherItem
                         weatherItem.isSelected.value = true
                     }
                 }) {
@@ -221,18 +242,6 @@ fun UserReportPopup(
                         fontWeight = FontWeight.Bold
                     )
                 }
-            }
-        }
-        item{
-            Spacer(modifier = Modifier.padding(10.dp))
-        }
-        item{
-            Button(onClick = {
-                if((userImage.value != null) && (selectedWeatherItem != null)){
-                    submitAction(userImage.value!!, selectedWeatherItem!!.weatherType)
-                }
-            }) {
-                Text(text = "submit")
             }
         }
     }
