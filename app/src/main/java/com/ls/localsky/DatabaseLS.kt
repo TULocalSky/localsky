@@ -255,7 +255,6 @@ class DatabaseLS() {
             .addOnSuccessListener {
                 Log.d(TAG_FIRESTORE, "UserReport Created with ID $it")
                 val userReport = UserReport(
-                    it.id,
                     user.userID!!,
                     createdTime,
                     latitude,
