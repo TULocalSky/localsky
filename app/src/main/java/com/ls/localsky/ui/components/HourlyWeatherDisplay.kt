@@ -1,5 +1,6 @@
 package com.ls.localsky.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,11 @@ fun HourlyWeatherDisplay(
     val calendar = GregorianCalendar.getInstance()
     val date = Date((weatherData.time*1000).toLong())
     calendar.setTime(date)
-    val time = calendar.get(Calendar.HOUR)
+    val hourOfDay = calendar.get(Calendar.HOUR)
+    val amOrPm = calendar.get(Calendar.AM_PM)
+
+    // Convert 0 to 12 for display purposes
+    val hour = if (hourOfDay == 0) 12 else hourOfDay
 
     Column(
         modifier = modifier,
@@ -33,7 +38,7 @@ fun HourlyWeatherDisplay(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "${time}:00${getAMorPM(calendar.get(Calendar.AM_PM))}"
+            text = "$hour:00${getAMorPM(amOrPm)}"
         )
         Image(
             painter = painterResource(WeatherType.fromWeatherReport(weatherData.icon).iconRes),

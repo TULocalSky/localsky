@@ -14,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -31,6 +33,11 @@ fun HourlyWeatherForecast(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(0.dp, 20.dp, 0.dp, 20.dp))
                 .padding(16.dp)
+//                .blur(
+//                    radiusX = 10.dp,
+//                    radiusY = 10.dp,
+//                    edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
+//                )
                 .shadow(
                     elevation = 10.dp,
                     shape = RoundedCornerShape(8.dp)
@@ -40,7 +47,8 @@ fun HourlyWeatherForecast(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(brush = Brush.linearGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)))
+                    .background(brush = Brush.linearGradient(
+                        listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)))
                     .padding(16.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
