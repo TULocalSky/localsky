@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,13 +24,16 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,9 +53,11 @@ import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.ui.components.CustomMapMarker
 import com.ls.localsky.viewmodels.UserViewModelLS
+import kotlinx.coroutines.launch
 
 const val MARKER_STATE = "marker state"
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     latitude: Double = 39.9528,
@@ -60,6 +66,11 @@ fun MapScreen(
     database: DatabaseLS,
     userViewModel: UserViewModelLS
 ){
+
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     val cityHall = remember{ LatLng(latitude, longitude) }
     val cityHallState = rememberMarkerState(MARKER_STATE, cityHall)
     val cameraPositionState = rememberCameraPositionState {
@@ -85,8 +96,30 @@ fun MapScreen(
         ) {
             CustomMapMarker(
                 state = cityHallState,
-                title = "City Hall"
+                onClick = {
+                    showBottomSheet = true
+                    false
+                }
             )
+        }
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                sheetState = sheetState
+            ) {
+                // Sheet content
+                Button(onClick = {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            showBottomSheet = false
+                        }
+                    }
+                }) {
+                    Text("Hide bottom sheet")
+                }
+            }
         }
         if(userViewModel.getCurrentUser().userID != null){
             if(!showUserReportScreen){
