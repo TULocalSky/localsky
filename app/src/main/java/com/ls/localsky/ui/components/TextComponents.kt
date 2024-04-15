@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material3.Divider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
@@ -27,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-
 fun TitleText(value: String) {
     Text(
         text= value,
@@ -72,57 +70,26 @@ fun DividerTextComponent() {
 }
 
 @Composable
-fun ClickableLoginText(onTextSelected : (String) -> Unit) {
-    val initText = "Already have an account? "
-    val loginText = "Login Here"
+fun ClickableText(
+    nonHighlightedText : String,
+    highlightedText : String,
+    onTextSelected : (String) -> Unit
+) {
 
     val annotatedString = buildAnnotatedString {
-        append(initText)
+        append(nonHighlightedText)
         withStyle(style = SpanStyle(color = Color.Blue)) {
-            pushStringAnnotation(tag = loginText, annotation = loginText)
-            append(loginText)
+            pushStringAnnotation(tag = highlightedText, annotation = highlightedText)
+            append(highlightedText)
         }
     }
-
-    var color = LocalContentColor.current
+    val color = LocalContentColor.current
     ClickableText(
         style = TextStyle.Default.copy(color = color),
         text = annotatedString, onClick = { offset ->
         annotatedString.getStringAnnotations(offset, offset)
             .firstOrNull()?.also{ span ->
-                Log.d("ClickableLoginText", "{${span.item}}")
-
-                if (span.item == loginText) {
-                    onTextSelected(span.item)
-                }
-
-            }
-    })
-
-}
-
-@Composable
-fun ClickableRegisterText(onTextSelected : (String) -> Unit) {
-    val initText = "Don't have an account? "
-    val registerText = "Register Here"
-
-    val annotatedString = buildAnnotatedString {
-        append(initText)
-        withStyle(style = SpanStyle(color = Color.Blue)) {
-            pushStringAnnotation(tag = registerText, annotation = registerText)
-            append(registerText)
-        }
-    }
-
-    var color = LocalContentColor.current
-    ClickableText(
-        style = TextStyle.Default.copy(color = color),
-        text = annotatedString, onClick = { offset ->
-        annotatedString.getStringAnnotations(offset, offset)
-            .firstOrNull()?.also{ span ->
-                Log.d("ClickableRegisterText", "{${span.item}}")
-
-                if (span.item == registerText) {
+                if (span.item == highlightedText) {
                     onTextSelected(span.item)
                 }
 

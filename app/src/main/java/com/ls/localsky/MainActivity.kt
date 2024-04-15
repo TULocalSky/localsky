@@ -6,8 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.firestore.toObject
-import com.ls.localsky.models.User
 import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyApp
 import com.ls.localsky.ui.app.LocalSkyAppRouter
@@ -30,7 +28,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             LocalSkyTheme {
 
-                Log.d("Logged in user", database.getCurrentUser()!!.email!!)
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
                     LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)

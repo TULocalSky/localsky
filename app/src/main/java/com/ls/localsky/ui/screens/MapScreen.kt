@@ -88,41 +88,42 @@ fun MapScreen(
                 title = "City Hall"
             )
         }
+        if(userViewModel.getCurrentUser().userID != null){
+            if(!showUserReportScreen){
+                ExtendedFloatingActionButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(20.dp),
+                    onClick = { showUserReportScreen = true  },
+                    icon = { Icon(Icons.Filled.Edit, "Report") },
+                    text = { Text(text = "Report") },
+                )
 
-        if(!showUserReportScreen){
-            ExtendedFloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(20.dp),
-                onClick = { showUserReportScreen = true  },
-                icon = { Icon(Icons.Filled.Edit, "Report") },
-                text = { Text(text = "Report") },
-            )
-
-        } else{
-            UserReportPopup(
-                submitAction = {
-                    picture, condition ->
-                    val user = userViewModel.getCurrentUser()
-                    database.uploadReport(
-                        picture,
-                        user,
-                        latitude,
-                        longitude,
-                        condition.weatherSummary,
-                        { ref, report ->
-                            Log.d("UserReport","It worked")
-                        },
-                        {
-                            Log.d("UserReport","It didnt work")
-                        }
-                    )
-                    showUserReportScreen = false
-                },
-                cancelAction = {
-                    showUserReportScreen = false
-                }
-            )
+            } else{
+                UserReportPopup(
+                    submitAction = {
+                            picture, condition ->
+                        val user = userViewModel.getCurrentUser()
+                        database.uploadReport(
+                            picture,
+                            user,
+                            latitude,
+                            longitude,
+                            condition.weatherSummary,
+                            { ref, report ->
+                                Log.d("UserReport","It worked")
+                            },
+                            {
+                                Log.d("UserReport","It didnt work")
+                            }
+                        )
+                        showUserReportScreen = false
+                    },
+                    cancelAction = {
+                        showUserReportScreen = false
+                    }
+                )
+            }
         }
     }
 }
