@@ -2,9 +2,7 @@ package com.ls.localsky
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.Composable
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -15,7 +13,6 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
