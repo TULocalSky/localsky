@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -90,7 +91,7 @@ fun MapScreen(
             userReportViewModel.getUserReports().forEach { report ->
                 CustomMapMarker(
                     report = report,
-                    onClick = {marker ->
+                    onClick = { _ ->
                         currentUserReport = report
                         showBottomSheet.value = true
                         false
@@ -104,7 +105,8 @@ fun MapScreen(
         if (showBottomSheet.value) {
             UserReportSheet(
                 currentUserReport,
-                showBottomSheet
+                showBottomSheet,
+                database
             )
         }
         if(userViewModel.getCurrentUser().userID != null){
@@ -278,12 +280,23 @@ fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?
 @Composable
 fun UserReportSheet(
     report: UserReport,
-    showBottomSheet: MutableState<Boolean>
+    showBottomSheet: MutableState<Boolean>,
+    database: DatabaseLS
 ){
     val userImage = remember { mutableStateOf<Bitmap?>(null) }
 
+    val onImageSuccess: (Bitmap) -> Unit = { bitmap ->
+        userImage.value = bitmap
+    }
+
+    val onImageFailure: () -> Unit = {
+        Log.e("UserReportSheet", "Failed to fetch image for report: ${report.locationPicture}")
+    }
+
+    // Fetch the image associated with the user report
+    database.getUserReportImage(report.locationPicture!!, onImageSuccess, onImageFailure)
+
     val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -291,16 +304,28 @@ fun UserReportSheet(
         },
         sheetState = sheetState
     ) {
-        // Sheet content
-
-        Button(onClick = {
-            scope.launch { sheetState.hide() }.invokeOnCompletion {
-                if (!sheetState.isVisible) {
-                    showBottomSheet.value = false
-                }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            if(userImage.value == null){
+                Image(
+                    painter = painterResource(id = R.drawable.no_photo_jpg ),
+                    contentDescription = "local weather image",
+                    alignment = Alignment.Center
+                )
+            }else{
+                Image(
+                    bitmap = userImage.value!!.asImageBitmap(),
+                    contentDescription = "local weather image",
+                    alignment = Alignment.Center
+                )
             }
-        }) {
-            Text("Hide bottom sheet")
+
+            Text(text = report.weatherCondition!!)
+
         }
     }
 }
