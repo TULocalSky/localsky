@@ -12,6 +12,7 @@ import com.ls.localsky.CacheLS
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.components.CustomNavBar
 import com.ls.localsky.ui.theme.LocalSkyTheme
+import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
@@ -21,7 +22,8 @@ fun LocalSkyApp(
     database: DatabaseLS,
     weatherViewModel: WeatherViewModelLS,
     cache: CacheLS,
-    userViewModel: UserViewModelLS
+    userViewModel: UserViewModelLS,
+    userReportViewModel: UserReportViewModelLS
 ){
     LocalSkyTheme {
         Surface(
@@ -39,7 +41,8 @@ fun LocalSkyApp(
                     databaseLS = database,
                     weatherViewModel = weatherViewModel,
                     cache = cache,
-                    userViewModel = userViewModel
+                    userViewModel = userViewModel,
+                    userReportViewModel = userReportViewModel
                 )
             }
         }

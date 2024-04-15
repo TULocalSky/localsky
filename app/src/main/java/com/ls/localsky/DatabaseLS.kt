@@ -328,7 +328,7 @@ class DatabaseLS() {
      * @param callback A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
-    fun getAllUserReports(callback: (ArrayList<UserReport>?) -> Unit
+    fun getAllUserReports(callback: (List<UserReport>?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
             .get()

@@ -13,6 +13,7 @@ import com.ls.localsky.ui.screens.MapScreen
 import com.ls.localsky.ui.screens.RegisterScreen
 import com.ls.localsky.ui.screens.SettingsScreen
 import com.ls.localsky.ui.screens.WeatherScreen
+import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
@@ -23,14 +24,16 @@ fun NavigationGraph(
     databaseLS: DatabaseLS,
     cache: CacheLS,
     weatherViewModel: WeatherViewModelLS,
-    userViewModel: UserViewModelLS
+    userViewModel: UserViewModelLS,
+    userReportViewModel: UserReportViewModelLS
 ) {
     NavHost(navController, startDestination = Screen.WeatherScreen.screen_route) {
         composable(Screen.MapScreen.screen_route) {
             MapScreen(
                 modifier = modifier,
                 database = databaseLS,
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                userReportViewModel = userReportViewModel
             )
         }
         composable(Screen.SettingsScreen.screen_route) {

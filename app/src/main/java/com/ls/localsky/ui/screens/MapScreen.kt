@@ -52,10 +52,10 @@ import com.ls.localsky.R
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.ui.components.CustomMapMarker
+import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import kotlinx.coroutines.launch
 
-const val MARKER_STATE = "marker state"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +64,8 @@ fun MapScreen(
     longitude: Double = -75.1635,
     modifier: Modifier,
     database: DatabaseLS,
-    userViewModel: UserViewModelLS
+    userViewModel: UserViewModelLS,
+    userReportViewModel: UserReportViewModelLS
 ){
 
     val sheetState = rememberModalBottomSheetState()
@@ -72,20 +73,12 @@ fun MapScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     val cityHall = remember{ LatLng(latitude, longitude) }
-    val cityHallState = rememberMarkerState(MARKER_STATE, cityHall)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(cityHall, 12f)
     }
     var showUserReportScreen by remember {
         mutableStateOf(false)
     }
-
-    //Use this to get all user reports
-//    database.getAllUserReports {
-//        it?.forEach {
-//           Log.d("", it.toString())
-//        }
-//    }
 
     Box(modifier = modifier){
         GoogleMap (
@@ -94,13 +87,17 @@ fun MapScreen(
                 zoomControlsEnabled = false
             )
         ) {
-            CustomMapMarker(
-                state = cityHallState,
-                onClick = {
-                    showBottomSheet = true
-                    false
-                }
-            )
+            userReportViewModel.getUserReports().forEach {
+                CustomMapMarker(
+                    latLng = LatLng(it.latitude!!, it.longitude!!),
+                    onClick = {
+                        showBottomSheet = true
+                        false
+                    }
+                )
+            }
+
+
         }
         if (showBottomSheet) {
             ModalBottomSheet(

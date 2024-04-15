@@ -12,6 +12,7 @@ import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.LocalSkyLoginApp
 import com.ls.localsky.ui.app.Screen
 import com.ls.localsky.ui.theme.LocalSkyTheme
+import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
@@ -23,14 +24,15 @@ class MainActivity : ComponentActivity() {
         val cacheLS = CacheLS(this)
         val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
         val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
+        val userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
         Screen.WeatherScreen.onCLick = {
             weatherViewModel.getWeatherData(cacheLS)
         }
         Screen.MapScreen.onCLick = {
             database.getAllUserReports {
-                it?.forEach {
-                   Log.d("MapOnClick", it.toString())
+                it?.let {
+                    userReportViewModel.setUserReports(it)
                 }
             }
         }
@@ -60,7 +62,8 @@ class MainActivity : ComponentActivity() {
                                 database,
                                 weatherViewModel,
                                 cacheLS,
-                                userViewModel
+                                userViewModel,
+                                userReportViewModel
                             )
                         }
                         App.Login -> {
