@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
@@ -39,12 +42,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
@@ -57,6 +64,7 @@ import com.ls.localsky.ui.components.CustomMapMarker
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import kotlinx.coroutines.launch
+import java.io.FileInputStream
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,11 +89,26 @@ fun MapScreen(
         mutableStateOf(false)
     }
 
+    val isDarkMode = isSystemInDarkTheme()
+
+    // Load the appropriate map style depending on the current theme
+    val mapStyleOptions = if (isDarkMode) {
+        // Load dark mode map style
+        MapStyleOptions.loadRawResourceStyle(LocalContext.current, R.raw.dark_style)
+    } else {
+        // Load light mode map style
+        MapStyleOptions.loadRawResourceStyle(LocalContext.current, R.raw.light_style)
+    }
+
     Box(modifier = modifier){
         GoogleMap (
             cameraPositionState = cameraPositionState,
             uiSettings = MapUiSettings(
-                zoomControlsEnabled = false
+                zoomControlsEnabled = false,
+            ),
+            properties = MapProperties(
+                mapType = MapType.NORMAL,
+                mapStyleOptions = mapStyleOptions
             )
         ) {
             userReportViewModel.getUserReports().forEach { report ->
@@ -293,7 +316,6 @@ fun UserReportSheet(
         Log.e("UserReportSheet", "Failed to fetch image for report: ${report.locationPicture}")
     }
 
-    // Fetch the image associated with the user report
     database.getUserReportImage(report.locationPicture!!, onImageSuccess, onImageFailure)
 
     val sheetState = rememberModalBottomSheetState()
@@ -314,16 +336,23 @@ fun UserReportSheet(
                 Image(
                     painter = painterResource(id = R.drawable.no_photo_jpg ),
                     contentDescription = "local weather image",
-                    alignment = Alignment.Center
+                    alignment = Alignment.Center,
+                    modifier = Modifier.height(100.dp)
                 )
             }else{
                 Image(
                     bitmap = userImage.value!!.asImageBitmap(),
                     contentDescription = "local weather image",
-                    alignment = Alignment.Center
+                    alignment = Alignment.Center,
+                    modifier = Modifier.height(100.dp)
                 )
             }
-
+            Spacer(modifier = Modifier.padding(20.dp))
+            Text(text = "At " + report.createdTime)
+            Spacer(modifier = Modifier.padding(20.dp))
+            Divider()
+            Spacer(modifier = Modifier.padding(20.dp))
+            Text(text = "Weather Condition:")
             Text(text = report.weatherCondition!!)
 
         }
