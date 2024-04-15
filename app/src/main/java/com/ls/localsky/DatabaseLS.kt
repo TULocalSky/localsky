@@ -1,6 +1,7 @@
 package com.ls.localsky
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -347,15 +348,21 @@ class DatabaseLS() {
 
     fun getUserReportImage(
         url: String,
-        onSuccess: () -> Unit,
+        onSuccess: (Bitmap) -> Unit,
         onFailure: () -> Unit
     ){
         val storageRef = storage.reference
         val pathRef = storageRef.child(url)
 
         val ONE_MEGABYTE: Long = 1024 * 1024
-        pathRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
-            onSuccess()
+        pathRef.getBytes(ONE_MEGABYTE).addOnSuccessListener { byteArray ->
+            val bitmap: Bitmap? = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+            if (bitmap != null) {
+                onSuccess(bitmap)
+            } else {
+                // If bitmap decoding failed, call onFailure()
+                onFailure()
+            }
         }.addOnFailureListener {
             onFailure()
         }

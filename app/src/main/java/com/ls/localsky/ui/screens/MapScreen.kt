@@ -89,13 +89,13 @@ fun MapScreen(
         ) {
             userReportViewModel.getUserReports().forEach { report ->
                 CustomMapMarker(
-                    latLng = LatLng(report.latitude!!, report.longitude!!),
                     report = report,
                     onClick = {marker ->
                         currentUserReport = report
                         showBottomSheet.value = true
                         false
-                    }
+                    },
+                    database = database
                 )
             }
 
