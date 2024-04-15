@@ -49,6 +49,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
+import com.ls.localsky.models.UserReport
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.ui.components.CustomMapMarker
@@ -68,13 +69,12 @@ fun MapScreen(
     userReportViewModel: UserReportViewModelLS
 ){
 
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(false) }
+    var showBottomSheet = remember { mutableStateOf(false) }
+    var currentUserReport by remember { mutableStateOf(UserReport())}
 
-    val cityHall = remember{ LatLng(latitude, longitude) }
+    val userPosition = remember{ LatLng(latitude, longitude) }
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(cityHall, 12f)
+        position = CameraPosition.fromLatLngZoom(userPosition, 12f)
     }
     var showUserReportScreen by remember {
         mutableStateOf(false)
@@ -87,11 +87,13 @@ fun MapScreen(
                 zoomControlsEnabled = false
             )
         ) {
-            userReportViewModel.getUserReports().forEach {
+            userReportViewModel.getUserReports().forEach { report ->
                 CustomMapMarker(
-                    latLng = LatLng(it.latitude!!, it.longitude!!),
-                    onClick = {
-                        showBottomSheet = true
+                    latLng = LatLng(report.latitude!!, report.longitude!!),
+                    report = report,
+                    onClick = {marker ->
+                        currentUserReport = report
+                        showBottomSheet.value = true
                         false
                     }
                 )
@@ -99,24 +101,11 @@ fun MapScreen(
 
 
         }
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = sheetState
-            ) {
-                // Sheet content
-                Button(onClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            showBottomSheet = false
-                        }
-                    }
-                }) {
-                    Text("Hide bottom sheet")
-                }
-            }
+        if (showBottomSheet.value) {
+            UserReportSheet(
+                currentUserReport,
+                showBottomSheet
+            )
         }
         if(userViewModel.getCurrentUser().userID != null){
             if(!showUserReportScreen){
@@ -281,6 +270,37 @@ fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?
                     )
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UserReportSheet(
+    report: UserReport,
+    showBottomSheet: MutableState<Boolean>
+){
+    val userImage = remember { mutableStateOf<Bitmap?>(null) }
+
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+
+    ModalBottomSheet(
+        onDismissRequest = {
+            showBottomSheet.value = false
+        },
+        sheetState = sheetState
+    ) {
+        // Sheet content
+
+        Button(onClick = {
+            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                if (!sheetState.isVisible) {
+                    showBottomSheet.value = false
+                }
+            }
+        }) {
+            Text("Hide bottom sheet")
         }
     }
 }
