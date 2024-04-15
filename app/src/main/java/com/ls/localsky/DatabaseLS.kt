@@ -345,6 +345,23 @@ class DatabaseLS() {
             }
     }
 
+    fun getUserReportImage(
+        url: String,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ){
+        val storageRef = storage.reference
+        val pathRef = storageRef.child(url)
+
+        val ONE_MEGABYTE: Long = 1024 * 1024
+        pathRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+            onSuccess()
+        }.addOnFailureListener {
+            onFailure()
+        }
+
+    }
+
     /**
      * Gets the currently signed in user
      * @return The firebase user or null
