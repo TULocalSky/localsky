@@ -24,7 +24,16 @@ class MainActivity : ComponentActivity() {
         val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
         val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
-
+        Screen.WeatherScreen.onCLick = {
+            weatherViewModel.getWeatherData(cacheLS)
+        }
+        Screen.MapScreen.onCLick = {
+            database.getAllUserReports {
+                it?.forEach {
+                   Log.d("MapOnClick", it.toString())
+                }
+            }
+        }
         setContent {
             LocalSkyTheme {
 
