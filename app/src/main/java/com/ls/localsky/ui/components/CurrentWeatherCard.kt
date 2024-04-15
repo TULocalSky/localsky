@@ -53,9 +53,10 @@ fun CurrentWeatherCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 /*Time of day*/
+
                 Text(
                     text = "Today ${
-                        SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
+                        SimpleDateFormat("hh:mm a").format(Calendar.getInstance().time)
                     }",
                     modifier = Modifier.align(Alignment.End),
                 )
