@@ -57,6 +57,7 @@ import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
+import com.ls.localsky.parseTime
 import com.ls.localsky.ui.components.CustomMapMarker
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
@@ -347,12 +348,4 @@ fun UserReportSheet(
 
         }
     }
-}
-
-fun parseTime(time: String): String{
-    return LocalDateTime.parse(
-        time,
-        DateTimeFormatter
-            .ofPattern("dd/MM/yyyy HH:mm"))
-        .format(DateTimeFormatter.ofPattern("HH:mm"))
 }

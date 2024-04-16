@@ -21,7 +21,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class DatabaseLS() {
-
     private val database = Firebase.firestore
     private val auth = Firebase.auth
     private val storage = Firebase.storage
@@ -328,14 +327,18 @@ class DatabaseLS() {
      * @param callback A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
-    fun getAllUserReports(callback: (List<UserReport>?) -> Unit
+    fun getAllUserReports(
+        callback: (List<UserReport>?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
             .get()
             .addOnSuccessListener { documents ->
                 val reports = ArrayList<UserReport>()
                 for(document in documents){
-                    reports.add(document.toObject<UserReport>())
+                    val report = document.toObject<UserReport>()
+                    if(isReportValid(report.createdTime) ){
+                        reports.add(report)
+                    }
                 }
                 callback(reports)
             }
