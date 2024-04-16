@@ -24,32 +24,25 @@ const val MARKER_STATE = "marker state"
 
 @Composable
 fun CustomMapMarker(
-    report: UserReport,
+    reportAndPic: Pair<UserReport, Bitmap?>,
     onClick: (Marker) -> Boolean = { false },
-    database: DatabaseLS
 ){
 
-    val position = remember { LatLng(report.latitude!!, report.longitude!!) }
+    val position = remember { LatLng(reportAndPic.first.latitude!!, reportAndPic.first.longitude!!) }
     val markerState = rememberMarkerState(MARKER_STATE,position)
-    val markerImage = remember { mutableStateOf<BitmapDescriptor?>(null) }
-
-    val onImageSuccess: (Bitmap) -> Unit = { bitmap ->
-        val customizedBitmap = createCircularBitmap(bitmap)
-        val bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(customizedBitmap)
-        markerImage.value = bitmapDescriptor
+    val markerImage = remember(reportAndPic.second) {
+        if(reportAndPic.second == null){
+            BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
+        } else{
+            val customizedBitmap = createCircularBitmap(reportAndPic.second!!)
+            BitmapDescriptorFactory.fromBitmap(customizedBitmap)
+        }
     }
-
-    val onImageFailure: () -> Unit = {
-        val bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
-        markerImage.value = bitmapDescriptor
-    }
-
-    database.getUserReportImage(report.locationPicture!!, onImageSuccess, onImageFailure)
 
     Marker(
         state = markerState,
         onClick = onClick,
-        icon = markerImage.value
+        icon = markerImage
     )
 }
 

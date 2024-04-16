@@ -75,8 +75,8 @@ fun MapScreen(
     userReportViewModel: UserReportViewModelLS
 ){
 
-    var showBottomSheet = remember { mutableStateOf(false) }
-    var currentUserReport by remember { mutableStateOf(UserReport())}
+    val showBottomSheet = remember { mutableStateOf(false) }
+    var currentUserReport by remember { mutableStateOf(Pair<UserReport, Bitmap?>(UserReport(), null))}
 
     val userPosition = remember{ LatLng(latitude, longitude) }
     val cameraPositionState = rememberCameraPositionState {
@@ -108,15 +108,15 @@ fun MapScreen(
                 mapStyleOptions = mapStyleOptions
             )
         ) {
-            userReportViewModel.getUserReports().forEach { report ->
+            val reports = remember { userReportViewModel.getUserReports() }
+            reports.forEach { report ->
                 CustomMapMarker(
-                    report = report,
+                    reportAndPic = report.toPair(),
                     onClick = { _ ->
-                        currentUserReport = report
+                        currentUserReport = report.toPair()
                         showBottomSheet.value = true
                         false
-                    },
-                    database = database
+                    }
                 )
             }
 
@@ -126,7 +126,6 @@ fun MapScreen(
             UserReportSheet(
                 currentUserReport,
                 showBottomSheet,
-                database
             )
         }
         if(userViewModel.getCurrentUser().userID != null){
@@ -299,21 +298,10 @@ fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserReportSheet(
-    report: UserReport,
+    reportAndPic: Pair<UserReport, Bitmap?>,
     showBottomSheet: MutableState<Boolean>,
-    database: DatabaseLS
 ){
-    val userImage = remember { mutableStateOf<Bitmap?>(null) }
-
-    val onImageSuccess: (Bitmap) -> Unit = { bitmap ->
-        userImage.value = bitmap
-    }
-
-    val onImageFailure: () -> Unit = {
-        Log.e("UserReportSheet", "Failed to fetch image for report: ${report.locationPicture}")
-    }
-
-    database.getUserReportImage(report.locationPicture!!, onImageSuccess, onImageFailure)
+    val userImage = remember { mutableStateOf(reportAndPic.second) }
 
     val sheetState = rememberModalBottomSheetState()
 
@@ -345,12 +333,12 @@ fun UserReportSheet(
                 )
             }
             Spacer(modifier = Modifier.padding(20.dp))
-            Text(text = "Today at ${parseTime(report.createdTime!!)}")
+            Text(text = "Today at ${parseTime(reportAndPic.first.createdTime!!)}")
             Spacer(modifier = Modifier.padding(20.dp))
             Divider()
             Spacer(modifier = Modifier.padding(20.dp))
             Text(text = "Weather Condition:")
-            Text(text = report.weatherCondition!!)
+            Text(text = reportAndPic.first.weatherCondition!!)
 
         }
     }

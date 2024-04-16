@@ -276,6 +276,7 @@ class DatabaseLS() {
         onSuccess: (String) -> Unit,
         onFailure: (Exception) -> Unit
     ){
+        Log.d(TAG_STORAGE,"Uploading Image")
         val storageReference = storage.reference
         val imageRef = storageReference.child("UserReportImages/$userID/$fileName.jpeg")
         val byteOutput = ByteArrayOutputStream()
@@ -349,6 +350,7 @@ class DatabaseLS() {
         onSuccess: (Bitmap) -> Unit,
         onFailure: () -> Unit
     ){
+        Log.d(TAG_STORAGE, "Downloading image at $url")
         val storageRef = storage.reference
         val pathRef = storageRef.child(url)
 
