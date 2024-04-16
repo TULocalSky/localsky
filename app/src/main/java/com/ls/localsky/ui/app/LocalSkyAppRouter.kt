@@ -23,9 +23,9 @@ sealed class App{
 }
 
 object LocalSkyAppRouter {
-    val currentApp : MutableState<App> = mutableStateOf(App.Main)
+    val currentApp : MutableState<App> = mutableStateOf(App.Login)
 
-    val currentScreen : MutableState<Screen> = mutableStateOf(Screen.WeatherScreen)
+    val currentScreen : MutableState<Screen> = mutableStateOf(Screen.LoginScreen)
 
     //Navigation from one screen to the next
     fun navigateTo(destination: Screen) {

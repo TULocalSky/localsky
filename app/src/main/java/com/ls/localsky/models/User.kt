@@ -1,17 +1,20 @@
 package com.ls.localsky.models
 
 class User(
-    val userID: String,
-    val firstName: String,
-    val lastName: String,
-    val email: String
+    val userID: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val email: String? = null
 ) {
+
+    @Override
+    override fun toString(): String = userID + "\n" + firstName + "\n" + lastName + "\n" + email
 
     companion object{
         public val USER_TABLE = "Users"
-        public val USERID = "UserID"
-        public val FIRST_NAME = "FirstName"
-        public val LAST_NAME = "LastName"
-        public val EMAIL_ADDRESS = "Email"
+        public val USERID = "userID"
+        public val FIRST_NAME = "firstName"
+        public val LAST_NAME = "lastName"
+        public val EMAIL_ADDRESS = "email"
     }
 }

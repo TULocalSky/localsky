@@ -21,7 +21,6 @@ fun SettingsScreen(
     database: DatabaseLS
 ){
     Surface(
-        color = Color.White,
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)

@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material3.Divider
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -82,10 +84,9 @@ fun ClickableLoginText(onTextSelected : (String) -> Unit) {
         }
     }
 
+    var color = LocalContentColor.current
     ClickableText(
-        style = TextStyle(
-                textAlign = TextAlign.Center
-        ),
+        style = TextStyle.Default.copy(color = color),
         text = annotatedString, onClick = { offset ->
         annotatedString.getStringAnnotations(offset, offset)
             .firstOrNull()?.also{ span ->
@@ -113,10 +114,9 @@ fun ClickableRegisterText(onTextSelected : (String) -> Unit) {
         }
     }
 
+    var color = LocalContentColor.current
     ClickableText(
-        style = TextStyle(
-            textAlign = TextAlign.Center
-        ),
+        style = TextStyle.Default.copy(color = color),
         text = annotatedString, onClick = { offset ->
         annotatedString.getStringAnnotations(offset, offset)
             .firstOrNull()?.also{ span ->

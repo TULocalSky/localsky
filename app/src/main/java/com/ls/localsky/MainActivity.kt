@@ -6,11 +6,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.firestore.toObject
+import com.ls.localsky.models.User
 import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyApp
 import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.LocalSkyLoginApp
+import com.ls.localsky.ui.app.Screen
 import com.ls.localsky.ui.theme.LocalSkyTheme
+import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 class MainActivity : ComponentActivity() {
@@ -20,14 +24,27 @@ class MainActivity : ComponentActivity() {
         val database = DatabaseLS()
         val cacheLS = CacheLS(this)
         val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
+        val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
 
         setContent {
             LocalSkyTheme {
 
-                Log.d("Logged in user", database.getCurrentUser().toString())
+                Log.d("Logged in user", database.getCurrentUser()!!.email!!)
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
+                    LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
+                    database.getUserByID(
+                        database.getCurrentUser()!!.uid,
+                        {_, user ->
+                                userViewModel.setCurrentUser(user!!)
+                                Log.d("Login", "Got User $user")
+
+                        },
+                        {
+                            Log.d("Login", "Error Getting User ${database.getCurrentUser()!!.uid}")
+                        }
+                    )
                 }
 
                 Crossfade(targetState = LocalSkyAppRouter.currentApp, label = "") { currentApp ->
@@ -36,12 +53,14 @@ class MainActivity : ComponentActivity() {
                             LocalSkyApp(
                                 database,
                                 weatherViewModel,
-                                cacheLS
+                                cacheLS,
+                                userViewModel
                             )
                         }
                         App.Login -> {
                             LocalSkyLoginApp(
-                                database = database
+                                database = database,
+                                userViewModel
                             )
                         }
                     }

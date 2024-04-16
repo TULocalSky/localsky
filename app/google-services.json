@@ -7,38 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:111685960381:android:fff8ad192d56baf2e66dd4",
-        "android_client_info": {
-          "package_name": "com.localsky.localsky"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "111685960381-og65rev2sohnflat9q23rac01n36klj4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDaEOCa4dGwq82vXbj6kL90uF17_MTImWM"
-        },
-        {
-          "current_key": "AIzaSyBW49CMgwLm5Q8vJb2PQ4OahmG-yrEN-QI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "111685960381-og65rev2sohnflat9q23rac01n36klj4.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:111685960381:android:1518a88a92b754d4e66dd4",
         "android_client_info": {
           "package_name": "com.ls.localsky"
@@ -46,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "111685960381-bjni934stcm9s6t6ucdiscgjlnhsaq7a.apps.googleusercontent.com",
+          "client_id": "111685960381-17jkv313dmha7b88oob2paqnvr14023m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ls.localsky",
-            "certificate_hash": "ca0fcbbfd421d0416c8b38eaaf30102e6f12cc00"
+            "certificate_hash": "0200ff6daad95965512125b9fda812f51a69ce81"
           }
         },
         {
@@ -62,11 +30,11 @@
           }
         },
         {
-          "client_id": "111685960381-svv09nhmbd10plu8cauup416ob9h9ipa.apps.googleusercontent.com",
+          "client_id": "111685960381-tavnlolsb066dha8aeroprj59gac9tue.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ls.localsky",
-            "certificate_hash": "c71e533234940e342b053490a020ce4baf8167bf"
+            "certificate_hash": "074369b12fcf95ddfc735ac04d66b6acbc6db22e"
           }
         },
         {
@@ -77,9 +45,6 @@
       "api_key": [
         {
           "current_key": "AIzaSyDaEOCa4dGwq82vXbj6kL90uF17_MTImWM"
-        },
-        {
-          "current_key": "AIzaSyBW49CMgwLm5Q8vJb2PQ4OahmG-yrEN-QI"
         }
       ],
       "services": {

@@ -49,7 +49,7 @@ fun DailyWeatherDisplay(
         Column {
             Row {
                 WeatherDataDisplay(
-                    value = weatherData.precipProbability.toInt(),
+                    value = (weatherData.precipProbability * 100).toInt(),
                     unit = "%",
                     icon = ImageVector.vectorResource(R.drawable.drop),
                 )
@@ -59,11 +59,11 @@ fun DailyWeatherDisplay(
                     modifier = Modifier.width(40.dp)
                 )
                 TemperatureText(
-                    temperature = weatherData.temperatureHigh.toInt(),
+                    temperature = weatherData.temperatureLow.toInt(),
                     fontSize = 24.sp,
                 )
                 TemperatureText(
-                    temperature = weatherData.temperatureLow.toInt(),
+                    temperature = weatherData.temperatureHigh.toInt(),
                     fontSize = 24.sp,
                 )
             }

@@ -113,6 +113,9 @@ dependencies {
     //Firebase Firestore
     val firestoreVersion = "24.11.0"
     implementation("com.google.firebase:firebase-firestore:$firestoreVersion")
+    // Firebase Storage
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-storage")
 
     //Gson
     implementation("com.google.code.gson:gson:2.10.1")

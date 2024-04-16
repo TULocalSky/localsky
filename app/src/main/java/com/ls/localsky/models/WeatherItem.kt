@@ -1,4 +1,4 @@
-package com.ls.localsky.ui.screens.Map
+package com.ls.localsky.models
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

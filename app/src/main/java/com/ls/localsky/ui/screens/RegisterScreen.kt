@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
+import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.Screen
 import com.ls.localsky.ui.components.ButtonComponent
@@ -33,11 +34,13 @@ import com.ls.localsky.ui.components.DividerTextComponent
 import com.ls.localsky.ui.components.NormalTextInput
 import com.ls.localsky.ui.components.PasswordInput
 import com.ls.localsky.ui.components.TitleText
+import com.ls.localsky.viewmodels.UserViewModelLS
 
 @Composable
 fun RegisterScreen(
     context: Context,
-    database: DatabaseLS
+    database: DatabaseLS,
+    userViewModel: UserViewModelLS
 ) {
 
     val firstNameValue = remember {
@@ -55,10 +58,8 @@ fun RegisterScreen(
 
 
     Surface(
-        color = Color.White,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
             .padding(28.dp)
     ){
         Column(modifier = Modifier.fillMaxSize()){
@@ -89,13 +90,15 @@ fun RegisterScreen(
                         lastNameValue.value,
                         emailValue.value,
                         passwordValue.value,
-                        { FirebaseUser, User ->
-                            Toast.makeText(
-                                context,
-                                "Debug: Created User",
-                                Toast.LENGTH_SHORT
-
-                            ).show()
+                        { firebaseUser, user ->
+//                            Toast.makeText(
+//                                context,
+//                                "Debug: Created User",
+//                                Toast.LENGTH_SHORT
+//
+//                            ).show()
+                            userViewModel.setCurrentUser(user)
+                            LocalSkyAppRouter.changeApp(App.Main)
                             LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
                         {
@@ -120,12 +123,6 @@ fun RegisterScreen(
 
     }
 
-}
-
-@Preview
-@Composable
-fun DefaultPreviewOfRegisterScreen() {
-    RegisterScreen(LocalContext.current,  DatabaseLS())
 }
 
 /**

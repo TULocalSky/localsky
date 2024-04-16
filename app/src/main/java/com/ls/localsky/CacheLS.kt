@@ -17,7 +17,6 @@ import com.google.gson.Gson
 import com.ls.localsky.models.WeatherData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 

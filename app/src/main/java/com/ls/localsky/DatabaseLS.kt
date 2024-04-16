@@ -1,6 +1,9 @@
 package com.ls.localsky
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.Composable
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -10,13 +13,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
+import java.io.ByteArrayOutputStream
+import java.time.LocalDateTime
 
 class DatabaseLS() {
 
     private val database = Firebase.firestore
     private val auth = Firebase.auth
+    private val storage = Firebase.storage
 
     /**
         Creates a user in the database
@@ -124,8 +133,8 @@ class DatabaseLS() {
             User.EMAIL_ADDRESS to user.email
         )
         getUserByID(
-            user.userID,
-            { userDocument ->
+            user.userID!!,
+            { userDocument, _ ->
                 database.collection(User.USER_TABLE)
                     .document(userDocument!!.id)
                     .set(newUserData, SetOptions.merge())
@@ -165,7 +174,7 @@ class DatabaseLS() {
      */
     fun getUserByID(
         userID: String,
-        onSuccess: (QueryDocumentSnapshot?) -> Unit,
+        onSuccess: (QueryDocumentSnapshot?, User?) -> Unit,
         onFailure: () -> Unit
     ) {
         getUserTable (
@@ -173,14 +182,14 @@ class DatabaseLS() {
             if (users != null) {
                 for (document in users) {
                     if (document.data[User.USERID] == userID) {
-                        onSuccess(document)
+                        onSuccess(document, document.toObject<User>())
                         return@getUserTable
                     }
                 }
             }
-                onFailure()
             },
             {
+                onFailure
                 //Choosing not to handle if the user table fails yet
             })
     }
@@ -198,9 +207,9 @@ class DatabaseLS() {
     ){
         getUserByID(
             userID,
-            {
+            { document, _ ->
                 database.collection(User.USER_TABLE)
-                    .document(it!!.id)
+                    .document(document!!.id)
                     .delete()
                     .addOnCompleteListener(onSuccess)
                     .addOnFailureListener(onFailure)
@@ -223,7 +232,7 @@ class DatabaseLS() {
      * @param onFailure A lambda expression called upon failure to create the report.
      * @return void
      */
-    fun createUserReport(
+    private fun createUserReport(
         user: User,
         createdTime: String,
         latitude: Double,
@@ -234,20 +243,19 @@ class DatabaseLS() {
         onFailure: (Exception) -> Unit
     ){
         val report = hashMapOf(
-            "UserID" to user.userID,
-            "CreatedAt" to createdTime,
-            "Latitude" to latitude,
-            "Longitude" to longitude,
-            "WeatherCondition" to weatherCondition,
-            "Picture" to locationPicture,
+            UserReport.USER_ID to user.userID,
+            UserReport.CREATED_TIME to createdTime,
+            UserReport.LATITUDE to latitude,
+            UserReport.LONGITUDE to longitude,
+            UserReport.WEATHER_CONDITION to weatherCondition,
+            UserReport.LOCATION_PICTURE to locationPicture,
         )
         database.collection(UserReport.USER_REPORT_TABLE)
             .add(report)
             .addOnSuccessListener {
                 Log.d(TAG_FIRESTORE, "UserReport Created with ID $it")
                 val userReport = UserReport(
-                    it.id,
-                    user,
+                    user.userID!!,
                     createdTime,
                     latitude,
                     longitude,
@@ -262,17 +270,74 @@ class DatabaseLS() {
             }
     }
 
+    private fun uploadImage(
+        image: Bitmap,
+        userID: String,
+        fileName: String,
+        onSuccess: (String) -> Unit,
+        onFailure: (Exception) -> Unit
+    ){
+        val storageReference = storage.reference
+        val imageRef = storageReference.child("UserReportImages/$userID/$fileName.jpeg")
+        val byteOutput = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteOutput)
+        val data = byteOutput.toByteArray()
+        val uploadTask = imageRef.putBytes(data)
+        uploadTask.addOnCompleteListener{ task ->
+                if (task.isSuccessful) {
+                    onSuccess(imageRef.path)
+                }
+            }.addOnFailureListener{
+                Log.d(TAG_STORAGE, it.toString())
+                onFailure(it)
+            }
+    }
+
+    fun uploadReport(
+        image: Bitmap,
+        user: User,
+        latitude: Double,
+        longitude: Double,
+        weatherCondition: String,
+        onSuccess: (DocumentReference, UserReport) -> Unit,
+        onFailure: (Exception) -> Unit
+
+    ){
+        uploadImage(
+            image,
+            user.userID!!,
+            user.email + latitude + longitude + LocalDateTime.now().toString(),
+            { fileURL ->
+                createUserReport(
+                    user,
+                    LocalDateTime.now().toString(),
+                    latitude,
+                    longitude,
+                    fileURL,
+                    weatherCondition,
+                    onSuccess,
+                    onFailure
+                )
+            },
+            onFailure
+        )
+    }
+
     /**
      * Retrieves all user reports from the database.
      * @param callback A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
-    fun getAllUserReports(callback: (QuerySnapshot?) -> Unit
+    fun getAllUserReports(callback: (ArrayList<UserReport>?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
             .get()
-            .addOnSuccessListener { result ->
-                callback(result)
+            .addOnSuccessListener { documents ->
+                val reports = ArrayList<UserReport>()
+                for(document in documents){
+                    reports.add(document.toObject<UserReport>())
+                }
+                callback(reports)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG_FIRESTORE, "Error getting documents.", exception)
@@ -293,5 +358,6 @@ class DatabaseLS() {
     companion object{
         private val TAG_FIRESTORE = "FIRESTORE"
         private val TAG_FIREAUTH = "FIREAUTH"
+        private val TAG_STORAGE = "STORAGE"
     }
 }

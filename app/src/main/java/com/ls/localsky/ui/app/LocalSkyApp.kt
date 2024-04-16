@@ -12,6 +12,7 @@ import com.ls.localsky.CacheLS
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.ui.components.CustomNavBar
 import com.ls.localsky.ui.theme.LocalSkyTheme
+import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -19,7 +20,8 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 fun LocalSkyApp(
     database: DatabaseLS,
     weatherViewModel: WeatherViewModelLS,
-    cache: CacheLS
+    cache: CacheLS,
+    userViewModel: UserViewModelLS
 ){
     LocalSkyTheme {
         Surface(
@@ -37,7 +39,7 @@ fun LocalSkyApp(
                     databaseLS = database,
                     weatherViewModel = weatherViewModel,
                     cache = cache,
-                    innerPadding = innerPadding
+                    userViewModel = userViewModel
                 )
             }
         }
