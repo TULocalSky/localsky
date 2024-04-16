@@ -188,7 +188,7 @@ class DatabaseLS() {
             }
             },
             {
-                onFailure
+                onFailure()
                 //Choosing not to handle if the user table fails yet
             })
     }

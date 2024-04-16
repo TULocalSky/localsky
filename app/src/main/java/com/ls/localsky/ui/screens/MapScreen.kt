@@ -151,7 +151,12 @@ fun MapScreen(
                             longitude,
                             condition.weatherSummary,
                             { ref, report ->
-                                Log.d("UserReport","It worked")
+                                Log.d("UserReport","Report Uploaded")
+                                database.getAllUserReports {
+                                    it?.let {
+                                        userReportViewModel.setUserReports(it, database)
+                                    }
+                                }
                             },
                             {
                                 Log.d("UserReport","It didnt work")
