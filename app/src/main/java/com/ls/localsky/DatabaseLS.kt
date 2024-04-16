@@ -21,7 +21,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class DatabaseLS() {
-
     private val database = Firebase.firestore
     private val auth = Firebase.auth
     private val storage = Firebase.storage
@@ -188,7 +187,7 @@ class DatabaseLS() {
             }
             },
             {
-                onFailure
+                onFailure()
                 //Choosing not to handle if the user table fails yet
             })
     }
@@ -276,6 +275,7 @@ class DatabaseLS() {
         onSuccess: (String) -> Unit,
         onFailure: (Exception) -> Unit
     ){
+        Log.d(TAG_STORAGE,"Uploading Image")
         val storageReference = storage.reference
         val imageRef = storageReference.child("UserReportImages/$userID/$fileName.jpeg")
         val byteOutput = ByteArrayOutputStream()
@@ -327,14 +327,18 @@ class DatabaseLS() {
      * @param callback A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
-    fun getAllUserReports(callback: (List<UserReport>?) -> Unit
+    fun getAllUserReports(
+        callback: (List<UserReport>?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
             .get()
             .addOnSuccessListener { documents ->
                 val reports = ArrayList<UserReport>()
                 for(document in documents){
-                    reports.add(document.toObject<UserReport>())
+                    val report = document.toObject<UserReport>()
+                    if(isReportValid(report, 39.9528, -75.1635)){
+                        reports.add(report)
+                    }
                 }
                 callback(reports)
             }
@@ -349,6 +353,7 @@ class DatabaseLS() {
         onSuccess: (Bitmap) -> Unit,
         onFailure: () -> Unit
     ){
+        Log.d(TAG_STORAGE, "Downloading image at $url")
         val storageRef = storage.reference
         val pathRef = storageRef.child(url)
 

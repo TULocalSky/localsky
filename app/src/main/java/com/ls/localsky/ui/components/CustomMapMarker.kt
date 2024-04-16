@@ -5,18 +5,13 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.RectF
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberMarkerState
-import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
 
@@ -24,32 +19,25 @@ const val MARKER_STATE = "marker state"
 
 @Composable
 fun CustomMapMarker(
-    report: UserReport,
+    reportAndPic: Pair<UserReport, Bitmap?>,
     onClick: (Marker) -> Boolean = { false },
-    database: DatabaseLS
 ){
 
-    val position = remember { LatLng(report.latitude!!, report.longitude!!) }
+    val position = remember { LatLng(reportAndPic.first.latitude!!, reportAndPic.first.longitude!!) }
     val markerState = rememberMarkerState(MARKER_STATE,position)
-    val markerImage = remember { mutableStateOf<BitmapDescriptor?>(null) }
-
-    val onImageSuccess: (Bitmap) -> Unit = { bitmap ->
-        val customizedBitmap = createCircularBitmap(bitmap)
-        val bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(customizedBitmap)
-        markerImage.value = bitmapDescriptor
+    val markerImage = remember(reportAndPic.second) {
+        if(reportAndPic.second == null){
+            BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
+        } else{
+            val customizedBitmap = createCircularBitmap(reportAndPic.second!!)
+            BitmapDescriptorFactory.fromBitmap(customizedBitmap)
+        }
     }
-
-    val onImageFailure: () -> Unit = {
-        val bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
-        markerImage.value = bitmapDescriptor
-    }
-
-    database.getUserReportImage(report.locationPicture!!, onImageSuccess, onImageFailure)
 
     Marker(
         state = markerState,
         onClick = onClick,
-        icon = markerImage.value
+        icon = markerImage
     )
 }
 
@@ -77,7 +65,7 @@ fun createCircularBitmap(bitmap: Bitmap, size: Int = 128, borderSize: Int = 4): 
     canvas.drawBitmap(resizedBitmap, borderSize.toFloat(), borderSize.toFloat(), paint)
 
     // Draw the border around the circular image
-    paint.color = Color.BLACK // Set the border color (black)
+    paint.color = Color.BLACK
     paint.style = Paint.Style.STROKE
     paint.strokeWidth = borderSize.toFloat()
     canvas.drawCircle((size + borderSize).toFloat() / 2, (size + borderSize).toFloat() / 2, (size + borderSize).toFloat() / 2 - borderSize / 2, paint)

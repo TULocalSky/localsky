@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         Screen.MapScreen.onCLick = {
             database.getAllUserReports {
                 it?.let {
-                    userReportViewModel.setUserReports(it)
+                    userReportViewModel.setUserReports(it, database)
                 }
             }
         }
