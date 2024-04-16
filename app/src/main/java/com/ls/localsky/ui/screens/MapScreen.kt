@@ -60,6 +60,8 @@ import com.ls.localsky.models.WeatherType
 import com.ls.localsky.ui.components.CustomMapMarker
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -343,7 +345,7 @@ fun UserReportSheet(
                 )
             }
             Spacer(modifier = Modifier.padding(20.dp))
-            Text(text = "At " + report.createdTime)
+            Text(text = "Today at ${parseTime(report.createdTime!!)}")
             Spacer(modifier = Modifier.padding(20.dp))
             Divider()
             Spacer(modifier = Modifier.padding(20.dp))
@@ -352,4 +354,12 @@ fun UserReportSheet(
 
         }
     }
+}
+
+fun parseTime(time: String): String{
+    return LocalDateTime.parse(
+        time,
+        DateTimeFormatter
+            .ofPattern("dd/MM/yyyy HH:mm"))
+        .format(DateTimeFormatter.ofPattern("HH:mm"))
 }

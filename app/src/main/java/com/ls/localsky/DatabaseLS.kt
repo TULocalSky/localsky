@@ -18,6 +18,7 @@ import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
 import java.io.ByteArrayOutputStream
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class DatabaseLS() {
 
@@ -308,7 +309,7 @@ class DatabaseLS() {
             { fileURL ->
                 createUserReport(
                     user,
-                    LocalDateTime.now().toString(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                     latitude,
                     longitude,
                     fileURL,
