@@ -15,9 +15,9 @@ private val DarkColorScheme = darkColorScheme(
     secondaryContainer = DarkBlue2,
     onPrimary = DarkModeTextColor,
     onSecondary = DarkModeTextColor,
-    onTertiary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
+    onTertiary = DarkModeTextColor,
+    onBackground = DarkModeTextColor,
+    onSurface = DarkModeTextColor,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -27,10 +27,10 @@ private val LightColorScheme = lightColorScheme(
     primaryContainer = LightBlue1,
     secondaryContainer = LightBlue2,
     onPrimary = LightModeTextColor,
-    onSecondary = Color.White,
-    onTertiary = Color.Yellow,
-    onBackground = Color.White,
-    onSurface = Color.Black,
+    onSecondary = LightModeTextColor,
+    onTertiary = LightModeTextColor,
+    onBackground = LightModeTextColor,
+    onSurface = LightModeTextColor,
 
 
 )

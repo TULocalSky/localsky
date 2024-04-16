@@ -6,14 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.firestore.toObject
-import com.ls.localsky.models.User
 import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyApp
 import com.ls.localsky.ui.app.LocalSkyAppRouter
 import com.ls.localsky.ui.app.LocalSkyLoginApp
 import com.ls.localsky.ui.app.Screen
 import com.ls.localsky.ui.theme.LocalSkyTheme
+import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
@@ -25,12 +24,21 @@ class MainActivity : ComponentActivity() {
         val cacheLS = CacheLS(this)
         val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
         val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
+        val userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
-
+        Screen.WeatherScreen.onCLick = {
+            weatherViewModel.getWeatherData(cacheLS)
+        }
+        Screen.MapScreen.onCLick = {
+            database.getAllUserReports {
+                it?.let {
+                    userReportViewModel.setUserReports(it)
+                }
+            }
+        }
         setContent {
             LocalSkyTheme {
 
-                Log.d("Logged in user", database.getCurrentUser()!!.email!!)
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
                     LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
@@ -54,7 +62,8 @@ class MainActivity : ComponentActivity() {
                                 database,
                                 weatherViewModel,
                                 cacheLS,
-                                userViewModel
+                                userViewModel,
+                                userReportViewModel
                             )
                         }
                         App.Login -> {

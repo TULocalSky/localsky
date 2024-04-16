@@ -27,6 +27,7 @@ fun CustomNavBar(navController: NavController){
                 selected = currentRoute == item.screen_route,
                 onClick = {
                     navController.navigate(item.screen_route) {
+                        item.onCLick()
 
                         navController.graph.startDestinationRoute?.let { screen_route ->
                             popUpTo(screen_route) {

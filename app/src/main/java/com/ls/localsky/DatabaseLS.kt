@@ -1,9 +1,8 @@
 package com.ls.localsky
 
 import android.graphics.Bitmap
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.compose.runtime.Composable
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -14,7 +13,6 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.storage
 import com.ls.localsky.models.User
 import com.ls.localsky.models.UserReport
@@ -328,7 +326,7 @@ class DatabaseLS() {
      * @param callback A lambda expression that receives the [QuerySnapshot] result.
      * @return void
      */
-    fun getAllUserReports(callback: (ArrayList<UserReport>?) -> Unit
+    fun getAllUserReports(callback: (List<UserReport>?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
             .get()
@@ -343,6 +341,29 @@ class DatabaseLS() {
                 Log.w(TAG_FIRESTORE, "Error getting documents.", exception)
                 callback(null)
             }
+    }
+
+    fun getUserReportImage(
+        url: String,
+        onSuccess: (Bitmap) -> Unit,
+        onFailure: () -> Unit
+    ){
+        val storageRef = storage.reference
+        val pathRef = storageRef.child(url)
+
+        val ONE_MEGABYTE: Long = 1024 * 1024
+        pathRef.getBytes(ONE_MEGABYTE).addOnSuccessListener { byteArray ->
+            val bitmap: Bitmap? = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+            if (bitmap != null) {
+                onSuccess(bitmap)
+            } else {
+                // If bitmap decoding failed, call onFailure()
+                onFailure()
+            }
+        }.addOnFailureListener {
+            onFailure()
+        }
+
     }
 
     /**

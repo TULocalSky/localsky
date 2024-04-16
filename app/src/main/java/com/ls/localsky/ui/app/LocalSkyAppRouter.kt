@@ -9,12 +9,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class Screen(var title: String, var icon: ImageVector, var screen_route: String, val showBottomBar: Boolean) {
-    object LoginScreen : Screen("Login",Icons.Default.Person,"login", false)
-    object RegisterScreen : Screen("CreateAccount",Icons.Default.Person,"create_account", false)
-    object MapScreen : Screen("Map", Icons.Default.Place,"map", true)
-    object SettingsScreen : Screen("Settings",Icons.Default.Settings,"settings", true)
-    object WeatherScreen : Screen("Weather", Icons.Default.Cloud, "weather", true)
+sealed class Screen(var title: String, var icon: ImageVector, var screen_route: String, val showBottomBar: Boolean, var onCLick: () -> Unit) {
+    object LoginScreen : Screen("Login",Icons.Default.Person,"login", false, {})
+    object RegisterScreen : Screen("CreateAccount",Icons.Default.Person,"create_account", false, {})
+    object MapScreen : Screen("Map", Icons.Default.Place,"map", true, {})
+    object SettingsScreen : Screen("Settings",Icons.Default.Settings,"settings", true, {})
+    object WeatherScreen : Screen("Weather", Icons.Default.Cloud, "weather", true, {})
 }
 
 sealed class App{
