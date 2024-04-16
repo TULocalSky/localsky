@@ -336,7 +336,7 @@ class DatabaseLS() {
                 val reports = ArrayList<UserReport>()
                 for(document in documents){
                     val report = document.toObject<UserReport>()
-                    if(isReportValid(report.createdTime) ){
+                    if(isReportValid(report, 39.9528, -75.1635)){
                         reports.add(report)
                     }
                 }

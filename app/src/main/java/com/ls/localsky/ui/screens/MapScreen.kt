@@ -65,7 +65,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     latitude: Double = 39.9528,

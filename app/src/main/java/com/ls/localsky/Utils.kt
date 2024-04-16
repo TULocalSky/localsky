@@ -1,10 +1,12 @@
 package com.ls.localsky
 
+import com.ls.localsky.models.UserReport
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 private val REPORT_VALID_TIME_HOURS = 2
+private val MAX_MARKER_DISTANCE = 0.1
 
 fun parseTime(time: String): String{
     return LocalDateTime.parse(
@@ -14,37 +16,19 @@ fun parseTime(time: String): String{
         .format(DateTimeFormatter.ofPattern("HH:mm"))
 }
 
-fun parseTimeToHours(time: String) : Int{
-    return LocalDateTime.parse(
-        time,
-        DateTimeFormatter
-            .ofPattern("dd/MM/yyyy HH:mm"))
-        .format(DateTimeFormatter.ofPattern("HH")).toInt()
+fun isReportValid(report: UserReport, userLat: Double, userLong: Double) : Boolean{
+    return isReportValidTime(report.createdTime!!) &&
+            isReportValidLocation(userLat, userLong, report.latitude!!, report.longitude!!)
 }
 
-fun parseTimeToDay(time: String) : Int{
-    return LocalDateTime.parse(
-        time,
-        DateTimeFormatter
-            .ofPattern("dd/MM/yyyy HH:mm"))
-        .format(DateTimeFormatter.ofPattern("dd")).toInt()
-}
-fun parseTimeToMonth(time: String) : Int{
-    return LocalDateTime.parse(
-        time,
-        DateTimeFormatter
-            .ofPattern("dd/MM/yyyy HH:mm"))
-        .format(DateTimeFormatter.ofPattern("dd")).toInt()
-}
-fun parseTimeToYear(time: String) : Int{
-    return LocalDateTime.parse(
-        time,
-        DateTimeFormatter
-            .ofPattern("dd/MM/yyyy HH:mm"))
-        .format(DateTimeFormatter.ofPattern("yyyy")).toInt()
+fun isReportValidLocation(userLat: Double, userLong: Double, givenLat: Double, givenLong: Double): Boolean {
+    val latDifference = Math.abs(userLat - givenLat)
+    val longDifference = Math.abs(userLong - givenLong)
+
+    return latDifference <= MAX_MARKER_DISTANCE && longDifference <= MAX_MARKER_DISTANCE
 }
 
-fun isReportValid(time: String): Boolean{
+fun isReportValidTime(time: String): Boolean{
 
     val givenTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
     val currentTime = LocalDateTime.now()
