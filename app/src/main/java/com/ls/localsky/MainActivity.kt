@@ -1,11 +1,14 @@
 package com.ls.localsky
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import com.ls.localsky.services.LocationService
 import com.ls.localsky.ui.app.App
 import com.ls.localsky.ui.app.LocalSkyApp
 import com.ls.localsky.ui.app.LocalSkyAppRouter
@@ -15,10 +18,22 @@ import com.ls.localsky.ui.theme.LocalSkyTheme
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
+import android.Manifest
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            0
+        )
+
+        startService(Intent(this, LocationService::class.java))
         
         val database = DatabaseLS()
         val cacheLS = CacheLS(this)

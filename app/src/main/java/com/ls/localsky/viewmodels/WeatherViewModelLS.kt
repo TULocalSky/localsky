@@ -1,15 +1,18 @@
 package com.ls.localsky.viewmodels
 
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.CacheLS
 import com.ls.localsky.WeatherAPI
 import com.ls.localsky.models.WeatherData
 import com.ls.localsky.models.WeatherState
+import com.ls.localsky.services.LocationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +24,7 @@ class WeatherViewModelLS: ViewModel(){
 
     var weatherDataState by mutableStateOf(WeatherState())
 
+    var _location: LatLng = LatLng(0.0, 0.0)
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
@@ -49,7 +53,7 @@ class WeatherViewModelLS: ViewModel(){
                 )
             }
         }
-        WeatherAPI().getWeatherData(40.28517258577531, -75.26480837142107, {
+        WeatherAPI().getWeatherData(_location.latitude, _location.longitude, {
             Log.d(TAG,"Getting New Weather Data for the View Model")
             weatherDataState = weatherDataState.copy(
                 weatherData = it,
@@ -68,6 +72,10 @@ class WeatherViewModelLS: ViewModel(){
             getWeatherData(cache)
 
         })
+    }
+
+    fun setCoordinate(location: LatLng) {
+        _location = location
     }
 
     companion object{

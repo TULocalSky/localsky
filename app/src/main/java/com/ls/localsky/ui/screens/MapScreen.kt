@@ -33,6 +33,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +59,7 @@ import com.ls.localsky.models.UserReport
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
 import com.ls.localsky.parseTime
+import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CustomMapMarker
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
@@ -67,20 +69,24 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun MapScreen(
-    latitude: Double = 39.9528,
-    longitude: Double = -75.1635,
     modifier: Modifier,
     database: DatabaseLS,
     userViewModel: UserViewModelLS,
     userReportViewModel: UserReportViewModelLS
 ){
+    val currentLocation by LocationRepository.currentLocation.collectAsState()
+    Log.d("currentLocation Testing Map", currentLocation?.latitude.toString())
 
     val showBottomSheet = remember { mutableStateOf(false) }
     var currentUserReport by remember { mutableStateOf(Pair<UserReport, Bitmap?>(UserReport(), null))}
 
-    val userPosition = remember{ LatLng(latitude, longitude) }
+    val userPosition = remember{ currentLocation?.latitude?.let { currentLocation?.longitude?.let { it1 ->
+        LatLng(it,
+            it1
+        )
+    } } }
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(userPosition, 12f)
+        position = userPosition?.let { CameraPosition.fromLatLngZoom(it, 12f) }!!
     }
     var showUserReportScreen by remember {
         mutableStateOf(false)
@@ -144,24 +150,26 @@ fun MapScreen(
                     submitAction = {
                             picture, condition ->
                         val user = userViewModel.getCurrentUser()
-                        database.uploadReport(
-                            picture,
-                            user,
-                            latitude,
-                            longitude,
-                            condition.weatherSummary,
-                            { ref, report ->
-                                Log.d("UserReport","Report Uploaded")
-                                database.getAllUserReports {
-                                    it?.let {
-                                        userReportViewModel.setUserReports(it, database)
+                        currentLocation?.latitude?.let {
+                            database.uploadReport(
+                                picture,
+                                user,
+                                it,
+                                currentLocation!!.longitude,
+                                condition.weatherSummary,
+                                { ref, report ->
+                                    Log.d("UserReport","Report Uploaded")
+                                    database.getAllUserReports {
+                                        it?.let {
+                                            userReportViewModel.setUserReports(it, database)
+                                        }
                                     }
+                                },
+                                {
+                                    Log.d("UserReport","It didnt work")
                                 }
-                            },
-                            {
-                                Log.d("UserReport","It didnt work")
-                            }
-                        )
+                            )
+                        }
                         showUserReportScreen = false
                     },
                     cancelAction = {

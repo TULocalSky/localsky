@@ -12,6 +12,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ls.localsky.CacheLS
+import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CurrentWeatherCard
 import com.ls.localsky.ui.components.DailyWeatherForecast
 import com.ls.localsky.ui.components.HourlyWeatherForecast
@@ -32,6 +34,9 @@ fun WeatherScreen(
     modifier: Modifier
 ){
     val isRefreshing by viewModelLS.isRefreshing.collectAsStateWithLifecycle()
+
+    val currentLocation by LocationRepository.currentLocation.collectAsState()
+
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
@@ -41,6 +46,7 @@ fun WeatherScreen(
         modifier = modifier
             .pullRefresh(pullRefreshState)
     ) {
+        viewModelLS.setCoordinate(currentLocation)
         LazyColumn {
             item{
                 CurrentWeatherCard(
