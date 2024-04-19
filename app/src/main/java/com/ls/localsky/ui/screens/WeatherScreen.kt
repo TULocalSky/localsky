@@ -46,38 +46,47 @@ fun WeatherScreen(
         modifier = modifier
             .pullRefresh(pullRefreshState)
     ) {
-        viewModelLS.setCoordinate(currentLocation)
-        LazyColumn {
-            item{
-                CurrentWeatherCard(
-                    viewModel = viewModelLS
-                )
-            }
-            item{
-                if(viewModelLS.weatherDataState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(align = Alignment.CenterHorizontally),
+        if (currentLocation == null) {
+            // Show a loading indicator at the center of the screen
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentWidth(align = Alignment.CenterHorizontally)
+            )
+        } else {
+            viewModelLS.setCoordinate(currentLocation!!)
+            LazyColumn {
+                item{
+                    CurrentWeatherCard(
+                        viewModel = viewModelLS
                     )
                 }
+                item{
+                    if(viewModelLS.weatherDataState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentWidth(align = Alignment.CenterHorizontally),
+                        )
+                    }
+                }
+                item{
+                    HourlyWeatherForecast(
+                        viewModel = viewModelLS
+                    )
+                }
+                item{
+                    DailyWeatherForecast(
+                        viewModel = viewModelLS
+                    )
+                }
+                item{
+                    Spacer(
+                        Modifier.height(200.dp)
+                    )
+                }
+
             }
-            item{
-                HourlyWeatherForecast(
-                    viewModel = viewModelLS
-                )
-            }
-            item{
-                DailyWeatherForecast(
-                    viewModel = viewModelLS
-                )
-            }
-            item{
-                Spacer(
-                    Modifier.height(200.dp)
-                )
-            }
-            
         }
     }
 

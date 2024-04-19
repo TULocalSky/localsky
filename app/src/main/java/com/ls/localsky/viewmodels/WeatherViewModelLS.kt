@@ -76,6 +76,10 @@ class WeatherViewModelLS: ViewModel(){
 
     fun setCoordinate(location: LatLng) {
         _location = location
+        weatherDataState = weatherDataState.copy(
+            isLoading = false,
+            error = null
+        )
     }
 
     companion object{

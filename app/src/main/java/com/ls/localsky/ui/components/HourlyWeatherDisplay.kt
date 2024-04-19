@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ls.localsky.R
 import com.ls.localsky.models.WeatherData
 import com.ls.localsky.models.WeatherType
 import java.util.Calendar
@@ -30,7 +32,7 @@ fun HourlyWeatherDisplay(
 
     // Convert 0 to 12 for display purposes
     val hour = if (hourOfDay == 0) 12 else hourOfDay
-
+    val iconRes = WeatherType.fromWeatherReport(weatherData.icon).iconRes
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,8 +41,8 @@ fun HourlyWeatherDisplay(
         Text(
             text = "$hour:00${getAMorPM(amOrPm)}"
         )
-        Image(
-            painter = painterResource(WeatherType.fromWeatherReport(weatherData.icon).iconRes),
+        Icon(
+            painterResource(id = iconRes),
             contentDescription = null,
             modifier = Modifier.width(40.dp)
         )

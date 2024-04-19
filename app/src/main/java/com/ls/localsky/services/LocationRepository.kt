@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 object LocationRepository {
-    private val _currentLocation = MutableStateFlow(LatLng(0.0, 0.0))
-    val currentLocation: StateFlow<LatLng> = _currentLocation.asStateFlow()
+    private val _currentLocation = MutableStateFlow<LatLng?>(null)
+    val currentLocation: StateFlow<LatLng?> = _currentLocation.asStateFlow()
     fun updateLocation(location: LatLng?) {
             _currentLocation.value = location!!
     }
