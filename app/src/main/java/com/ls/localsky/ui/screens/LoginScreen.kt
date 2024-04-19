@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -60,7 +61,12 @@ fun LoginScreen(
             Spacer(modifier=Modifier.height(50.dp))
             // Text input fields
             // Email
-            NormalTextInput(labelValue = stringResource(id = R.string.email), emailValue, Icons.Filled.Mail, KeyboardType.Email)
+            NormalTextInput(
+                labelValue = stringResource(id = R.string.email),
+                emailValue,
+                Icons.Filled.Mail,
+                KeyboardType.Email
+            )
             PasswordInput(labelValue = stringResource(id = R.string.password), passwordValue)
             Spacer(modifier=Modifier.height(50.dp))
             //Buttons
