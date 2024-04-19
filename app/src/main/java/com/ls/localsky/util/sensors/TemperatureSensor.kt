@@ -6,7 +6,7 @@ import android.hardware.Sensor
 import java.lang.ref.WeakReference
 
 class TemperatureSensor private constructor(
-    private val context: Context
+    context: Context
 ): AndroidSensor(
     context = context,
     sensorFeature = PackageManager.FEATURE_SENSOR_AMBIENT_TEMPERATURE,
@@ -21,7 +21,7 @@ class TemperatureSensor private constructor(
             val instance = instanceReference?.get()
             return instance?: synchronized(this){
                 val newInstance = instanceReference?.get()
-                newInstance ?: TemperatureSensor(context.applicationContext).also {
+                newInstance ?: TemperatureSensor(context).also {
                     instanceReference = WeakReference(it)
                 }
             }
