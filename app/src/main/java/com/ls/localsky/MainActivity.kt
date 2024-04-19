@@ -19,10 +19,22 @@ import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 import android.Manifest
+import com.ls.localsky.util.sensors.TemperatureSensor
+import com.ls.localsky.viewmodels.SensorViewModelLS
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val svm = SensorViewModelLS()
+
+        TemperatureSensor.getInstance(this).run {
+            startListening()
+            setOnSensorValuesChangedListener {
+                svm.setAmbientTemp(it[0])
+                Log.d("TEMPERATURE", "temp = ${svm.getAmbientTempC()}")
+            }
+        }
 
         ActivityCompat.requestPermissions(
             this,
@@ -53,6 +65,13 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             LocalSkyTheme {
+
+//                val ts = TemperatureSensor(this)
+//                if(ts.doesSensorExist){
+//                    Log.d("TEMPERATURE", "temp = ${ts.getTempC()}C")
+//                }else{
+//                    Log.d("TEMPERATURE", "Device cannot track ambient temp")
+//                }
 
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
@@ -93,6 +112,12 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        TemperatureSensor.getInstance(this).stopListening()
     }
 }
 
