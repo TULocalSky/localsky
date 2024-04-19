@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.ui.app.App
@@ -81,7 +83,6 @@ fun LoginScreen(
                                 it.uid,
                                 { _, user ->
                                     userViewModelLS.setCurrentUser(user!!)
-                                    Log.d("Login", "Got User $user")
 
                                 },
                                 {
@@ -93,11 +94,21 @@ fun LoginScreen(
                             LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
                         {
-                            Toast.makeText(
-                                context,
-                                "There was an error signing in try again soon.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Log.d("Login", it.toString())
+                            if(it is FirebaseAuthInvalidCredentialsException){
+                                Toast.makeText(
+                                    context,
+                                    "Email or password is incorrect",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else{
+                                Toast.makeText(
+                                    context,
+                                    "There was an error signing in try again soon.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
                         }
                     )
                 }
