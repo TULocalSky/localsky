@@ -65,14 +65,6 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             LocalSkyTheme {
-
-//                val ts = TemperatureSensor(this)
-//                if(ts.doesSensorExist){
-//                    Log.d("TEMPERATURE", "temp = ${ts.getTempC()}C")
-//                }else{
-//                    Log.d("TEMPERATURE", "Device cannot track ambient temp")
-//                }
-
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
                     LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
