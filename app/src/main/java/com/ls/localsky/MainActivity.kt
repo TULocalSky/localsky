@@ -19,8 +19,16 @@ import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 import android.Manifest
+import android.content.pm.PackageManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var weatherViewModel: WeatherViewModelLS
+    private lateinit var cacheLS: CacheLS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,12 +40,12 @@ class MainActivity : ComponentActivity() {
             ),
             0
         )
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         startService(Intent(this, LocationService::class.java))
-        
+
         val database = DatabaseLS()
-        val cacheLS = CacheLS(this)
-        val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
+        cacheLS = CacheLS(this)
+        weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
         val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
         val userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
@@ -91,6 +99,33 @@ class MainActivity : ComponentActivity() {
 
                 }
 
+            }
+        }
+        getCurrentLocationAndUpdateWeatherViewModel()
+    }
+
+    private fun getCurrentLocationAndUpdateWeatherViewModel() {
+        // Check for permissions before requesting location
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            // Request permissions if not granted
+            return
+        }
+
+        // Get last known location
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                // Update the WeatherViewModelLS with the current location
+                val latLng = LatLng(location.latitude, location.longitude)
+                weatherViewModel.setCoordinate(latLng)
+
+                // Call the function to get weather data
+                weatherViewModel.getWeatherData(cacheLS)
             }
         }
     }
