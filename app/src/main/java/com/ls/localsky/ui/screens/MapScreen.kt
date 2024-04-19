@@ -52,7 +52,9 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
@@ -61,6 +63,7 @@ import com.ls.localsky.models.WeatherType
 import com.ls.localsky.parseTime
 import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CustomMapMarker
+import com.ls.localsky.ui.components.MARKER_STATE
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import java.time.LocalDateTime
@@ -75,7 +78,6 @@ fun MapScreen(
     userReportViewModel: UserReportViewModelLS
 ){
     val currentLocation by LocationRepository.currentLocation.collectAsState()
-    Log.d("currentLocation Testing Map", currentLocation?.latitude.toString())
 
     val showBottomSheet = remember { mutableStateOf(false) }
     var currentUserReport by remember { mutableStateOf(Pair<UserReport, Bitmap?>(UserReport(), null))}
@@ -103,6 +105,8 @@ fun MapScreen(
         MapStyleOptions.loadRawResourceStyle(LocalContext.current, R.raw.light_style)
     }
 
+    val currentLocationMarkerState = userPosition?.let { rememberMarkerState(MARKER_STATE, it) }
+
     Box(modifier = modifier){
         GoogleMap (
             cameraPositionState = cameraPositionState,
@@ -114,6 +118,11 @@ fun MapScreen(
                 mapStyleOptions = mapStyleOptions
             )
         ) {
+            if (currentLocationMarkerState != null) {
+                Marker(
+                    state = currentLocationMarkerState
+                )
+            }
             val reports = remember { userReportViewModel.getUserReports() }
             reports.forEach { report ->
                 CustomMapMarker(
