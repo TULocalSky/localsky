@@ -27,17 +27,4 @@ class TemperatureSensor private constructor(
             }
         }
     }
-    var temp = Float.MAX_VALUE
-    fun getTempC(): Float{
-        this.startListening()
-        this.setOnSensorValuesChangedListener { temp = it[0] }
-        this.stopListening()
-        return temp
-    }
-    fun getTempF(): Float{
-        this.startListening()
-        this.setOnSensorValuesChangedListener { temp = (it[0]*(9/5)+32) }
-        this.stopListening()
-        return temp
-    }
 }
