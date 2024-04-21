@@ -23,6 +23,8 @@ import android.content.pm.PackageManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.ls.localsky.util.sensors.TemperatureSensor
+import com.ls.localsky.viewmodels.SensorViewModelLS
 
 class MainActivity : ComponentActivity() {
 
@@ -31,6 +33,16 @@ class MainActivity : ComponentActivity() {
     private lateinit var cacheLS: CacheLS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val svm = SensorViewModelLS()
+
+        TemperatureSensor.getInstance(this).run {
+            startListening()
+            setOnSensorValuesChangedListener {
+                svm.setAmbientTemp(it[0])
+                Log.d("TEMPERATURE", "temp = ${svm.getAmbientTempC()}")
+            }
+        }
 
         ActivityCompat.requestPermissions(
             this,
@@ -128,6 +140,12 @@ class MainActivity : ComponentActivity() {
                 weatherViewModel.getWeatherData(cacheLS)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        TemperatureSensor.getInstance(this).stopListening()
     }
 }
 
