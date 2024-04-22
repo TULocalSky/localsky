@@ -80,11 +80,12 @@ class MainActivity : ComponentActivity() {
                     when(currentApp.value){
                         App.Main -> {
                             LocalSkyApp(
-                                database,
-                                weatherViewModel,
-                                cacheLS,
-                                userViewModel,
-                                userReportViewModel
+                                database = database,
+                                weatherViewModel = weatherViewModel,
+                                cache = cacheLS,
+                                userViewModel = userViewModel,
+                                userReportViewModel = userReportViewModel,
+                                sensorViewModel = sensorViewModel
                             )
                         }
                         App.Login -> {
@@ -136,9 +137,12 @@ class MainActivity : ComponentActivity() {
             weatherViewModel.getWeatherData(cacheLS)
         }
         Screen.MapScreen.onCLick = {
-            database.getAllUserReports {
-                it?.let {
-                    userReportViewModel.setUserReports(it, database)
+            weatherViewModel._location?.let {
+                database.getAllUserReports (it){
+                    it?.let {
+                        Log.d("UserReports", "Getting user reports")
+                        userReportViewModel.setUserReports(it, database)
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.ls.localsky.viewmodels
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -18,11 +19,11 @@ class UserReportViewModelLS : ViewModel() {
     fun setUserReports(reports: List<UserReport>, database: DatabaseLS){
         userReports.clear()
         reports.forEach{ report ->
+            Log.d(TAG, report.toString())
             database.getUserReportImage(
                 report.locationPicture!!,
                 { picture ->
                     userReports.put(report, picture)
-
                 }, {
 
                 })

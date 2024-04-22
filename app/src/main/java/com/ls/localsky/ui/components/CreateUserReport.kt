@@ -33,12 +33,15 @@ import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
+import com.ls.localsky.sensors.TemperatureSensor
+import com.ls.localsky.viewmodels.SensorViewModelLS
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 
 @Composable
 fun showUserReportScreen(
     modifier: Modifier,
+    sensorViewModel: SensorViewModelLS,
     showUserReportScreen: MutableState<Boolean>,
     userViewModel: UserViewModelLS,
     userReportViewModel: UserReportViewModelLS,
@@ -54,6 +57,7 @@ fun showUserReportScreen(
 
         } else{
             UserReportPopup(
+                sensorViewModel = sensorViewModel,
                 submitAction = {
                         picture, condition ->
                     val user = userViewModel.getCurrentUser()
@@ -67,7 +71,7 @@ fun showUserReportScreen(
                             "",
                             { ref, report ->
                                 Log.d("UserReport","Report Uploaded")
-                                database.getAllUserReports {
+                                database.getAllUserReports (currentLocation){
                                     it?.let {
                                         userReportViewModel.setUserReports(it, database)
                                     }
@@ -103,6 +107,7 @@ fun createUserReportButton(
 
 @Composable
 fun UserReportPopup(
+    sensorViewModel: SensorViewModelLS,
     submitAction: (Bitmap, WeatherType) -> Unit,
     cancelAction: () -> Unit
 ){
@@ -115,6 +120,8 @@ fun UserReportPopup(
     val userImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
         userImage.value = it
     }
+
+
 
     val paddingForLazyColumn = 15.dp
     Card (
@@ -153,6 +160,9 @@ fun UserReportPopup(
             WeatherConditionButtonDisplay(selectedWeatherItem = selectedWeatherItem)
             Spacer(modifier = Modifier.padding(10.dp))
             Spacer(modifier = Modifier.padding(10.dp))
+            sensorViewModel.getAmbientTempF()?.let{
+                Text(text = it.toString())
+            }
             Row{
                 FilledTonalButton(onClick = {
                     if(userImage.value != null){

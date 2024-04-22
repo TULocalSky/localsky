@@ -32,6 +32,7 @@ import com.ls.localsky.ui.components.CustomMapMarker
 import com.ls.localsky.ui.components.MARKER_STATE
 import com.ls.localsky.ui.components.UserReportSheet
 import com.ls.localsky.ui.components.showUserReportScreen
+import com.ls.localsky.viewmodels.SensorViewModelLS
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 
@@ -41,7 +42,8 @@ fun MapScreen(
     modifier: Modifier,
     database: DatabaseLS,
     userViewModel: UserViewModelLS,
-    userReportViewModel: UserReportViewModelLS
+    userReportViewModel: UserReportViewModelLS,
+    sensorViewModel: SensorViewModelLS
 ){
     val currentLocation by LocationRepository.currentLocation.collectAsState()
 
@@ -114,11 +116,12 @@ fun MapScreen(
             Modifier
                 .align(Alignment.BottomEnd)
                 .padding(20.dp),
-            showUserReportScreen,
-            userViewModel,
-            userReportViewModel,
-            database,
-            currentLocation
+            sensorViewModel = sensorViewModel,
+            showUserReportScreen = showUserReportScreen,
+            userViewModel = userViewModel,
+            userReportViewModel = userReportViewModel,
+            database = database,
+            currentLocation = currentLocation
         )
     }
 }

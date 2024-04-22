@@ -3,6 +3,7 @@ package com.ls.localsky
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -332,6 +333,7 @@ class DatabaseLS() {
      * @return void
      */
     fun getAllUserReports(
+        latLng: LatLng,
         callback: (List<UserReport>?) -> Unit
     ) {
         database.collection(UserReport.USER_REPORT_TABLE)
@@ -340,7 +342,7 @@ class DatabaseLS() {
                 val reports = ArrayList<UserReport>()
                 for(document in documents){
                     val report = document.toObject<UserReport>()
-                    if(isReportValid(report, 39.9528, -75.1635)){
+                    if(isReportValid(report, latLng.latitude, latLng.longitude)){
                         reports.add(report)
                     }
                 }
