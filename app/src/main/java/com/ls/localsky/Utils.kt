@@ -22,6 +22,7 @@ fun isReportValid(report: UserReport, userLat: Double, userLong: Double) : Boole
 }
 
 fun isReportValidLocation(userLat: Double, userLong: Double, givenLat: Double, givenLong: Double): Boolean {
+    return true
     val latDifference = Math.abs(userLat - givenLat)
     val longDifference = Math.abs(userLong - givenLong)
 
@@ -29,7 +30,7 @@ fun isReportValidLocation(userLat: Double, userLong: Double, givenLat: Double, g
 }
 
 fun isReportValidTime(time: String): Boolean{
-
+    return true
     val givenTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
     val currentTime = LocalDateTime.now()
 

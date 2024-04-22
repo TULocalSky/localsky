@@ -19,26 +19,32 @@ const val MARKER_STATE = "marker state"
 
 @Composable
 fun CustomMapMarker(
-    reportAndPic: Pair<UserReport, Bitmap?>,
+    reportAndPic: Pair<UserReport?, Bitmap?>,
     onClick: (Marker) -> Boolean = { false },
 ){
 
-    val position = remember { LatLng(reportAndPic.first.latitude!!, reportAndPic.first.longitude!!) }
-    val markerState = rememberMarkerState(MARKER_STATE,position)
-    val markerImage = remember(reportAndPic.second) {
-        if(reportAndPic.second == null){
-            BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
-        } else{
-            val customizedBitmap = createCircularBitmap(reportAndPic.second!!)
-            BitmapDescriptorFactory.fromBitmap(customizedBitmap)
+    val latitude = reportAndPic.first?.latitude
+    val longitude = reportAndPic.first?.longitude
+
+    if(latitude != null && longitude != null){
+        val position = remember { LatLng(latitude, longitude) }
+        val markerState = rememberMarkerState(MARKER_STATE,position)
+        val markerImage = remember(reportAndPic.second) {
+            if(reportAndPic.second == null){
+                BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
+            } else{
+                val customizedBitmap = createCircularBitmap(reportAndPic.second!!)
+                BitmapDescriptorFactory.fromBitmap(customizedBitmap)
+            }
         }
+
+        Marker(
+            state = markerState,
+            onClick = onClick,
+            icon = markerImage
+        )
     }
 
-    Marker(
-        state = markerState,
-        onClick = onClick,
-        icon = markerImage
-    )
 }
 
 // Function to convert a bitmap to a circular shape and add a border around it

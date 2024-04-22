@@ -25,7 +25,7 @@ class UserReportViewModelLS : ViewModel() {
                 { picture ->
                     userReports.put(report, picture)
                 }, {
-
+                    Log.d("Storage","Failed to get picture")
                 })
         }
     }
