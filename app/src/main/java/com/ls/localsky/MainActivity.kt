@@ -29,18 +29,23 @@ import com.ls.localsky.viewmodels.SensorViewModelLS
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var weatherViewModel: WeatherViewModelLS
     private lateinit var cacheLS: CacheLS
+    private lateinit var database: DatabaseLS
+
+    private lateinit var userViewModel: UserViewModelLS
+    private lateinit var weatherViewModel: WeatherViewModelLS
+    private lateinit var userReportViewModel: UserReportViewModelLS
+    private lateinit var sensorViewModel: SensorViewModelLS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val svm = SensorViewModelLS()
+        sensorViewModel = SensorViewModelLS()
 
         TemperatureSensor.getInstance(this).run {
             startListening()
             setOnSensorValuesChangedListener {
-                svm.setAmbientTemp(it[0])
-                Log.d("TEMPERATURE", "temp = ${svm.getAmbientTempC()}")
+                sensorViewModel.setAmbientTemp(it[0])
+                Log.d("TEMPERATURE", "temp = ${sensorViewModel.getAmbientTempC()}")
             }
         }
 
@@ -55,22 +60,14 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         startService(Intent(this, LocationService::class.java))
 
-        val database = DatabaseLS()
+        database = DatabaseLS()
         cacheLS = CacheLS(this)
         weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
-        val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
-        val userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
+        userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
-        Screen.WeatherScreen.onCLick = {
-            weatherViewModel.getWeatherData(cacheLS)
-        }
-        Screen.MapScreen.onCLick = {
-            database.getAllUserReports {
-                it?.let {
-                    userReportViewModel.setUserReports(it, database)
-                }
-            }
-        }
+
+        setScreenActions()
         setContent {
             LocalSkyTheme {
 
@@ -138,6 +135,19 @@ class MainActivity : ComponentActivity() {
 
                 // Call the function to get weather data
                 weatherViewModel.getWeatherData(cacheLS)
+            }
+        }
+    }
+
+    fun setScreenActions(){
+        Screen.WeatherScreen.onCLick = {
+            weatherViewModel.getWeatherData(cacheLS)
+        }
+        Screen.MapScreen.onCLick = {
+            database.getAllUserReports {
+                it?.let {
+                    userReportViewModel.setUserReports(it, database)
+                }
             }
         }
     }
