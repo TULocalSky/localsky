@@ -37,6 +37,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var weatherViewModel: WeatherViewModelLS
     private lateinit var userReportViewModel: UserReportViewModelLS
     private lateinit var sensorViewModel: SensorViewModelLS
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -132,13 +134,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     fun setScreenActions(){
+        checkPerms()
         Screen.WeatherScreen.onCLick = {
             weatherViewModel.getWeatherData(cacheLS)
         }
         Screen.MapScreen.onCLick = {
-            weatherViewModel._location?.let {
-                database.getAllUserReports (it){
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                database.getAllUserReports (LatLng(location.latitude, location.longitude)){
                     it?.let {
                         Log.d("UserReports", "Getting user reports")
                         userReportViewModel.setUserReports(it, database)

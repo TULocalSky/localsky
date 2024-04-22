@@ -1,6 +1,7 @@
 package com.ls.localsky.ui.components
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ fun UserReportSheet(
     showBottomSheet: MutableState<Boolean>,
 ){
     val userImage = remember { mutableStateOf(reportAndPic.second) }
+    Log.d("ImageTest", userImage.toString())
 
     val sheetState = rememberModalBottomSheetState()
     if (showBottomSheet.value) {
