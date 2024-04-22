@@ -106,6 +106,7 @@ fun MapScreen(
 
         UserReportSheet(
             currentUserReport,
+            null,
             showBottomSheet,
         )
 

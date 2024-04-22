@@ -29,6 +29,7 @@ import com.ls.localsky.parseTime
 @Composable
 fun UserReportSheet(
     reportAndPic: Pair<UserReport, Bitmap?>,
+    temperature: String?,
     showBottomSheet: MutableState<Boolean>,
 ){
     val userImage = remember { mutableStateOf(reportAndPic.second) }
@@ -66,11 +67,31 @@ fun UserReportSheet(
                 Text(text = "Today at ${parseTime(reportAndPic.first.createdTime!!)}")
                 Spacer(modifier = Modifier.padding(20.dp))
                 Divider()
-                Spacer(modifier = Modifier.padding(20.dp))
-                Text(text = "Weather Condition:")
-                Text(text = reportAndPic.first.weatherCondition!!)
+                reportAndPic.first.weatherCondition?.let {
+                    userReportField(
+                        title = "Weather Condition:",
+                        field = it
+                    )
+                }
+                temperature?.let {
+                    userReportField(
+                        title = "Reported Temperature:",
+                        field = it
+                    )
+                }
+
 
             }
         }
     }
+}
+
+@Composable
+fun userReportField(
+     title: String,
+     field: String,
+){
+    Spacer(modifier = Modifier.padding(20.dp))
+    Text(text = title)
+    Text(text = field)
 }
