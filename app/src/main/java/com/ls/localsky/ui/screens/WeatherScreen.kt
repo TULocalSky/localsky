@@ -12,6 +12,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -46,6 +47,7 @@ fun WeatherScreen(
         modifier = modifier
             .pullRefresh(pullRefreshState)
     ) {
+
         if (currentLocation == null) {
             // Show a loading indicator at the center of the screen
             CircularProgressIndicator(
