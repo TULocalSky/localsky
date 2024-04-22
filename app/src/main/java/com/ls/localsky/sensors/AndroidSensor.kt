@@ -2,7 +2,7 @@
  * mid level abstraction for android specific sensor
  * **/
 
-package com.ls.localsky.util.sensors
+package com.ls.localsky.sensors
 
 import android.content.Context
 import android.hardware.Sensor

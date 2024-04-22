@@ -1,8 +1,9 @@
 package com.ls.localsky.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 
-class SensorViewModelLS {
+class SensorViewModelLS : ViewModel(){
     private var ambientTemperature = mutableStateOf(0f)
 
     fun setAmbientTemp(temp : Float){ ambientTemperature.value = temp }

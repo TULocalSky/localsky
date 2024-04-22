@@ -19,11 +19,12 @@ import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.ls.localsky.util.sensors.TemperatureSensor
+import com.ls.localsky.sensors.TemperatureSensor
 import com.ls.localsky.viewmodels.SensorViewModelLS
 
 class MainActivity : ComponentActivity() {
@@ -39,35 +40,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sensorViewModel = SensorViewModelLS()
-
-        TemperatureSensor.getInstance(this).run {
-            startListening()
-            setOnSensorValuesChangedListener {
-                sensorViewModel.setAmbientTemp(it[0])
-                Log.d("TEMPERATURE", "temp = ${sensorViewModel.getAmbientTempC()}")
-            }
-        }
-
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            0
-        )
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        startService(Intent(this, LocationService::class.java))
-
         database = DatabaseLS()
         cacheLS = CacheLS(this)
         weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
         userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
         userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
+        sensorViewModel = ViewModelProvider(this)[SensorViewModelLS::class.java]
+
         weatherViewModel.getWeatherData(cacheLS)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        startTempSensor()
+        checkPerms()
+
+        getCurrentLocationAndUpdateWeatherViewModel()
+
         setScreenActions()
+
         setContent {
             LocalSkyTheme {
 
@@ -79,7 +69,6 @@ class MainActivity : ComponentActivity() {
                         {_, user ->
                                 userViewModel.setCurrentUser(user!!)
                                 Log.d("Login", "Got User $user")
-
                         },
                         {
                             Log.d("Login", "Error Getting User ${database.getCurrentUser()!!.uid}")
@@ -110,21 +99,24 @@ class MainActivity : ComponentActivity() {
 
             }
         }
-        getCurrentLocationAndUpdateWeatherViewModel()
     }
 
-    private fun getCurrentLocationAndUpdateWeatherViewModel() {
-        // Check for permissions before requesting location
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED) {
-            // Request permissions if not granted
-            return
+    private fun startTempSensor(){
+        TemperatureSensor.getInstance(this).run {
+            startListening()
+            setOnSensorValuesChangedListener {
+                sensorViewModel.setAmbientTemp(it[0])
+                Log.d("TEMPERATURE", "temp = ${sensorViewModel.getAmbientTempC()}")
+            }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocationAndUpdateWeatherViewModel() {
+
+        checkPerms()
+
+        startService(Intent(this, LocationService::class.java))
 
         // Get last known location
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -152,9 +144,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun checkPerms(){
+        // Check for permissions before requesting location
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            // Get the permissions
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                0
+            )
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-
         TemperatureSensor.getInstance(this).stopListening()
     }
 }
