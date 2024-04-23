@@ -25,7 +25,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.sensors.TemperatureSensor
-import com.ls.localsky.viewmodels.LocationViewModelLS
 import com.ls.localsky.viewmodels.SensorViewModelLS
 
 class MainActivity : ComponentActivity() {
