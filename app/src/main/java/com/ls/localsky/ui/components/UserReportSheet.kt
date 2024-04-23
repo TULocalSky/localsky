@@ -24,12 +24,14 @@ import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
 import com.ls.localsky.parseTime
+import com.ls.localsky.viewmodels.SensorViewModelLS
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserReportSheet(
     reportAndPic: Pair<UserReport, Bitmap?>,
+    sensorViewModel: SensorViewModelLS,
     showBottomSheet: MutableState<Boolean>,
 ){
     val userImage = remember { mutableStateOf(reportAndPic.second) }
@@ -69,7 +71,11 @@ fun UserReportSheet(
             Divider()
             userReportField(
                 title = "Weather Condition:",
-                field = reportAndPic.first.weatherCondition!!
+                field = reportAndPic.first.weatherCondition
+            )
+            userReportField(
+                title = "Reported Weather:",
+                field = sensorViewModel.getAmbientTempF()
             )
 
         }
@@ -78,9 +84,12 @@ fun UserReportSheet(
 @Composable
 fun userReportField(
     title: String,
-    field: String,
+    field: String?,
 ){
-    Spacer(modifier = Modifier.padding(20.dp))
-    Text(text = title)
-    Text(text = field)
+    field?.let {
+        Spacer(modifier = Modifier.padding(20.dp))
+        Text(text = title)
+        Text(text = it)
+    }
+
 }

@@ -66,11 +66,11 @@ fun showUserReportScreen(
                             picture,
                             user,
                             it,
-                            currentLocation!!.longitude,
+                            currentLocation.longitude,
                             condition.weatherSummary,
-                            "",
+                            sensorViewModel.getAmbientTempF().toString(),
                             { ref, report ->
-                                Log.d("UserReport","Report Uploaded")
+                                Log.d("UserReport","Report Uploaded $report")
                                 database.getAllUserReports (currentLocation){
                                     it?.let {
                                         userReportViewModel.setUserReports(it, database)

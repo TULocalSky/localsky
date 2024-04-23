@@ -7,8 +7,11 @@ class SensorViewModelLS : ViewModel(){
     private var ambientTemperature = mutableStateOf<Float?>(null)
 
     fun setAmbientTemp(temp : Float){ ambientTemperature.value = temp }
-    fun getAmbientTempC() = ambientTemperature.value
+    fun getAmbientTempC() = ambientTemperature.value?.let {
+        "$it°C"
+    }
     fun getAmbientTempF() = ambientTemperature.value?.let {
-        it * (9/5)+32
+        val temp = it * (9/5)+32
+        "$temp°F"
     }
 }

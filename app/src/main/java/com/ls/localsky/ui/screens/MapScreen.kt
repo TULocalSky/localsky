@@ -1,15 +1,10 @@
 package com.ls.localsky.ui.screens
 
+import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,8 +28,8 @@ import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
 import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CustomMapMarker
-import com.ls.localsky.ui.components.UserReportPopup
 import com.ls.localsky.ui.components.UserReportSheet
+import com.ls.localsky.ui.components.showUserReportScreen
 import com.ls.localsky.viewmodels.SensorViewModelLS
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
@@ -63,20 +58,14 @@ fun MapScreen(
     val cameraPositionState = rememberCameraPositionState {
         position = userPosition?.let { CameraPosition.fromLatLngZoom(it, 12f) }!!
     }
-    var showUserReportScreen by remember {
+    var showUserReportScreen = remember {
         mutableStateOf(false)
     }
 
     val isDarkMode = isSystemInDarkTheme()
 
     // Load the appropriate map style depending on the current theme
-    val mapStyleOptions = if (isDarkMode) {
-        // Load dark mode map style
-        MapStyleOptions.loadRawResourceStyle(LocalContext.current, R.raw.dark_style)
-    } else {
-        // Load light mode map style
-        MapStyleOptions.loadRawResourceStyle(LocalContext.current, R.raw.light_style)
-    }
+    val mapStyleOptions = getMapStyleOptions(isDarkMode, LocalContext.current)
 
     Box(modifier = modifier){
         GoogleMap (
@@ -100,62 +89,39 @@ fun MapScreen(
                     }
                 )
             }
-
-
         }
         if (showBottomSheet.value) {
             UserReportSheet(
                 currentUserReport,
+                sensorViewModel,
                 showBottomSheet,
             )
         }
         if(userViewModel.getCurrentUser().userID != null){
-            if(!showUserReportScreen){
-                ExtendedFloatingActionButton(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(20.dp),
-                    onClick = { showUserReportScreen = true  },
-                    icon = { Icon(Icons.Filled.Edit, "Report") },
-                    text = { Text(text = "Report") },
-                )
-
-            } else{
-                UserReportPopup(
-                    sensorViewModel = sensorViewModel,
-                    submitAction = {
-                            picture, condition ->
-                        val user = userViewModel.getCurrentUser()
-                        currentLocation?.latitude?.let {
-                            database.uploadReport(
-                                picture,
-                                user,
-                                it,
-                                currentLocation!!.longitude,
-                                condition.weatherSummary,
-                                null,
-                                { ref, report ->
-                                    Log.d("UserReport","Report Uploaded")
-                                    userViewModel.getCurrentUserLocation()?.let { latlng ->
-                                        database.getAllUserReports (latlng){
-                                            it?.let {
-                                                userReportViewModel.setUserReports(it, database)
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    Log.d("UserReport","It didnt work")
-                                }
-                            )
-                        }
-                        showUserReportScreen = false
-                    },
-                    cancelAction = {
-                        showUserReportScreen = false
-                    }
-                )
-            }
+            showUserReportScreen(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(20.dp),
+                sensorViewModel = sensorViewModel,
+                showUserReportScreen = showUserReportScreen,
+                userViewModel = userViewModel,
+                userReportViewModel = userReportViewModel,
+                database = database,
+                currentLocation =currentLocation
+            )
         }
+    }
+}
+
+fun getMapStyleOptions(
+    isDarkMode: Boolean,
+    context: Context
+): MapStyleOptions{
+    return if (isDarkMode) {
+        // Load dark mode map style
+        MapStyleOptions.loadRawResourceStyle(context, R.raw.dark_style)
+    } else {
+        // Load light mode map style
+        MapStyleOptions.loadRawResourceStyle(context, R.raw.light_style)
     }
 }
