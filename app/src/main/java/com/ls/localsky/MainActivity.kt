@@ -25,6 +25,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.sensors.TemperatureSensor
+import com.ls.localsky.viewmodels.LocationViewModelLS
 import com.ls.localsky.viewmodels.SensorViewModelLS
 
 class MainActivity : ComponentActivity() {
@@ -126,6 +127,7 @@ class MainActivity : ComponentActivity() {
             location?.let {
                 // Update the WeatherViewModelLS with the current location
                 val latLng = LatLng(location.latitude, location.longitude)
+                userViewModel.setCurrentUserLocation(latLng)
                 weatherViewModel.setCoordinate(latLng)
 
                 // Call the function to get weather data
@@ -142,9 +144,11 @@ class MainActivity : ComponentActivity() {
         }
         Screen.MapScreen.onCLick = {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                database.getAllUserReports (LatLng(location.latitude, location.longitude)){
+                val latlong = LatLng(location.latitude, location.longitude)
+                database.getAllUserReports (latlong){
                     it?.let {
                         Log.d("UserReports", "Getting user reports")
+                        userViewModel.setCurrentUserLocation(latlong)
                         userReportViewModel.setUserReports(it, database)
                     }
                 }

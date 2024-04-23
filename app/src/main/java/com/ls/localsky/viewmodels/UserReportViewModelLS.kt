@@ -19,10 +19,10 @@ class UserReportViewModelLS : ViewModel() {
     fun setUserReports(reports: List<UserReport>, database: DatabaseLS){
         userReports.clear()
         reports.forEach{ report ->
-            Log.d(TAG, report.toString())
             database.getUserReportImage(
                 report.locationPicture!!,
                 { picture ->
+                    Log.d("Picture", "Got the picture $picture")
                     userReports.put(report, picture)
                 }, {
                     Log.d("Storage","Failed to get picture")
