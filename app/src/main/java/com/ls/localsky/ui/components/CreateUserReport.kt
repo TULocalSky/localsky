@@ -155,12 +155,15 @@ fun UserReportPopup(
             Text(
                 text = "What's the weather looking like?",
             )
-            WeatherConditionButtonDisplay(selectedWeatherItem = selectedWeatherItem)
+            WeatherConditionButtonDisplay(
+                selectedWeatherItem = selectedWeatherItem,
+            )
             Spacer(modifier = Modifier.padding(10.dp))
             Spacer(modifier = Modifier.padding(10.dp))
-            sensorViewModel.getAmbientTempF()?.let{
-                Text(text = it.toString())
-            }
+            userReportField(
+                title = "Temperature",
+                field = sensorViewModel.getAmbientTempF()
+            )
             Row{
                 FilledTonalButton(onClick = {
                     if(userImage.value != null && selectedWeatherItem.value != null){

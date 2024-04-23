@@ -1,6 +1,7 @@
 package com.ls.localsky.ui.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
@@ -19,10 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
+import com.ls.localsky.viewmodels.SensorViewModelLS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherConditionButtonDisplay(selectedWeatherItem: MutableState<WeatherItem?>){
+fun WeatherConditionButtonDisplay(
+    selectedWeatherItem: MutableState<WeatherItem?>,
+){
     val weatherItems = remember {
         WeatherType.allWeatherTypes.map {
             WeatherItem(it)
