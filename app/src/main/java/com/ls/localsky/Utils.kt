@@ -13,7 +13,7 @@ fun parseTime(time: String): String{
         time,
         DateTimeFormatter
             .ofPattern("dd/MM/yyyy HH:mm"))
-        .format(DateTimeFormatter.ofPattern("HH:mm"))
+        .format(DateTimeFormatter.ofPattern("HH:mm a"))
 }
 
 fun isReportValid(report: UserReport, userLat: Double, userLong: Double) : Boolean{

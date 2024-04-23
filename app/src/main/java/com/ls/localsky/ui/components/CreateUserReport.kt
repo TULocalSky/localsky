@@ -159,11 +159,11 @@ fun UserReportPopup(
                 selectedWeatherItem = selectedWeatherItem,
             )
             Spacer(modifier = Modifier.padding(10.dp))
-            Spacer(modifier = Modifier.padding(10.dp))
             userReportField(
                 title = "Temperature",
                 field = sensorViewModel.getAmbientTempF()
             )
+            Spacer(modifier = Modifier.padding(10.dp))
             Row{
                 FilledTonalButton(onClick = {
                     if(userImage.value != null && selectedWeatherItem.value != null){

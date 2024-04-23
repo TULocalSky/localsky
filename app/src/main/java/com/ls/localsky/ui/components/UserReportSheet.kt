@@ -31,7 +31,6 @@ import com.ls.localsky.viewmodels.SensorViewModelLS
 @Composable
 fun UserReportSheet(
     reportAndPic: Pair<UserReport, Bitmap?>,
-    sensorViewModel: SensorViewModelLS,
     showBottomSheet: MutableState<Boolean>,
 ){
     val userImage = remember { mutableStateOf(reportAndPic.second) }
@@ -75,7 +74,7 @@ fun UserReportSheet(
             )
             userReportField(
                 title = "Reported Weather:",
-                field = sensorViewModel.getAmbientTempF()
+                field = reportAndPic.first.reportedTemperature
             )
 
         }

@@ -93,7 +93,6 @@ fun MapScreen(
         if (showBottomSheet.value) {
             UserReportSheet(
                 currentUserReport,
-                sensorViewModel,
                 showBottomSheet,
             )
         }
