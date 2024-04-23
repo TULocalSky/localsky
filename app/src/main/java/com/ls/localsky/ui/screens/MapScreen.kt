@@ -22,12 +22,15 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
 import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CustomMapMarker
+import com.ls.localsky.ui.components.MARKER_STATE
 import com.ls.localsky.ui.components.UserReportSheet
 import com.ls.localsky.ui.components.showUserReportScreen
 import com.ls.localsky.viewmodels.SensorViewModelLS
@@ -58,6 +61,9 @@ fun MapScreen(
     val cameraPositionState = rememberCameraPositionState {
         position = userPosition?.let { CameraPosition.fromLatLngZoom(it, 12f) }!!
     }
+
+    val currentLocationMarkerState = userPosition?.let { rememberMarkerState(MARKER_STATE, it) }
+
     var showUserReportScreen = remember {
         mutableStateOf(false)
     }
@@ -78,6 +84,11 @@ fun MapScreen(
                 mapStyleOptions = mapStyleOptions
             )
         ) {
+            if (currentLocationMarkerState != null) {
+                Marker(
+                    state = currentLocationMarkerState
+                )
+            }
             val reports = remember { userReportViewModel.getUserReports() }
             reports.forEach { report ->
                 CustomMapMarker(
