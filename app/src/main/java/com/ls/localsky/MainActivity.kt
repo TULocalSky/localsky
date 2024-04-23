@@ -19,52 +19,50 @@ import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 import android.Manifest
-import com.ls.localsky.util.sensors.TemperatureSensor
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import com.ls.localsky.sensors.TemperatureSensor
 import com.ls.localsky.viewmodels.SensorViewModelLS
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var cacheLS: CacheLS
+    private lateinit var database: DatabaseLS
+
+    private lateinit var userViewModel: UserViewModelLS
+    private lateinit var weatherViewModel: WeatherViewModelLS
+    private lateinit var userReportViewModel: UserReportViewModelLS
+    private lateinit var sensorViewModel: SensorViewModelLS
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val svm = SensorViewModelLS()
+        database = DatabaseLS()
+        cacheLS = CacheLS(this)
+        weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
+        userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
+        sensorViewModel = ViewModelProvider(this)[SensorViewModelLS::class.java]
 
-        TemperatureSensor.getInstance(this).run {
-            startListening()
-            setOnSensorValuesChangedListener {
-                svm.setAmbientTemp(it[0])
-                Log.d("TEMPERATURE", "temp = ${svm.getAmbientTempC()}")
-            }
-        }
-
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            0
-        )
-
-        startService(Intent(this, LocationService::class.java))
-        
-        val database = DatabaseLS()
-        val cacheLS = CacheLS(this)
-        val weatherViewModel = ViewModelProvider(this)[WeatherViewModelLS::class.java]
-        val userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
-        val userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
         weatherViewModel.getWeatherData(cacheLS)
-        Screen.WeatherScreen.onCLick = {
-            weatherViewModel.getWeatherData(cacheLS)
-        }
-        Screen.MapScreen.onCLick = {
-            database.getAllUserReports {
-                it?.let {
-                    userReportViewModel.setUserReports(it, database)
-                }
-            }
-        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        startTempSensor()
+        checkPerms()
+
+        getCurrentLocationAndUpdateWeatherViewModel()
+
+        setScreenActions()
+
         setContent {
             LocalSkyTheme {
+
                 if(database.getCurrentUser() != null){
                     LocalSkyAppRouter.changeApp(App.Main)
                     LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
@@ -73,7 +71,6 @@ class MainActivity : ComponentActivity() {
                         {_, user ->
                                 userViewModel.setCurrentUser(user!!)
                                 Log.d("Login", "Got User $user")
-
                         },
                         {
                             Log.d("Login", "Error Getting User ${database.getCurrentUser()!!.uid}")
@@ -85,11 +82,12 @@ class MainActivity : ComponentActivity() {
                     when(currentApp.value){
                         App.Main -> {
                             LocalSkyApp(
-                                database,
-                                weatherViewModel,
-                                cacheLS,
-                                userViewModel,
-                                userReportViewModel
+                                database = database,
+                                weatherViewModel = weatherViewModel,
+                                cache = cacheLS,
+                                userViewModel = userViewModel,
+                                userReportViewModel = userReportViewModel,
+                                sensorViewModel = sensorViewModel
                             )
                         }
                         App.Login -> {
@@ -106,9 +104,80 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun startTempSensor(){
+        TemperatureSensor.getInstance(this).run {
+            startListening()
+            setOnSensorValuesChangedListener {
+                sensorViewModel.setAmbientTemp(it[0])
+                Log.d("TEMPERATURE", "temp = ${sensorViewModel.getAmbientTempC()}")
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocationAndUpdateWeatherViewModel() {
+
+        checkPerms()
+
+        startService(Intent(this, LocationService::class.java))
+
+        // Get last known location
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                // Update the WeatherViewModelLS with the current location
+                val latLng = LatLng(location.latitude, location.longitude)
+                userViewModel.setCurrentUserLocation(latLng)
+                weatherViewModel.setCoordinate(latLng)
+
+                // Call the function to get weather data
+                weatherViewModel.getWeatherData(cacheLS)
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun setScreenActions(){
+        checkPerms()
+        Screen.WeatherScreen.onCLick = {
+            weatherViewModel.getWeatherData(cacheLS)
+        }
+        Screen.MapScreen.onCLick = {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                val latlong = LatLng(location.latitude, location.longitude)
+                database.getAllUserReports (latlong){
+                    it?.let {
+                        Log.d("UserReports", "Getting user reports")
+                        userViewModel.setCurrentUserLocation(latlong)
+                        userReportViewModel.setUserReports(it, database)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkPerms(){
+        // Check for permissions before requesting location
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            // Get the permissions
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                0
+            )
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-
         TemperatureSensor.getInstance(this).stopListening()
     }
 }

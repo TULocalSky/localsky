@@ -13,7 +13,7 @@ fun parseTime(time: String): String{
         time,
         DateTimeFormatter
             .ofPattern("dd/MM/yyyy HH:mm"))
-        .format(DateTimeFormatter.ofPattern("HH:mm"))
+        .format(DateTimeFormatter.ofPattern("HH:mm a"))
 }
 
 fun isReportValid(report: UserReport, userLat: Double, userLong: Double) : Boolean{
@@ -29,7 +29,6 @@ fun isReportValidLocation(userLat: Double, userLong: Double, givenLat: Double, g
 }
 
 fun isReportValidTime(time: String): Boolean{
-
     val givenTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
     val currentTime = LocalDateTime.now()
 

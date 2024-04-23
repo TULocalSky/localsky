@@ -11,7 +11,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Mail
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,34 +28,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EmailInput(labelValue:String) {
-
-    val emailValue = remember {
-        mutableStateOf("")
-    }
-
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = labelValue) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.LightGray,
-            focusedLabelColor = Color.LightGray,
-            cursorColor = Color.White
-        ),
-        keyboardOptions = KeyboardOptions.Default,
-        value = emailValue.value,
-        onValueChange = {
-            emailValue.value = it
-        },
-        leadingIcon = {
-            Icon(imageVector = Icons.Filled.Mail, contentDescription = "", tint = Color.LightGray)
-        }
-    )
-
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,7 +85,7 @@ fun NormalTextInput(
     labelValue: String,
     textInputValue: MutableState<String>,
     imageVector: ImageVector,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType,
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -131,7 +102,7 @@ fun NormalTextInput(
         },
         leadingIcon = {
             Icon(imageVector = imageVector, contentDescription = "", tint = Color.LightGray)
-        }
+        },
     )
 }
 

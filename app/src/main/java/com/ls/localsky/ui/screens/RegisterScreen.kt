@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.ui.app.App
@@ -95,11 +96,20 @@ fun RegisterScreen(
                         },
                         {
                             Log.d("Register Error",it.toString())
-                            Toast.makeText(
-                                context,
-                                "There was an error creating your account try again soon.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            if(it is FirebaseAuthUserCollisionException){
+                                Toast.makeText(
+                                    context,
+                                    "Email address already in use",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else{
+                                Toast.makeText(
+                                    context,
+                                    "There was an error creating your account try again soon.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
                         }
                     )
                 }

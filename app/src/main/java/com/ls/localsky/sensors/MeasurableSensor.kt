@@ -3,7 +3,7 @@
  * not android specific
  *  **/
 
-package com.ls.localsky.util.sensors
+package com.ls.localsky.sensors
 
 abstract class MeasurableSensor(
     protected val sensorType: Int

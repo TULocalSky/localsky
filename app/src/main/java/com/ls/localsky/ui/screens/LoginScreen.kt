@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.ui.app.App
@@ -58,7 +61,12 @@ fun LoginScreen(
             Spacer(modifier=Modifier.height(50.dp))
             // Text input fields
             // Email
-            NormalTextInput(labelValue = stringResource(id = R.string.email), emailValue, Icons.Filled.Mail, KeyboardType.Email)
+            NormalTextInput(
+                labelValue = stringResource(id = R.string.email),
+                emailValue,
+                Icons.Filled.Mail,
+                KeyboardType.Email
+            )
             PasswordInput(labelValue = stringResource(id = R.string.password), passwordValue)
             Spacer(modifier=Modifier.height(50.dp))
             //Buttons
@@ -81,7 +89,6 @@ fun LoginScreen(
                                 it.uid,
                                 { _, user ->
                                     userViewModelLS.setCurrentUser(user!!)
-                                    Log.d("Login", "Got User $user")
 
                                 },
                                 {
@@ -93,11 +100,21 @@ fun LoginScreen(
                             LocalSkyAppRouter.navigateTo(Screen.WeatherScreen)
                         },
                         {
-                            Toast.makeText(
-                                context,
-                                "There was an error signing in try again soon.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Log.d("Login", it.toString())
+                            if(it is FirebaseAuthInvalidCredentialsException){
+                                Toast.makeText(
+                                    context,
+                                    "Email or password is incorrect",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else{
+                                Toast.makeText(
+                                    context,
+                                    "There was an error signing in try again soon.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
                         }
                     )
                 }

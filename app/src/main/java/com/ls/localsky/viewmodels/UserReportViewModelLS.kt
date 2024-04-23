@@ -1,6 +1,7 @@
 package com.ls.localsky.viewmodels
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -21,10 +22,10 @@ class UserReportViewModelLS : ViewModel() {
             database.getUserReportImage(
                 report.locationPicture!!,
                 { picture ->
+                    Log.d("Picture", "Got the picture $picture")
                     userReports.put(report, picture)
-
                 }, {
-
+                    Log.d("Storage","Failed to get picture")
                 })
         }
     }

@@ -1,4 +1,4 @@
-package com.ls.localsky.util.sensors
+package com.ls.localsky.sensors
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -17,7 +17,7 @@ class TemperatureSensor private constructor(
         //create a weak reference to avoid memory leaks
         private var instanceReference: WeakReference<TemperatureSensor>? = null
 
-        fun getInstance(context: Context): TemperatureSensor{
+        fun getInstance(context: Context): TemperatureSensor {
             val instance = instanceReference?.get()
             return instance?: synchronized(this){
                 val newInstance = instanceReference?.get()

@@ -12,6 +12,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -46,38 +47,48 @@ fun WeatherScreen(
         modifier = modifier
             .pullRefresh(pullRefreshState)
     ) {
-        viewModelLS.setCoordinate(currentLocation)
-        LazyColumn {
-            item{
-                CurrentWeatherCard(
-                    viewModel = viewModelLS
-                )
-            }
-            item{
-                if(viewModelLS.weatherDataState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(align = Alignment.CenterHorizontally),
+
+        if (currentLocation == null) {
+            // Show a loading indicator at the center of the screen
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentWidth(align = Alignment.CenterHorizontally)
+            )
+        } else {
+            viewModelLS.setCoordinate(currentLocation!!)
+            LazyColumn {
+                item{
+                    CurrentWeatherCard(
+                        viewModel = viewModelLS
                     )
                 }
+                item{
+                    if(viewModelLS.weatherDataState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentWidth(align = Alignment.CenterHorizontally),
+                        )
+                    }
+                }
+                item{
+                    HourlyWeatherForecast(
+                        viewModel = viewModelLS
+                    )
+                }
+                item{
+                    DailyWeatherForecast(
+                        viewModel = viewModelLS
+                    )
+                }
+                item{
+                    Spacer(
+                        Modifier.height(200.dp)
+                    )
+                }
+
             }
-            item{
-                HourlyWeatherForecast(
-                    viewModel = viewModelLS
-                )
-            }
-            item{
-                DailyWeatherForecast(
-                    viewModel = viewModelLS
-                )
-            }
-            item{
-                Spacer(
-                    Modifier.height(200.dp)
-                )
-            }
-            
         }
     }
 

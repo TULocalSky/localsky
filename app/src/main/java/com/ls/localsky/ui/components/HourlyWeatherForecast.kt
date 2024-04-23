@@ -62,7 +62,7 @@ fun HourlyWeatherForecast(
                         HourlyWeatherDisplay(
                             weatherData = hourly.data[weatherDataIndex],
                             modifier = Modifier
-                                .height(100.dp)
+                                .height(120.dp)
                                 .padding(horizontal = 16.dp)
                                 .background(Color.Transparent)
                         )

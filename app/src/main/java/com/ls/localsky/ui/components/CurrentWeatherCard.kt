@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,7 +64,7 @@ fun CurrentWeatherCard(
                 Spacer(modifier = Modifier.height(16.dp))
                 /*Weather icon*/
 
-                Image(
+                Icon(
                     painter = painterResource(id = WeatherType.fromWeatherReport(data.hourly.summary).iconRes),
                     contentDescription = null,
                     modifier = Modifier.width(200.dp)

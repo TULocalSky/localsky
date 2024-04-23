@@ -1,7 +1,6 @@
 package com.ls.localsky.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -26,10 +25,11 @@ fun SettingsScreen(
             .background(Color.White)
     ){
             Column (
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                modifier = Modifier.fillMaxSize()
             ){
                 Button(
+                    modifier = Modifier
+                        .align(Alignment.End),
                     onClick = {
                         database.signOut()
                         LocalSkyAppRouter.navigateTo(Screen.LoginScreen)
