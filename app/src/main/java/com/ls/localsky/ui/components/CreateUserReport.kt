@@ -121,8 +121,6 @@ fun UserReportPopup(
         userImage.value = it
     }
 
-
-
     val paddingForLazyColumn = 15.dp
     Card (
         modifier = Modifier
@@ -165,7 +163,7 @@ fun UserReportPopup(
             }
             Row{
                 FilledTonalButton(onClick = {
-                    if(userImage.value != null){
+                    if(userImage.value != null && selectedWeatherItem.value != null){
                         submitAction(userImage.value!!, selectedWeatherItem.value!!.weatherType)
                     }
                 }) {
