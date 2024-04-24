@@ -68,7 +68,7 @@ fun showUserReportScreen(
                             it,
                             currentLocation.longitude,
                             condition.weatherSummary,
-                            sensorViewModel.getAmbientTempF().toString(),
+                            sensorViewModel.getAmbientTempF(),
                             { ref, report ->
                                 Log.d("UserReport","Report Uploaded $report")
                                 database.getAllUserReports (currentLocation){
