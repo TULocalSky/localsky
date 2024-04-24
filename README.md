@@ -54,7 +54,9 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Abstract
-A weather app with the ability to upload your own weather data about your surroundings.
+A weather app with the ability to upload your own weather data about your surroundings. Users are able to
+upload live weather reports to a map, where other users may interact and view their reports. Reports are only
+active for 2 hours, which helps to keep all information up to date for other users. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -87,7 +89,7 @@ To get a local copy up and running follow these simple example steps.
    ```
 4. Enter your API keys in `local.properties`
    ```Java
-   MAPS_API_KEY=YOURAPIKEYHERE
+   GOOGLE_MAPS_API_KEY=YOURAPIKEYHERE
    PIRATE_WEATHER_API_KEY=YOURAPIKEYHERE
    ```
 
