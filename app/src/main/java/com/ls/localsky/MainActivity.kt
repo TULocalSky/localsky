@@ -139,7 +139,7 @@ class MainActivity : ComponentActivity() {
     fun setScreenActions(){
         checkPerms()
         Screen.WeatherScreen.onCLick = {
-            weatherViewModel.getWeatherData(cacheLS)
+//            weatherViewModel.getWeatherData(cacheLS)
         }
         Screen.MapScreen.onCLick = {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->

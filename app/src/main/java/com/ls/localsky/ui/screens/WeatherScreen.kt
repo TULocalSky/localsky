@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.CacheLS
 import com.ls.localsky.services.LocationRepository
@@ -38,58 +40,65 @@ fun WeatherScreen(
 ){
     val isRefreshing by viewModelLS.isRefreshing.collectAsStateWithLifecycle()
 
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
-        onRefresh = {
-            viewModelLS.getWeatherData(cache)
-        })
+    val pullRefreshState = rememberSwipeRefreshState(
+        isRefreshing = isRefreshing,
+//        onRefresh = {
+//            viewModelLS.getWeatherData(cache)
+//        }
+        )
     Surface(
         modifier = modifier
-            .pullRefresh(pullRefreshState)
+//            .pullRefresh(pullRefreshState)
     ) {
 
-        if (currentLocation == null) {
-            // Show a loading indicator at the center of the screen
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentWidth(align = Alignment.CenterHorizontally)
-            )
-        } else {
-            viewModelLS.setCoordinate(currentLocation)
-            LazyColumn {
-                item{
-                    CurrentWeatherCard(
-                        viewModel = viewModelLS
-                    )
-                }
-                item{
-                    if(viewModelLS.weatherDataState.isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentWidth(align = Alignment.CenterHorizontally),
+        SwipeRefresh(
+            state = pullRefreshState,
+            onRefresh = { viewModelLS.getWeatherData(cache) }
+        ) {
+            if (currentLocation == null) {
+                // Show a loading indicator at the center of the screen
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentWidth(align = Alignment.CenterHorizontally)
+                )
+            } else {
+                viewModelLS.setCoordinate(currentLocation)
+                LazyColumn {
+                    item{
+                        CurrentWeatherCard(
+                            viewModel = viewModelLS
                         )
                     }
-                }
-                item{
-                    HourlyWeatherForecast(
-                        viewModel = viewModelLS
-                    )
-                }
-                item{
-                    DailyWeatherForecast(
-                        viewModel = viewModelLS
-                    )
-                }
-                item{
-                    Spacer(
-                        Modifier.height(200.dp)
-                    )
-                }
+                    item{
+                        if(viewModelLS.weatherDataState.isLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentWidth(align = Alignment.CenterHorizontally),
+                            )
+                        }
+                    }
+                    item{
+                        HourlyWeatherForecast(
+                            viewModel = viewModelLS
+                        )
+                    }
+                    item{
+                        DailyWeatherForecast(
+                            viewModel = viewModelLS
+                        )
+                    }
+                    item{
+                        Spacer(
+                            Modifier.height(200.dp)
+                        )
+                    }
 
+                }
             }
         }
+
     }
 
 }

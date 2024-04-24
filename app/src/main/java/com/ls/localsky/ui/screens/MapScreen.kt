@@ -47,17 +47,14 @@ fun MapScreen(
     userViewModel: UserViewModelLS,
     userReportViewModel: UserReportViewModelLS,
     sensorViewModel: SensorViewModelLS,
+    currentLocation: LatLng?
 ){
-    val currentLocation by LocationRepository.currentLocation.collectAsState()
-
     val showBottomSheet = remember { mutableStateOf(false) }
     var currentUserReport by remember { mutableStateOf(Pair<UserReport, Bitmap?>(UserReport(), null))}
 
     val userPosition = remember {
         currentLocation?.latitude?.let {
-            currentLocation?.longitude?.let { it1 ->
-                LatLng(it, it1)
-            }
+            LatLng(it, currentLocation.longitude)
         }
     }
 

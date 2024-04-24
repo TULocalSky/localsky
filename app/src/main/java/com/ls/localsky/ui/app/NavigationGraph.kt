@@ -37,6 +37,7 @@ fun NavigationGraph(
                 userViewModel = userViewModel,
                 userReportViewModel = userReportViewModel,
                 sensorViewModel = sensorViewModel,
+                userViewModel.getCurrentUserLocation()
             )
         }
         composable(Screen.SettingsScreen.screen_route) {
