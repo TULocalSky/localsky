@@ -6,6 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -51,15 +53,25 @@ fun MapScreen(
     val showBottomSheet = remember { mutableStateOf(false) }
     var currentUserReport by remember { mutableStateOf(Pair<UserReport, Bitmap?>(UserReport(), null))}
 
-    val userPosition = remember{
+    val userPosition = remember {
         currentLocation?.latitude?.let {
             currentLocation?.longitude?.let { it1 ->
                 LatLng(it, it1)
             }
         }
     }
-    val cameraPositionState = rememberCameraPositionState {
-        position = userPosition?.let { CameraPosition.fromLatLngZoom(it, 12f) }!!
+
+    val cameraPositionState = rememberCameraPositionState()
+
+    LaunchedEffect(userPosition) {
+        // Check if userPosition is not null
+        userPosition?.let { position ->
+            // Animate the camera to the user's position
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newLatLngZoom(position, 12f),
+                durationMs = 1000
+            )
+        }
     }
 
     val currentLocationMarkerState = userPosition?.let { rememberMarkerState(MARKER_STATE, it) }
