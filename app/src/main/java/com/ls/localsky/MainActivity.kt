@@ -155,6 +155,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
+
     private fun checkPerms(){
         // Check for permissions before requesting location
         if (ActivityCompat.checkSelfPermission(

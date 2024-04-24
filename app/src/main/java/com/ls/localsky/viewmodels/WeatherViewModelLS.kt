@@ -24,7 +24,8 @@ class WeatherViewModelLS: ViewModel(){
 
     var weatherDataState by mutableStateOf(WeatherState())
 
-    var _location: LatLng? = LocationRepository.currentLocation.value
+    var _location: LatLng? = null
+//        LocationRepository.currentLocation.value
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>

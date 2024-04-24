@@ -8,12 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +20,6 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.CacheLS
-import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CurrentWeatherCard
 import com.ls.localsky.ui.components.DailyWeatherForecast
 import com.ls.localsky.ui.components.HourlyWeatherForecast
@@ -41,19 +36,16 @@ fun WeatherScreen(
     val isRefreshing by viewModelLS.isRefreshing.collectAsStateWithLifecycle()
 
     val pullRefreshState = rememberSwipeRefreshState(
-        isRefreshing = isRefreshing,
-//        onRefresh = {
-//            viewModelLS.getWeatherData(cache)
-//        }
+            isRefreshing = isRefreshing,
         )
     Surface(
         modifier = modifier
-//            .pullRefresh(pullRefreshState)
     ) {
 
         SwipeRefresh(
             state = pullRefreshState,
-            onRefresh = { viewModelLS.getWeatherData(cache) }
+            onRefresh = { viewModelLS.getWeatherData(cache) },
+            modifier = Modifier.fillMaxSize()
         ) {
             if (currentLocation == null) {
                 // Show a loading indicator at the center of the screen
