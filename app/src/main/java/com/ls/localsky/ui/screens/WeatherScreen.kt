@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.CacheLS
 import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CurrentWeatherCard
@@ -32,11 +33,10 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 fun WeatherScreen(
     viewModelLS: WeatherViewModelLS,
     cache: CacheLS,
-    modifier: Modifier
+    modifier: Modifier,
+    currentLocation: LatLng?
 ){
     val isRefreshing by viewModelLS.isRefreshing.collectAsStateWithLifecycle()
-
-    val currentLocation by LocationRepository.currentLocation.collectAsState()
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
@@ -56,7 +56,7 @@ fun WeatherScreen(
                     .wrapContentWidth(align = Alignment.CenterHorizontally)
             )
         } else {
-            viewModelLS.setCoordinate(currentLocation!!)
+            viewModelLS.setCoordinate(currentLocation)
             LazyColumn {
                 item{
                     CurrentWeatherCard(
