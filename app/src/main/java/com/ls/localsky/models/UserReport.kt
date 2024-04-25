@@ -12,6 +12,7 @@ data class UserReport(
     val locationPicture: String? = null,
     val weatherCondition: String? = null,
     val reportedTemperature: String? = null,
+    val reportedRelativeHumidity: String? = null,
 ) {
 
     @Override
@@ -26,5 +27,6 @@ data class UserReport(
         val LOCATION_PICTURE = "locationPicture"
         val WEATHER_CONDITION = "weatherCondition"
         val REPORTED_TEMPERATURE = "reportedTemperature"
+        val REPORTED_RELATIVE_HUMIDITY = "reportedRelativeHumidity"
     }
 }

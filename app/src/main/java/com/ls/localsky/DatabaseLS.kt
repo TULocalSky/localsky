@@ -239,6 +239,7 @@ class DatabaseLS() {
         locationPicture: String,
         weatherCondition: String,
         reportedTemperature: String?,
+        reportedRelativeHumidity: String?,
         onSuccess: (DocumentReference, UserReport) -> Unit,
         onFailure: (Exception) -> Unit
     ){
@@ -250,6 +251,7 @@ class DatabaseLS() {
             UserReport.WEATHER_CONDITION to weatherCondition,
             UserReport.LOCATION_PICTURE to locationPicture,
             UserReport.REPORTED_TEMPERATURE to reportedTemperature,
+            UserReport.REPORTED_RELATIVE_HUMIDITY to reportedRelativeHumidity,
         )
         database.collection(UserReport.USER_REPORT_TABLE)
             .add(report)
@@ -302,6 +304,7 @@ class DatabaseLS() {
         longitude: Double,
         weatherCondition: String,
         reportedTemperature: String?,
+        reportedRelativeHumidity: String?,
         onSuccess: (DocumentReference, UserReport) -> Unit,
         onFailure: (Exception) -> Unit
 
@@ -319,6 +322,7 @@ class DatabaseLS() {
                     fileURL,
                     weatherCondition,
                     reportedTemperature,
+                    reportedRelativeHumidity,
                     onSuccess,
                     onFailure
                 )
