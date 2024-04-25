@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 
 class SensorViewModelLS : ViewModel(){
     private var ambientTemperature = mutableStateOf<Float?>(null)
+    private var relativeHumidity = mutableStateOf<Float?>(null)
 
     fun setAmbientTemp(temp : Float){ ambientTemperature.value = temp }
     fun getAmbientTempC() = ambientTemperature.value?.let {
@@ -14,4 +15,7 @@ class SensorViewModelLS : ViewModel(){
         val temp = it * (9/5)+32
         "$temp°F"
     }
+
+    fun setRelativeHumidity(temp : Float){ relativeHumidity.value = temp }
+    fun getRelativeHumidity() = relativeHumidity.value?.let { "$it%" }
 }

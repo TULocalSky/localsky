@@ -33,7 +33,6 @@ import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
-import com.ls.localsky.sensors.TemperatureSensor
 import com.ls.localsky.viewmodels.SensorViewModelLS
 import com.ls.localsky.viewmodels.UserReportViewModelLS
 import com.ls.localsky.viewmodels.UserViewModelLS
@@ -69,6 +68,7 @@ fun showUserReportScreen(
                             currentLocation.longitude,
                             condition.weatherSummary,
                             sensorViewModel.getAmbientTempF().toString(),
+                            sensorViewModel.getRelativeHumidity(),
                             { ref, report ->
                                 Log.d("UserReport","Report Uploaded $report")
                                 database.getAllUserReports (currentLocation){
@@ -159,9 +159,13 @@ fun UserReportPopup(
                 selectedWeatherItem = selectedWeatherItem,
             )
             Spacer(modifier = Modifier.padding(10.dp))
-            userReportField(
+            UserReportField(
                 title = "Temperature",
                 field = sensorViewModel.getAmbientTempF()
+            )
+            UserReportField(
+                title = "Relative Humidity",
+                field = sensorViewModel.getRelativeHumidity()
             )
             Spacer(modifier = Modifier.padding(10.dp))
             Row{
