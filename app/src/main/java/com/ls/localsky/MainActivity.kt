@@ -24,6 +24,7 @@ import android.content.pm.PackageManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.ls.localsky.sensors.RelativeHumiditySensor
 import com.ls.localsky.sensors.TemperatureSensor
 import com.ls.localsky.viewmodels.SensorViewModelLS
 
@@ -54,6 +55,7 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         startTempSensor()
+        startRelativeHumiditySensor()
         checkPerms()
 
         getCurrentLocationAndUpdateWeatherViewModel()
@@ -110,6 +112,16 @@ class MainActivity : ComponentActivity() {
             setOnSensorValuesChangedListener {
                 sensorViewModel.setAmbientTemp(it[0])
                 Log.d("TEMPERATURE", "temp = ${sensorViewModel.getAmbientTempC()}")
+            }
+        }
+    }
+
+    private fun startRelativeHumiditySensor(){
+        RelativeHumiditySensor.getInstance(this).run {
+            startListening()
+            setOnSensorValuesChangedListener {
+                sensorViewModel.setRelativeHumidity(it[0])
+                Log.d("HUMIDITY", "humidity = ${sensorViewModel.getRelativeHumidity()}")
             }
         }
     }
