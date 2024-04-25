@@ -3,8 +3,12 @@ package com.ls.localsky
 import com.ls.localsky.models.UserReport
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.GregorianCalendar
 
 class UtilsTest {
 
@@ -40,7 +44,26 @@ class UtilsTest {
         assert(!isWrong)
     }
 
+    @Test
     fun isTimeValidTest(){
+        val currentUserReport = UserReport(
+            createdTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+            latitude = 39.98157993,
+            longitude = -75.15689202
+        )
+        val cal = GregorianCalendar()
+        cal.add(Calendar.HOUR_OF_DAY, -3)
 
+        val oldUserReport = UserReport(
+            createdTime = SimpleDateFormat("dd/MM/yyyy HH:mm").format(cal.time),
+            latitude = 39.98157993,
+            longitude = -75.15689202
+        )
+
+        val isGood = isReportValidTime(currentUserReport.createdTime!!)
+        val isBad = isReportValidTime(oldUserReport.createdTime!!)
+
+        assert(isGood)
+        assert(!isBad)
     }
 }
