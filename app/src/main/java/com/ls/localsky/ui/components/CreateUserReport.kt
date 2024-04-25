@@ -163,6 +163,10 @@ fun UserReportPopup(
                 title = "Temperature",
                 field = sensorViewModel.getAmbientTempF()
             )
+            UserReportField(
+                title = "Relative Humidity",
+                field = sensorViewModel.getRelativeHumidity()
+            )
             Spacer(modifier = Modifier.padding(10.dp))
             Row{
                 FilledTonalButton(onClick = {
