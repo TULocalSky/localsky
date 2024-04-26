@@ -138,5 +138,12 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    // Optional -- Mockito framework
+    testImplementation("org.mockito:mockito-core")
+    // Optional -- mockito-kotlin
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    // Optional -- Mockk framework
+    testImplementation("io.mockk:mockk")
+
 }
 

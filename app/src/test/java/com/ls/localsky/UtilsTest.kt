@@ -3,7 +3,6 @@ package com.ls.localsky
 import com.ls.localsky.models.UserReport
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
