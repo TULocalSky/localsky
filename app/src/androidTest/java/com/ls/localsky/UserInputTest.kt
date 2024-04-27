@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -36,9 +37,12 @@ class UserInputTest {
             }
         }
 
-        composeTestRule.onNodeWithContentDescription(activity.getString(R.string.email)).performTextInput("tulocalsky@gmail.com")
-        composeTestRule.onNodeWithContentDescription(activity.getString(R.string.password)).performTextInput("Test12345")
+        composeTestRule.onNodeWithTag("Email").performTextInput("tulocalsky@gmail.com")
+        composeTestRule.onNodeWithTag("Password").performTextInput("Test12345")
         composeTestRule.onNodeWithText(activity.getString(R.string.login)).performClick()
+        //Might need to be longer depending on internet connection
+        Thread.sleep(5000)
+        assert(userViewModel.getCurrentUser().userID != null)
 
     }
 
