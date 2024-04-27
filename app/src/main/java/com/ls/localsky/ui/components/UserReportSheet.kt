@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
 import com.ls.localsky.parseTime
-import com.ls.localsky.viewmodels.SensorViewModelLS
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,20 +67,23 @@ fun UserReportSheet(
             Text(text = "Today at ${parseTime(reportAndPic.first.createdTime!!)}")
             Spacer(modifier = Modifier.padding(20.dp))
             Divider()
-            userReportField(
+            UserReportField(
                 title = "Weather Condition:",
                 field = reportAndPic.first.weatherCondition
             )
-            userReportField(
+            UserReportField(
                 title = "Reported Weather:",
                 field = reportAndPic.first.reportedTemperature
             )
-
+            UserReportField(
+                title = "Reported Relative Humidity",
+                field = reportAndPic.first.reportedRelativeHumidity
+            )
         }
     }
 }
 @Composable
-fun userReportField(
+fun UserReportField(
     title: String,
     field: String?,
 ){
