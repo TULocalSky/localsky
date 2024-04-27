@@ -166,7 +166,7 @@ class MainActivity : ComponentActivity() {
                 weatherViewModel.setCoordinate(latLng)
 
                 // Call the function to get weather data
-                weatherViewModel.getWeatherData(cacheLS)
+//                weatherViewModel.getWeatherData(cacheLS)
             }
         }
 
