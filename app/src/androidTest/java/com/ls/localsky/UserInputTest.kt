@@ -3,21 +3,18 @@ package com.ls.localsky
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.lifecycle.ViewModelProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.compose.ui.test.performTextInput
 import com.ls.localsky.ui.screens.LoginScreen
+import com.ls.localsky.ui.screens.RegisterScreen
 import com.ls.localsky.ui.theme.LocalSkyTheme
 import com.ls.localsky.viewmodels.UserViewModelLS
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class LoginScreenTest {
+class UserInputTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -28,7 +25,7 @@ class LoginScreenTest {
     private val userViewModel = UserViewModelLS()
 
     @Test
-    fun myTest(){
+    fun loginScreenTest(){
         composeTestRule.setContent {
             LocalSkyTheme {
                 LoginScreen(
@@ -39,7 +36,10 @@ class LoginScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithContentDescription(activity.getString(R.string.email)).performClick()
-        assert(true)
+        composeTestRule.onNodeWithContentDescription(activity.getString(R.string.email)).performTextInput("tulocalsky@gmail.com")
+        composeTestRule.onNodeWithContentDescription(activity.getString(R.string.password)).performTextInput("Test12345")
+        composeTestRule.onNodeWithText(activity.getString(R.string.login)).performClick()
+
     }
+
 }
