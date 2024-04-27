@@ -46,4 +46,25 @@ class UserInputTest {
 
     }
 
+    @Test
+    fun loginScreenWrongPasswordTest(){
+        composeTestRule.setContent {
+            LocalSkyTheme {
+                LoginScreen(
+                    context = LocalContext.current,
+                    database = database,
+                    userViewModelLS = userViewModel
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("Email").performTextInput("tulocalsky@gmail.com")
+        composeTestRule.onNodeWithTag("Password").performTextInput("WrongPassword")
+        composeTestRule.onNodeWithText(activity.getString(R.string.login)).performClick()
+        //Might need to be longer depending on internet connection
+        Thread.sleep(5000)
+        assert(userViewModel.getCurrentUser().userID == null)
+
+    }
+
 }
