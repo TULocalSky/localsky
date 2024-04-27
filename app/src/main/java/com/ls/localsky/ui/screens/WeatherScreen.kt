@@ -1,5 +1,6 @@
 package com.ls.localsky.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
@@ -25,7 +26,6 @@ import com.ls.localsky.ui.components.DailyWeatherForecast
 import com.ls.localsky.ui.components.HourlyWeatherForecast
 import com.ls.localsky.viewmodels.WeatherViewModelLS
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WeatherScreen(
     viewModelLS: WeatherViewModelLS,
@@ -41,7 +41,6 @@ fun WeatherScreen(
     Surface(
         modifier = modifier
     ) {
-
         SwipeRefresh(
             state = pullRefreshState,
             onRefresh = { viewModelLS.getWeatherData(cache) },
