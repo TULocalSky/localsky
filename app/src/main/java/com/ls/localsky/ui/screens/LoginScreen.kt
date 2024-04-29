@@ -65,7 +65,8 @@ fun LoginScreen(
                 labelValue = stringResource(id = R.string.email),
                 emailValue,
                 Icons.Filled.Mail,
-                KeyboardType.Email
+                KeyboardType.Email,
+                "Email"
             )
             PasswordInput(labelValue = stringResource(id = R.string.password), passwordValue)
             Spacer(modifier=Modifier.height(50.dp))

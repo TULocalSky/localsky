@@ -67,11 +67,29 @@ fun RegisterScreen(
             Spacer(modifier=Modifier.height(50.dp))
             // Text input fields
             // First Name
-            NormalTextInput(labelValue = stringResource(id = R.string.first_name), firstNameValue, Icons.Filled.Person, KeyboardType.Text)
+            NormalTextInput(
+                labelValue = stringResource(id = R.string.first_name),
+                firstNameValue,
+                Icons.Filled.Person,
+                KeyboardType.Text,
+                "FirstName"
+            )
             // Last name
-            NormalTextInput(labelValue = stringResource(id = R.string.last_name), lastNameValue, Icons.Filled.Person, KeyboardType.Text)
+            NormalTextInput(
+                labelValue = stringResource(id = R.string.last_name),
+                lastNameValue,
+                Icons.Filled.Person,
+                KeyboardType.Text,
+                "LastName"
+            )
             // Email
-            NormalTextInput(labelValue = stringResource(id = R.string.email), emailValue, Icons.Filled.Mail, KeyboardType.Email)
+            NormalTextInput(
+                labelValue = stringResource(id = R.string.email),
+                emailValue,
+                Icons.Filled.Mail,
+                KeyboardType.Email,
+                "Email"
+            )
             PasswordInput(labelValue = stringResource(id = R.string.password), passwordValue)
             Spacer(modifier=Modifier.height(50.dp))
             //Buttons
