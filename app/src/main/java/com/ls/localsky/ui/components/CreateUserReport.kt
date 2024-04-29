@@ -67,7 +67,7 @@ fun showUserReportScreen(
                             it,
                             currentLocation.longitude,
                             condition.weatherSummary,
-                            sensorViewModel.getAmbientTempF().toString(),
+                            sensorViewModel.getAmbientTempF(),
                             sensorViewModel.getRelativeHumidity(),
                             { ref, report ->
                                 Log.d("UserReport","Report Uploaded $report")

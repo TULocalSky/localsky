@@ -6,7 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
@@ -28,7 +28,6 @@ import com.google.maps.android.compose.rememberMarkerState
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
-import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.ui.components.CustomMapMarker
 import com.ls.localsky.ui.components.MARKER_STATE
 import com.ls.localsky.ui.components.UserReportSheet
@@ -45,21 +44,28 @@ fun MapScreen(
     userViewModel: UserViewModelLS,
     userReportViewModel: UserReportViewModelLS,
     sensorViewModel: SensorViewModelLS,
+    currentLocation: LatLng?
 ){
-    val currentLocation by LocationRepository.currentLocation.collectAsState()
-
     val showBottomSheet = remember { mutableStateOf(false) }
     var currentUserReport by remember { mutableStateOf(Pair<UserReport, Bitmap?>(UserReport(), null))}
 
-    val userPosition = remember{
+    val userPosition = remember {
         currentLocation?.latitude?.let {
-            currentLocation?.longitude?.let { it1 ->
-                LatLng(it, it1)
-            }
+            LatLng(it, currentLocation.longitude)
         }
     }
-    val cameraPositionState = rememberCameraPositionState {
-        position = userPosition?.let { CameraPosition.fromLatLngZoom(it, 12f) }!!
+
+    val cameraPositionState = rememberCameraPositionState()
+
+    LaunchedEffect(userPosition) {
+        // Check if userPosition is not null
+        userPosition?.let { position ->
+            // Animate the camera to the user's position
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newLatLngZoom(position, 12f),
+                durationMs = 1000
+            )
+        }
     }
 
     val currentLocationMarkerState = userPosition?.let { rememberMarkerState(MARKER_STATE, it) }
@@ -117,7 +123,7 @@ fun MapScreen(
                 userViewModel = userViewModel,
                 userReportViewModel = userReportViewModel,
                 database = database,
-                currentLocation =currentLocation
+                currentLocation = currentLocation
             )
         }
     }

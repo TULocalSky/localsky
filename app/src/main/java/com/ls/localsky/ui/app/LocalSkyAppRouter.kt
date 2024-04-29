@@ -33,6 +33,7 @@ object LocalSkyAppRouter {
     }
     fun changeApp(app: App){
         currentApp.value = app
+        Screen.WeatherScreen.onCLick()
     }
 
 }

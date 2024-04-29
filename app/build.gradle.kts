@@ -130,6 +130,7 @@ dependencies {
     //Google Maps
     implementation("com.google.maps.android:maps-compose:4.3.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
@@ -137,6 +138,8 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    implementation ("com.google.accompanist:accompanist-swiperefresh:0.27.0")
+    
     // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 // Needed for createComposeRule(), but not for createAndroidComposeRule<YourActivity>():

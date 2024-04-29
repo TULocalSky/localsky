@@ -37,6 +37,7 @@ fun NavigationGraph(
                 userViewModel = userViewModel,
                 userReportViewModel = userReportViewModel,
                 sensorViewModel = sensorViewModel,
+                userViewModel.getCurrentUserLocation()
             )
         }
         composable(Screen.SettingsScreen.screen_route) {
@@ -48,7 +49,8 @@ fun NavigationGraph(
             WeatherScreen(
                 viewModelLS = weatherViewModel,
                 cache = cache,
-                modifier = modifier
+                modifier = modifier,
+                userViewModel.getCurrentUserLocation()
             )
         }
         composable(Screen.RegisterScreen.screen_route){

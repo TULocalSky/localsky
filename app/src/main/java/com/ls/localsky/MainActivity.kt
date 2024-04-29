@@ -21,16 +21,25 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.os.Looper
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.sensors.RelativeHumiditySensor
 import com.ls.localsky.sensors.TemperatureSensor
 import com.ls.localsky.viewmodels.SensorViewModelLS
+import java.util.concurrent.TimeUnit
+
+val REQUESTING_LOCATION_UPDATES_KEY = "location_update_key"
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
     private lateinit var cacheLS: CacheLS
     private lateinit var database: DatabaseLS
 
@@ -39,9 +48,25 @@ class MainActivity : ComponentActivity() {
     private lateinit var userReportViewModel: UserReportViewModelLS
     private lateinit var sensorViewModel: SensorViewModelLS
 
+    private var requestingLocationUpdates = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        checkPerms()
+
+        updateValuesFromBundle(savedInstanceState)
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations){
+                    val latLng = LatLng(location.latitude, location.longitude)
+                    userViewModel.setCurrentUserLocation(latLng)
+                    weatherViewModel.setCoordinate(latLng)
+                }
+            }
+        }
 
         database = DatabaseLS()
         cacheLS = CacheLS(this)
@@ -50,15 +75,14 @@ class MainActivity : ComponentActivity() {
         userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
         sensorViewModel = ViewModelProvider(this)[SensorViewModelLS::class.java]
 
-        weatherViewModel.getWeatherData(cacheLS)
+        startTempSensor()
+        startRelativeHumiditySensor()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        startTempSensor()
-        startRelativeHumiditySensor()
-        checkPerms()
-
         getCurrentLocationAndUpdateWeatherViewModel()
+
+        weatherViewModel.getWeatherData(cacheLS)
 
         setScreenActions()
 
@@ -142,16 +166,17 @@ class MainActivity : ComponentActivity() {
                 weatherViewModel.setCoordinate(latLng)
 
                 // Call the function to get weather data
-                weatherViewModel.getWeatherData(cacheLS)
+//                weatherViewModel.getWeatherData(cacheLS)
             }
         }
+
     }
 
     @SuppressLint("MissingPermission")
     fun setScreenActions(){
         checkPerms()
         Screen.WeatherScreen.onCLick = {
-            weatherViewModel.getWeatherData(cacheLS)
+//            weatherViewModel.getWeatherData(cacheLS)
         }
         Screen.MapScreen.onCLick = {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -166,6 +191,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
 
     private fun checkPerms(){
         // Check for permissions before requesting location
@@ -191,6 +218,55 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         TemperatureSensor.getInstance(this).stopListening()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, requestingLocationUpdates)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun updateValuesFromBundle(savedInstanceState: Bundle?) {
+        savedInstanceState ?: return
+
+        // Update the value of requestingLocationUpdates from the Bundle.
+        if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
+            requestingLocationUpdates = savedInstanceState.getBoolean(
+                REQUESTING_LOCATION_UPDATES_KEY)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (requestingLocationUpdates) startLocationUpdates()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        checkPerms()
+        val locationRequest = LocationRequest.create().apply {
+            interval = TimeUnit.SECONDS.toMillis(60)
+
+            fastestInterval = TimeUnit.SECONDS.toMillis(30)
+
+            maxWaitTime = TimeUnit.MINUTES.toMillis(2)
+
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 }
 

@@ -24,7 +24,8 @@ class WeatherViewModelLS: ViewModel(){
 
     var weatherDataState by mutableStateOf(WeatherState())
 
-    var _location: LatLng? = LocationRepository.currentLocation.value
+    var _location: LatLng? = null
+//        LocationRepository.currentLocation.value
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
@@ -37,6 +38,7 @@ class WeatherViewModelLS: ViewModel(){
     fun getWeatherData(
         cache: CacheLS
     ){
+        _isRefreshing.value = true
 
         // Have the weather data be loading until it gets its info
         weatherDataState = weatherDataState.copy(
@@ -51,6 +53,7 @@ class WeatherViewModelLS: ViewModel(){
                     isLoading = false,
                     error = null
                 )
+                _isRefreshing.value = false
             }
         }
         _location?.let {
@@ -62,6 +65,7 @@ class WeatherViewModelLS: ViewModel(){
                     error = null
                 )
                 cache.updateCachedWeatherData(it!!)
+                _isRefreshing.value = false
 
             },{
                 Log.d(WeatherAPI.TAG, "Error $it")
@@ -71,6 +75,8 @@ class WeatherViewModelLS: ViewModel(){
                 )
                 // Probably should wait some amount of time to restart
                 getWeatherData(cache)
+                _isRefreshing.value = false
+
 
             })
         }

@@ -23,7 +23,6 @@ class LocationService : Service() {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         locationListener = LocationListener { location ->
-            Log.d("Location Listener Listening: ", "${location.latitude}, ${location.longitude}.")
             val latLng = LatLng(location.latitude, location.longitude)
             LocationRepository.updateLocation(latLng)
         }
