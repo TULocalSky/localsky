@@ -1,5 +1,6 @@
 package com.ls.localsky.services
 
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,5 +11,6 @@ object LocationRepository {
     val currentLocation: StateFlow<LatLng?> = _currentLocation.asStateFlow()
     fun updateLocation(location: LatLng?) {
             _currentLocation.value = location!!
+        Log.d("",location.toString())
     }
 }
