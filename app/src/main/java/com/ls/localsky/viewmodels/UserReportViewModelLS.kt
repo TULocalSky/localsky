@@ -19,6 +19,7 @@ class UserReportViewModelLS : ViewModel() {
     fun setUserReports(reports: List<UserReport>, database: DatabaseLS){
         userReports.clear()
         reports.forEach{ report ->
+            userReports.put(report, null)
             database.getUserReportImage(
                 report.locationPicture!!,
                 { picture ->

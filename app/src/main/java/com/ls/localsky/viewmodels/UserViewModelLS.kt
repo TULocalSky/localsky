@@ -1,6 +1,7 @@
 package com.ls.localsky.viewmodels
 
 import android.location.Location
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -26,11 +27,11 @@ class UserViewModelLS : ViewModel() {
      * Gets the location of the user contained in the view model
      * @return [LiveData] containing a [LatLng]
      */
-    fun getCurrentUserLocation(): LatLng? {
+    fun getCurrentUserLocation(): MutableState<LatLng?> {
         LocationRepository.currentLocation.value?.let {
             currentUserLocation.value = it
         }
-        return currentUserLocation.value
+        return currentUserLocation
     }
 
     /**

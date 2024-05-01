@@ -23,13 +23,13 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.ls.localsky.DatabaseLS
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
 import com.ls.localsky.ui.components.CustomMapMarker
-import com.ls.localsky.ui.components.MARKER_STATE
 import com.ls.localsky.ui.components.UserReportSheet
 import com.ls.localsky.ui.components.showUserReportScreen
 import com.ls.localsky.viewmodels.SensorViewModelLS
@@ -44,14 +44,17 @@ fun MapScreen(
     userViewModel: UserViewModelLS,
     userReportViewModel: UserReportViewModelLS,
     sensorViewModel: SensorViewModelLS,
-    currentLocation: LatLng?
 ){
     val showBottomSheet = remember { mutableStateOf(false) }
     var currentUserReport by remember { mutableStateOf(Pair<UserReport, Bitmap?>(UserReport(), null))}
 
+    val showUserReportScreen = remember {
+        mutableStateOf(false)
+    }
+
     val userPosition = remember {
-        currentLocation?.latitude?.let {
-            LatLng(it, currentLocation.longitude)
+        userViewModel.getCurrentUserLocation().value?.let {loc ->
+            LatLng(loc.latitude, loc.longitude)
         }
     }
 
@@ -68,16 +71,11 @@ fun MapScreen(
         }
     }
 
-    val currentLocationMarkerState = userPosition?.let { rememberMarkerState(MARKER_STATE, it) }
-
-    var showUserReportScreen = remember {
-        mutableStateOf(false)
-    }
-
     val isDarkMode = isSystemInDarkTheme()
 
     // Load the appropriate map style depending on the current theme
     val mapStyleOptions = getMapStyleOptions(isDarkMode, LocalContext.current)
+
 
     Box(modifier = modifier){
         GoogleMap (
@@ -90,13 +88,12 @@ fun MapScreen(
                 mapStyleOptions = mapStyleOptions
             )
         ) {
-            if (currentLocationMarkerState != null) {
+            if (userPosition != null) {
                 Marker(
-                    state = currentLocationMarkerState
+                    state = MarkerState(userPosition)
                 )
             }
-            val reports = userReportViewModel.getUserReports()
-            reports.forEach { report ->
+            userReportViewModel.getUserReports().forEach { report ->
                 CustomMapMarker(
                     reportAndPic = report.toPair(),
                     onClick = { _ ->
@@ -123,7 +120,6 @@ fun MapScreen(
                 userViewModel = userViewModel,
                 userReportViewModel = userReportViewModel,
                 database = database,
-                currentLocation = currentLocation
             )
         }
     }

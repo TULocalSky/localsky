@@ -6,16 +6,17 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberMarkerState
 import com.ls.localsky.R
 import com.ls.localsky.models.UserReport
-
-const val MARKER_STATE = "marker state"
 
 @Composable
 fun CustomMapMarker(
@@ -28,20 +29,23 @@ fun CustomMapMarker(
 
     if(latitude != null && longitude != null){
         val position = remember { LatLng(latitude, longitude) }
-        val markerState = rememberMarkerState(MARKER_STATE,position)
+        val isVisable = remember { mutableStateOf(false) }
         val markerImage = remember(reportAndPic.second) {
             if(reportAndPic.second == null){
-                BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
+//                BitmapDescriptorFactory.fromResource(R.drawable.no_photo_jpg )
+                null
             } else{
                 val customizedBitmap = createCircularBitmap(reportAndPic.second!!)
+                isVisable.value = true
                 BitmapDescriptorFactory.fromBitmap(customizedBitmap)
             }
         }
 
         Marker(
-            state = markerState,
+            state = MarkerState(position),
             onClick = onClick,
-            icon = markerImage
+            icon = markerImage,
+            visible = isVisable.value
         )
     }
 

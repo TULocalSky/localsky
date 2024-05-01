@@ -21,25 +21,17 @@ import com.ls.localsky.viewmodels.WeatherViewModelLS
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.os.Looper
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.sensors.RelativeHumiditySensor
 import com.ls.localsky.sensors.TemperatureSensor
-import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.viewmodels.SensorViewModelLS
-import java.util.concurrent.TimeUnit
-
-val REQUESTING_LOCATION_UPDATES_KEY = "location_update_key"
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationCallback: LocationCallback
 
     private lateinit var cacheLS: CacheLS
     private lateinit var database: DatabaseLS
@@ -49,12 +41,23 @@ class MainActivity : ComponentActivity() {
     private lateinit var userReportViewModel: UserReportViewModelLS
     private lateinit var sensorViewModel: SensorViewModelLS
 
+    val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            // PERMISSION GRANTED
+            startService(Intent(this, LocationService::class.java))
+        } else {
+            // PERMISSION NOT GRANTED
+        }
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkPerms()
+        startLocationPermissionRequest()
 
         database = DatabaseLS()
         cacheLS = CacheLS(this)
@@ -140,11 +143,6 @@ class MainActivity : ComponentActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getCurrentLocationAndUpdateWeatherViewModel() {
-
-        checkPerms()
-
-        startService(Intent(this, LocationService::class.java))
-
         // Get last known location
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             location?.let {
@@ -155,16 +153,14 @@ class MainActivity : ComponentActivity() {
 
             }
         }
-
     }
 
     fun setScreenActions(){
-        checkPerms()
         Screen.WeatherScreen.onCLick = {
             userViewModel.getCurrentUserLocation()
         }
         Screen.MapScreen.onCLick = {
-            userViewModel.getCurrentUserLocation()?.let {latLong ->
+            userViewModel.getCurrentUserLocation().value?.let {latLong ->
                 database.getAllUserReports (latLong){
                     it?.let {
                         Log.d("UserReports", "Getting user reports")
@@ -176,27 +172,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
-
-    private fun checkPerms(){
-        // Check for permissions before requesting location
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED) {
-            // Get the permissions
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ),
-                0
-            )
-        }
+    private fun startLocationPermissionRequest() {
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     override fun onDestroy() {

@@ -20,6 +20,7 @@ class LocationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("Location Service","Starting Service")
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         locationListener = LocationListener { location ->
