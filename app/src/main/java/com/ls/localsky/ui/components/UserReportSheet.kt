@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -53,7 +54,7 @@ fun UserReportSheet(
                     painter = painterResource(id = R.drawable.no_photo_jpg ),
                     contentDescription = "local weather image",
                     alignment = Alignment.Center,
-                    modifier = Modifier.height(100.dp)
+                    modifier = Modifier.size(500.dp)
                 )
             }else{
                 Image(

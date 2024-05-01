@@ -7,6 +7,9 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET("{latitude},{longitude}")
-    fun getDefaultWeather(@Path("latitude") lat: String, @Path("longitude") lon: String): Call<WeatherData>
+    fun getDefaultWeather(
+        @Path("latitude") lat: String,
+        @Path("longitude") lon: String
+    ): Call<WeatherData>
 
 }

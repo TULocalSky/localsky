@@ -95,7 +95,7 @@ fun MapScreen(
                     state = currentLocationMarkerState
                 )
             }
-            val reports = remember { userReportViewModel.getUserReports() }
+            val reports = userReportViewModel.getUserReports()
             reports.forEach { report ->
                 CustomMapMarker(
                     reportAndPic = report.toPair(),
