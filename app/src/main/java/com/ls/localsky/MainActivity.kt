@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.sensors.RelativeHumiditySensor
 import com.ls.localsky.sensors.TemperatureSensor
+import com.ls.localsky.services.LocationRepository
 import com.ls.localsky.viewmodels.SensorViewModelLS
 
 class MainActivity : ComponentActivity() {
@@ -52,7 +53,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
+    override fun onStart() {
+        super.onStart()
+        weatherViewModel.getWeatherData(cacheLS)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +69,7 @@ class MainActivity : ComponentActivity() {
         userViewModel = ViewModelProvider(this)[UserViewModelLS::class.java]
         userReportViewModel = ViewModelProvider(this)[UserReportViewModelLS::class.java]
         sensorViewModel = ViewModelProvider(this)[SensorViewModelLS::class.java]
+        LocationRepository.setRepoViewModel(weatherViewModel, cacheLS)
 
         startTempSensor()
         startRelativeHumiditySensor()
@@ -74,6 +79,7 @@ class MainActivity : ComponentActivity() {
         getCurrentLocationAndUpdateWeatherViewModel()
 
         weatherViewModel.getWeatherData(cacheLS)
+        Log.d("Testings",  userViewModel.getCurrentUserLocation().value.toString())
 
         setScreenActions()
 
@@ -150,7 +156,6 @@ class MainActivity : ComponentActivity() {
                 val latLng = LatLng(location.latitude, location.longitude)
                 userViewModel.setCurrentUserLocation(latLng)
                 weatherViewModel.setCoordinate(latLng)
-
             }
         }
     }
@@ -158,6 +163,8 @@ class MainActivity : ComponentActivity() {
     fun setScreenActions(){
         Screen.WeatherScreen.onCLick = {
             userViewModel.getCurrentUserLocation()
+            weatherViewModel.getWeatherData(cacheLS)
+            Log.d("Testings",  userViewModel.getCurrentUserLocation().value.toString())
         }
         Screen.MapScreen.onCLick = {
             userViewModel.getCurrentUserLocation().value?.let {latLong ->

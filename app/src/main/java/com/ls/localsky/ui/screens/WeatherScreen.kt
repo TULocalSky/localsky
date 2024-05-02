@@ -36,10 +36,9 @@ fun WeatherScreen(
 ){
     val isRefreshing by viewModelLS.isRefreshing.collectAsStateWithLifecycle()
 
-    val currentLocation by remember {
+    val currentLocation = remember {
         userViewModel.getCurrentUserLocation()
     }
-
 
     val pullRefreshState = rememberSwipeRefreshState(
             isRefreshing = isRefreshing,
@@ -100,10 +99,10 @@ fun WeatherScreen(
 }
 
 
-@Preview
-@Composable
-fun DefaultWeatherScreen(){
+//@Preview
+//@Composable
+//fun DefaultWeatherScreen(){
 //    WeatherScreen(viewModelLS = WeatherViewModelLS())
-}
+//}
 
 

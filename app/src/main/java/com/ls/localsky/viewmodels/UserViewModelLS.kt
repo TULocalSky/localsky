@@ -1,6 +1,7 @@
 package com.ls.localsky.viewmodels
 
 import android.location.Location
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -31,6 +32,7 @@ class UserViewModelLS : ViewModel() {
         LocationRepository.currentLocation.value?.let {
             currentUserLocation.value = it
         }
+        Log.d(TAG,currentUserLocation.value.toString())
         return currentUserLocation
     }
 

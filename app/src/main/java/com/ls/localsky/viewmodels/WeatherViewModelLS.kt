@@ -33,7 +33,7 @@ class WeatherViewModelLS: ViewModel(){
      * @return [LiveData] containing [WeatherData]
      */
     fun getWeatherData(
-        cache: CacheLS
+        cache: CacheLS,
     ){
         _isRefreshing.value = true
 
@@ -59,16 +59,18 @@ class WeatherViewModelLS: ViewModel(){
                 weatherDataState = weatherDataState.copy(
                     weatherData = it,
                     isLoading = false,
+                    isLocationFound = true,
                     error = null
                 )
                 cache.updateCachedWeatherData(it!!)
                 _isRefreshing.value = false
 
-            },{
-                Log.d(WeatherAPI.TAG, "Error $it")
+            },{error ->
+                Log.d(WeatherAPI.TAG, "Error $error")
                 weatherDataState = weatherDataState.copy(
                     isLoading = false,
-                    error = it.toString()
+                    isLocationFound = true,
+                    error = error.toString()
                 )
                 // Probably should wait some amount of time to restart
                 getWeatherData(cache)
@@ -82,6 +84,7 @@ class WeatherViewModelLS: ViewModel(){
     fun setCoordinate(location: LatLng) {
         weatherDataState = weatherDataState.copy(
             isLoading = false,
+            isLocationFound = true,
             error = null
         )
     }
