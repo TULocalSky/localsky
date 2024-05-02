@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ls.localsky.R
+import com.ls.localsky.convertWeatherSummary
 import com.ls.localsky.models.UserReport
 import com.ls.localsky.parseTime
 
@@ -70,7 +71,7 @@ fun UserReportSheet(
             Divider()
             UserReportField(
                 title = "Weather Condition:",
-                field = reportAndPic.first.weatherCondition
+                field = convertWeatherSummary(reportAndPic.first.weatherCondition)
             )
             UserReportField(
                 title = "Reported Weather:",

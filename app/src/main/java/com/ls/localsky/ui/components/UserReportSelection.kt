@@ -17,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ls.localsky.appendTimeofDay
+import com.ls.localsky.convertWeatherSummary
 import com.ls.localsky.isDay
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
@@ -69,61 +71,6 @@ fun WeatherConditionButtonDisplay(
                     )
                 }
             }
-        }
-    }
-}
-
-fun appendTimeofDay(weatherItem: WeatherItem) : WeatherItem{
-    val nowTime = LocalTime.now()
-
-    val weatherSummary = weatherItem.weatherType.weatherSummary
-    if(weatherSummary.equals("clear-")){
-        return if(isDay(nowTime)){
-            weatherItem.copy(
-                weatherType = WeatherType.ClearDay
-            )
-        } else {
-            weatherItem.copy(
-                weatherType = WeatherType.ClearNight
-            )
-        }
-    } else if(weatherSummary.equals("partly-cloudy-")){
-        return if(isDay(nowTime)){
-            weatherItem.copy(
-                weatherType = WeatherType.PartlyCloudyDay
-            )
-        } else {
-            weatherItem.copy(
-                weatherType = WeatherType.PartlyCloudyNight
-            )
-        }
-    }
-    return weatherItem
-}
-
-fun convertWeatherSummary(weatherSummary: String?): String{
-    return if (weatherSummary == null){
-        " "
-    } else {
-        when (weatherSummary) {
-            "clear-" ->
-                "Clear"
-            "fog" ->
-                "Foggy"
-            "sleet" ->
-                "Sleet"
-            "snow" ->
-                "Snowy"
-            "rain" ->
-                "Rainy"
-            "wind" ->
-                "Windy"
-            "partly-cloudy-" ->
-                "Partly Cloudy"
-            "cloudy" ->
-                "Cloudy"
-            else ->
-                "Error"
         }
     }
 }
