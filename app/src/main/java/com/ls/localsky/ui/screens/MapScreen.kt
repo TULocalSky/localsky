@@ -67,7 +67,7 @@ fun MapScreen(
         userPosition?.let { position ->
             // Animate the camera to the user's position
             cameraPositionState.animate(
-                update = CameraUpdateFactory.newLatLngZoom(position, 12f),
+                update = CameraUpdateFactory.newLatLngZoom(position, 14f),
                 durationMs = 1000
             )
         }

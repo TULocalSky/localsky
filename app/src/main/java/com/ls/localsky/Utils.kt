@@ -6,7 +6,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 private val REPORT_VALID_TIME_HOURS = 2
-private val MAX_MARKER_DISTANCE = 1
+// TODO Change this back to 0.01
+private val MAX_MARKER_DISTANCE = 0.01
 
 fun parseTime(time: String): String{
     return LocalDateTime.parse(
