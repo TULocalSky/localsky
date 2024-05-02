@@ -3,6 +3,7 @@ package com.ls.localsky
 import com.ls.localsky.models.UserReport
 import java.time.Duration
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 private val REPORT_VALID_TIME_HOURS = 2
@@ -36,4 +37,10 @@ fun isReportValidTime(time: String): Boolean{
     val duration = Duration.between(givenTime, currentTime)
 
     return duration.toHours() <= REPORT_VALID_TIME_HOURS
+}
+
+fun isDay(nowTime: LocalTime): Boolean{
+    val startDayTime = LocalTime.parse("05:00:00")
+    val endDayTime = LocalTime.parse("20:00:00")
+    return !nowTime.isBefore(startDayTime) && !nowTime.isAfter(endDayTime)
 }

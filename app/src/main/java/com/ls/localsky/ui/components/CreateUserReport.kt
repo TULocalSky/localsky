@@ -144,7 +144,7 @@ fun UserReportPopup(
             }
             Spacer(modifier = Modifier.padding(5.dp))
             FilledTonalButton(onClick = { userImageLauncher.launch() }) {
-                Text("take a pic")
+                Text("Take a Photo")
             }
             Spacer(modifier = Modifier.padding(20.dp))
             Text(
