@@ -16,6 +16,18 @@ class UserReportViewModelLS : ViewModel() {
 
     fun getUserReports() = userReports
 
+    fun refreshUserReports(report: UserReport, database: DatabaseLS){
+        userReports.put(report, null)
+        database.getUserReportImage(
+            report.locationPicture!!,
+            { picture ->
+                Log.d("Picture", "Got the picture $picture")
+                userReports.put(report, picture)
+            }, {
+                Log.d("Storage","Failed to get picture")
+            })
+    }
+
     fun setUserReports(reports: List<UserReport>, database: DatabaseLS){
         userReports.clear()
         reports.forEach{ report ->

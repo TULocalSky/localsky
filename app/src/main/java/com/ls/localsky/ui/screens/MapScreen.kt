@@ -58,6 +58,10 @@ fun MapScreen(
         }
     }
 
+    val userReports = remember {
+        userReportViewModel.getUserReports()
+    }
+
     val cameraPositionState = rememberCameraPositionState()
 
     LaunchedEffect(userPosition) {
@@ -93,7 +97,7 @@ fun MapScreen(
                     state = MarkerState(userPosition)
                 )
             }
-            userReportViewModel.getUserReports().forEach { report ->
+            userReports.forEach { report ->
                 CustomMapMarker(
                     reportAndPic = report.toPair(),
                     onClick = { _ ->

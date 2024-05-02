@@ -351,7 +351,6 @@ class DatabaseLS() {
                     )
 
                     if(isReportValid(correctReport, latLng.latitude, latLng.longitude)){
-                        Log.d("User Report Location", correctReport.toString())
                         reports.add(correctReport)
                     }
                 }

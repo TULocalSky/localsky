@@ -70,11 +70,7 @@ fun showUserReportScreen(
                             sensorViewModel.getRelativeHumidity(),
                             { ref, report ->
                                 Log.d("UserReport","Report Uploaded $report")
-                                database.getAllUserReports (loc){
-                                    it?.let {
-                                        userReportViewModel.setUserReports(it, database)
-                                    }
-                                }
+                                userReportViewModel.refreshUserReports(report, database)
                             },
                             {
                                 Log.d("UserReport","It didnt work")
