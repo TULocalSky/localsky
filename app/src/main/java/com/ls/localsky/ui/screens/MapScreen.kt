@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
@@ -87,14 +89,10 @@ fun MapScreen(
             ),
             properties = MapProperties(
                 mapType = MapType.NORMAL,
-                mapStyleOptions = mapStyleOptions
+                mapStyleOptions = mapStyleOptions,
+                isMyLocationEnabled = true
             )
         ) {
-            if (userPosition != null) {
-                Marker(
-                    state = MarkerState(userPosition)
-                )
-            }
 
             val userReports = remember {
                 userReportViewModel.getUserReports()
