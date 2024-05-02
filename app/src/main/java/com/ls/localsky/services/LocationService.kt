@@ -31,7 +31,7 @@ class LocationService : Service() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                10000L,
+                100000L,
                 0f,
                 locationListener!!
             )
