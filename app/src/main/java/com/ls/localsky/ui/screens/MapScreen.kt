@@ -58,9 +58,7 @@ fun MapScreen(
         }
     }
 
-    val userReports = remember {
-        userReportViewModel.getUserReports()
-    }
+
 
     val cameraPositionState = rememberCameraPositionState()
 
@@ -97,6 +95,11 @@ fun MapScreen(
                     state = MarkerState(userPosition)
                 )
             }
+
+            val userReports = remember {
+                userReportViewModel.getUserReports()
+            }
+
             userReports.forEach { report ->
                 CustomMapMarker(
                     reportAndPic = report.toPair(),
