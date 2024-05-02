@@ -346,8 +346,12 @@ class DatabaseLS() {
                 val reports = ArrayList<UserReport>()
                 for(document in documents){
                     val report = document.toObject<UserReport>()
-                    if(isReportValid(report, latLng.latitude, latLng.longitude)){
-                        reports.add(report)
+                    val correctReport = report.copy(
+                        createdTime = LocalDateTime.parse(report.createdTime, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm a"))
+                    )
+
+                    if(isReportValid(correctReport, latLng.latitude, latLng.longitude)){
+                        reports.add(correctReport)
                     }
                 }
                 callback(reports)

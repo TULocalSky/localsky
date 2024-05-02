@@ -1,10 +1,14 @@
 package com.ls.localsky.viewmodels
 
+import android.location.Location
+import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.ls.localsky.models.User
+import com.ls.localsky.services.LocationRepository
 
 class UserViewModelLS : ViewModel() {
 
@@ -24,8 +28,12 @@ class UserViewModelLS : ViewModel() {
      * Gets the location of the user contained in the view model
      * @return [LiveData] containing a [LatLng]
      */
-    fun getCurrentUserLocation(): LatLng? {
-        return currentUserLocation.value
+    fun getCurrentUserLocation(): MutableState<LatLng?> {
+        LocationRepository.currentLocation.value?.let {
+            currentUserLocation.value = it
+        }
+        Log.d(TAG,currentUserLocation.value.toString())
+        return currentUserLocation
     }
 
     /**

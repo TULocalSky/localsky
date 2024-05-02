@@ -45,7 +45,6 @@ fun showUserReportScreen(
     userViewModel: UserViewModelLS,
     userReportViewModel: UserReportViewModelLS,
     database: DatabaseLS,
-    currentLocation: LatLng?
 ) {
     if(userViewModel.getCurrentUser().userID != null){
         if(!showUserReportScreen.value){
@@ -60,22 +59,18 @@ fun showUserReportScreen(
                 submitAction = {
                         picture, condition ->
                     val user = userViewModel.getCurrentUser()
-                    currentLocation?.latitude?.let {
+                    userViewModel.getCurrentUserLocation().value?.let { loc ->
                         database.uploadReport(
                             picture,
                             user,
-                            it,
-                            currentLocation.longitude,
+                            loc.latitude,
+                            loc.longitude,
                             condition.weatherSummary,
                             sensorViewModel.getAmbientTempF(),
                             sensorViewModel.getRelativeHumidity(),
                             { ref, report ->
                                 Log.d("UserReport","Report Uploaded $report")
-                                database.getAllUserReports (currentLocation){
-                                    it?.let {
-                                        userReportViewModel.setUserReports(it, database)
-                                    }
-                                }
+                                userReportViewModel.refreshUserReports(report, database)
                             },
                             {
                                 Log.d("UserReport","It didnt work")

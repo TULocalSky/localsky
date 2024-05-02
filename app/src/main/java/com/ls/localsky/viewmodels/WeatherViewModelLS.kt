@@ -24,9 +24,6 @@ class WeatherViewModelLS: ViewModel(){
 
     var weatherDataState by mutableStateOf(WeatherState())
 
-    var _location: LatLng? = null
-//        LocationRepository.currentLocation.value
-
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing.asStateFlow()
@@ -36,7 +33,7 @@ class WeatherViewModelLS: ViewModel(){
      * @return [LiveData] containing [WeatherData]
      */
     fun getWeatherData(
-        cache: CacheLS
+        cache: CacheLS,
     ){
         _isRefreshing.value = true
 
@@ -56,22 +53,24 @@ class WeatherViewModelLS: ViewModel(){
                 _isRefreshing.value = false
             }
         }
-        _location?.let {
+        LocationRepository.currentLocation.value?.let {
             WeatherAPI().getWeatherData(it.latitude, it.longitude, {
                 Log.d(TAG,"Getting New Weather Data for the View Model")
                 weatherDataState = weatherDataState.copy(
                     weatherData = it,
                     isLoading = false,
+                    isLocationFound = true,
                     error = null
                 )
                 cache.updateCachedWeatherData(it!!)
                 _isRefreshing.value = false
 
-            },{
-                Log.d(WeatherAPI.TAG, "Error $it")
+            },{error ->
+                Log.d(WeatherAPI.TAG, "Error $error")
                 weatherDataState = weatherDataState.copy(
                     isLoading = false,
-                    error = it.toString()
+                    isLocationFound = true,
+                    error = error.toString()
                 )
                 // Probably should wait some amount of time to restart
                 getWeatherData(cache)
@@ -83,9 +82,9 @@ class WeatherViewModelLS: ViewModel(){
     }
 
     fun setCoordinate(location: LatLng) {
-        _location = location
         weatherDataState = weatherDataState.copy(
             isLoading = false,
+            isLocationFound = true,
             error = null
         )
     }
