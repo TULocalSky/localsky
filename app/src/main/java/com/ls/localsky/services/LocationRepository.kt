@@ -12,11 +12,13 @@ object LocationRepository {
     val currentLocation = MutableStateFlow<LatLng?>(null)
     lateinit var viewModel: WeatherViewModelLS
     lateinit var cache: CacheLS
+    var hasRun = false
 
     fun updateLocation(location: LatLng) {
         currentLocation.value = location
-        if(viewModel != null && currentLocation.value != null){
+        if(viewModel != null && !hasRun){
             viewModel.getWeatherData(cache)
+            hasRun = true
         }
         Log.d("",location.toString())
     }

@@ -163,8 +163,8 @@ class MainActivity : ComponentActivity() {
     fun setScreenActions(){
         Screen.WeatherScreen.onCLick = {
             userViewModel.getCurrentUserLocation()
-            weatherViewModel.getWeatherData(cacheLS)
-            Log.d("Testings",  userViewModel.getCurrentUserLocation().value.toString())
+//            weatherViewModel.getWeatherData(cacheLS)
+//            Log.d("Testings",  userViewModel.getCurrentUserLocation().value.toString())
         }
         Screen.MapScreen.onCLick = {
             userViewModel.getCurrentUserLocation().value?.let {latLong ->

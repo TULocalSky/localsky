@@ -1,7 +1,6 @@
 package com.ls.localsky.ui.components
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
@@ -18,9 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ls.localsky.appendTimeofDay
+import com.ls.localsky.convertWeatherSummary
+import com.ls.localsky.isDay
 import com.ls.localsky.models.WeatherItem
 import com.ls.localsky.models.WeatherType
-import com.ls.localsky.viewmodels.SensorViewModelLS
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +30,7 @@ fun WeatherConditionButtonDisplay(
     selectedWeatherItem: MutableState<WeatherItem?>,
 ){
     val weatherItems = remember {
-        WeatherType.allWeatherTypes.map {
+        WeatherType.reportWeatherTypes.map {
             WeatherItem(it)
         }.toTypedArray()
     }
@@ -46,7 +48,7 @@ fun WeatherConditionButtonDisplay(
             },
         ) {
             TextField(
-                value = selectedWeatherItem.value?.weatherType?.weatherSummary ?: "",
+                value = convertWeatherSummary(selectedWeatherItem.value?.weatherType?.weatherSummary),
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = {
@@ -61,9 +63,9 @@ fun WeatherConditionButtonDisplay(
             ) {
                 weatherItems.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(text = item.weatherType.weatherSummary) },
+                        text = { Text(text = convertWeatherSummary(item.weatherType.weatherSummary)) },
                         onClick = {
-                            selectedWeatherItem.value = item
+                            selectedWeatherItem.value = appendTimeofDay(item)
                             expanded = false
                         }
                     )

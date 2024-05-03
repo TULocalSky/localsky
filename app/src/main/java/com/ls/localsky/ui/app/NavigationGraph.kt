@@ -41,7 +41,9 @@ fun NavigationGraph(
         }
         composable(Screen.SettingsScreen.screen_route) {
             SettingsScreen(
-                databaseLS
+                modifier,
+                databaseLS,
+                userViewModel
             )
         }
         composable(Screen.WeatherScreen.screen_route) {

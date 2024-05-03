@@ -46,7 +46,7 @@ fun showUserReportScreen(
     userReportViewModel: UserReportViewModelLS,
     database: DatabaseLS,
 ) {
-    if(userViewModel.getCurrentUser().userID != null){
+    if(userViewModel.getCurrentUser() != null){
         if(!showUserReportScreen.value){
             createUserReportButton(
                 modifier = modifier,
@@ -62,7 +62,7 @@ fun showUserReportScreen(
                     userViewModel.getCurrentUserLocation().value?.let { loc ->
                         database.uploadReport(
                             picture,
-                            user,
+                            user!!,
                             loc.latitude,
                             loc.longitude,
                             condition.weatherSummary,
@@ -144,7 +144,7 @@ fun UserReportPopup(
             }
             Spacer(modifier = Modifier.padding(5.dp))
             FilledTonalButton(onClick = { userImageLauncher.launch() }) {
-                Text("take a pic")
+                Text("Take a Photo")
             }
             Spacer(modifier = Modifier.padding(20.dp))
             Text(

@@ -56,9 +56,7 @@ fun CurrentWeatherCard(
                 /*Time of day*/
 
                 Text(
-                    text = "Today ${
-                        SimpleDateFormat("hh:mm a").format(Calendar.getInstance().time)
-                    }",
+                    text = SimpleDateFormat("hh:mm a").format(Calendar.getInstance().time),
                     modifier = Modifier.align(Alignment.End),
                 )
                 Spacer(modifier = Modifier.height(16.dp))

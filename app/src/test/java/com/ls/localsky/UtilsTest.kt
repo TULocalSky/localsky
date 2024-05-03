@@ -5,6 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.GregorianCalendar
@@ -17,6 +18,14 @@ class UtilsTest {
         val parsedTime = parseTime(time)
         val expected = "12:14 PM"
         assertEquals(expected, parsedTime)
+    }
+
+    @Test
+    fun isDayTest(){
+        val dayTime = LocalTime.of(11, 0)
+        val nightTime = LocalTime.of(23, 0)
+        assert(isDay(dayTime))
+        assert(!isDay(nightTime))
     }
 
     @Test

@@ -57,9 +57,37 @@ sealed class WeatherType(
         iconRes = R.drawable.wind__2_
     )
 
+    object Clear : WeatherType(
+        weatherSummary = "clear-",
+        iconRes = R.drawable.clearday
+    )
+
+    object PartlyCloudy : WeatherType(
+        weatherSummary = "partly-cloudy-",
+        iconRes = R.drawable.partlycloudyday
+    )
+
     companion object {
-        val allWeatherTypes = arrayOf(ClearDay, ClearNight, Cloudy, Foggy,
-            PartlyCloudyDay, PartlyCloudyNight, Rain, Snow, Windy)
+        val allWeatherTypes = arrayOf(
+            ClearDay,
+            ClearNight,
+            Cloudy,
+            Foggy,
+            PartlyCloudyDay,
+            PartlyCloudyNight,
+            Rain,
+            Snow,
+            Windy
+        )
+        val reportWeatherTypes = arrayOf(
+            Clear,
+            Cloudy,
+            Foggy,
+            PartlyCloudy,
+            Rain,
+            Snow,
+            Windy
+        )
 
         fun fromWeatherReport(summary: String): WeatherType {
             return when (summary) {

@@ -12,9 +12,9 @@ import com.ls.localsky.services.LocationRepository
 
 class UserViewModelLS : ViewModel() {
 
-    private var currentUser = mutableStateOf(User())
+    private var currentUser = mutableStateOf<User?>(User())
 
-    fun getCurrentUser(): User{
+    fun getCurrentUser(): User?{
         return  currentUser.value
     }
 
@@ -42,6 +42,10 @@ class UserViewModelLS : ViewModel() {
      */
     fun setCurrentUserLocation(newLocation: LatLng){
         currentUserLocation.value = newLocation
+    }
+
+    fun clearCurrentUser() {
+        currentUser.value = null
     }
 
     companion object{

@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
@@ -67,7 +69,7 @@ fun MapScreen(
         userPosition?.let { position ->
             // Animate the camera to the user's position
             cameraPositionState.animate(
-                update = CameraUpdateFactory.newLatLngZoom(position, 12f),
+                update = CameraUpdateFactory.newLatLngZoom(position, 14f),
                 durationMs = 1000
             )
         }
@@ -87,14 +89,10 @@ fun MapScreen(
             ),
             properties = MapProperties(
                 mapType = MapType.NORMAL,
-                mapStyleOptions = mapStyleOptions
+                mapStyleOptions = mapStyleOptions,
+                isMyLocationEnabled = true
             )
         ) {
-            if (userPosition != null) {
-                Marker(
-                    state = MarkerState(userPosition)
-                )
-            }
 
             val userReports = remember {
                 userReportViewModel.getUserReports()
@@ -117,7 +115,7 @@ fun MapScreen(
                 showBottomSheet,
             )
         }
-        if(userViewModel.getCurrentUser().userID != null){
+        if(database.getCurrentUser() != null){
             showUserReportScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
