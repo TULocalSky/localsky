@@ -115,7 +115,7 @@ fun MapScreen(
                 showBottomSheet,
             )
         }
-        if(userViewModel.getCurrentUser().userID != null){
+        if(database.getCurrentUser() != null){
             showUserReportScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
