@@ -46,7 +46,7 @@ fun showUserReportScreen(
     userReportViewModel: UserReportViewModelLS,
     database: DatabaseLS,
 ) {
-    if(userViewModel.getCurrentUser().userID != null){
+    if(userViewModel.getCurrentUser() != null){
         if(!showUserReportScreen.value){
             createUserReportButton(
                 modifier = modifier,
@@ -62,7 +62,7 @@ fun showUserReportScreen(
                     userViewModel.getCurrentUserLocation().value?.let { loc ->
                         database.uploadReport(
                             picture,
-                            user,
+                            user!!,
                             loc.latitude,
                             loc.longitude,
                             condition.weatherSummary,
